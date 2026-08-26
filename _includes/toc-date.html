@@ -1,119 +1,426 @@
 <div class="book-summary">
+
     <script type="text/javascript">
-        // Fixes the page links scroll problem on both desktop and mobile browsers
+
+        // 点击不同页面时让正文回到顶部
         function pageScrollToTop(element) {
-            // both mobile and non-mobile
-            $('div.body-inner').animate({scrollTop: 0});
-            $(element).parent().find('li>ul>li').removeClass('active');
-            return true;  // propagate
+
+            $('div.body-inner').animate({
+                scrollTop: 0
+            });
+
+            $(element)
+                .parent()
+                .find('li>ul>li')
+                .removeClass('active');
+
+            return true;
         }
-        // Fixes the anchor links scroll problem on mobile browsers
+
+
+        // 手机端点击文章内部目录
         function mobilePageScrollToAnchor(element) {
-            $(element).closest('li.chapter').find('ul>li').removeClass('active');
-            $(element).parent().addClass('active');
+
+            $(element)
+                .closest('li.chapter')
+                .find('ul>li')
+                .removeClass('active');
+
+            $(element)
+                .parent()
+                .addClass('active');
+
+
             if ($(document).width() <= 1240) {
-                let target = $($(element).attr('href'));
+
+                let target = $(
+                    $(element).attr('href')
+                );
+
                 if (target.length) {
+
                     $('div.body-inner').animate({
-                        scrollTop: target.get(0).offsetTop,
+
+                        scrollTop:
+                            target.get(0).offsetTop
+
                     });
                 }
             }
+
             return true;
         }
+
     </script>
 
+
     <nav role="navigation">
-        <div id="book-search-input" role="search">
-            <input type="text" placeholder="Type to search" />
+
+
+        <!-- ========================= -->
+        <!-- Search -->
+        <!-- ========================= -->
+
+        <div
+            id="book-search-input"
+            role="search"
+        >
+
+            <input
+                type="text"
+                placeholder="搜索笔记..."
+            />
+
         </div>
-        <div id="book-search-input-link" role="search">
-            <a href="{{site.baseurl}}/assets/search.html">Click to Search</a>
+
+
+        <div
+            id="book-search-input-link"
+            role="search"
+        >
+
+            <a
+                href="{{ site.baseurl }}/assets/search.html"
+            >
+
+                搜索
+
+            </a>
+
         </div>
+
+
         <ul class="summary">
-            {% if page.url == "/index.html" or page.url == "/" %}
-            <li class="chapter active" data-level="1.1" data-path="{{site.baseurl}}">
+
+
+            <!-- ========================= -->
+            <!-- Home -->
+            <!-- ========================= -->
+
+            {% if page.url == "/" or page.url == "/index.html" %}
+
+                <li
+                    class="chapter active"
+                    data-path="{{ site.baseurl }}"
+                >
+
             {% else %}
-            <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}">
+
+                <li
+                    class="chapter"
+                    data-path="{{ site.baseurl }}"
+                >
+
             {% endif %}
-                <a href="{{site.baseurl}}/" onclick="pageScrollToTop(this)">
-                    {{ site.title | escape }}
+
+
+                <a
+                    href="{{ site.baseurl }}/"
+                    onclick="pageScrollToTop(this)"
+                >
+
+                    🏠 {{ site.title | escape }}
+
                 </a>
-                {% if site.toc.enabled %}
-                    {% if site.toc.enabled_index %}
-                        {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
-                    {% endif %}
+
+
+                {% if site.toc.enabled
+                    and site.toc.enabled_index
+                    and page.url == "/"
+                %}
+
+                    {% include toc.html
+                        html=content
+                        h_min=site.toc.h_min
+                        h_max=site.toc.h_max
+                    %}
+
                 {% endif %}
+
             </li>
+
 
             <li class="divider"></li>
 
-            {% if site.ordered_collections %}
-                {% for label in site.ordered_collections %}
-                    {% assign collection = site.collections | where: "label", label | first %}
-                    <!-- <p>{{ collection.label }}</p> -->
-                    {% if collection.output %}
-                        {% if collection.label == "posts" %}
-                            {% assign reversed_posts = site[collection.label] | reverse %}
-                        {% else %}
-                            {% assign reversed_posts = site[collection.label] %}
-                        {% endif %}
 
-                        {% for post in reversed_posts %}
-                            {% if page.url == post.url %}
-                            <li class="chapter active" data-level="1.2" data-path="{{site.baseurl}}{{post.url}}">
-                            {% else %}
-                            <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}{{post.url}}">
-                            {% endif %}
-                                <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
-                                    {{ post.title | escape }}
-                                </a>
-                                {% if site.toc.enabled %}
-                                    {% if page.url == post.url %}
-                                        {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
-                                    {% endif %}
+            <!-- ========================= -->
+            <!-- Knowledge Base -->
+            <!-- ========================= -->
+
+
+            {% assign pages_collection =
+                site.collections
+                | where: "label", "pages"
+                | first
+            %}
+
+
+            {% if pages_collection %}
+
+
+                {% for section in site.navigation_sections %}
+
+
+                    {% assign section_pages =
+                        pages_collection.docs
+                        | where: "category", section.category
+                        | sort: "order"
+                    %}
+
+
+                    {% if section_pages.size > 0 %}
+
+
+                        <li class="header">
+
+                            {{ section.title }}
+
+                        </li>
+
+
+                        {% for note in section_pages %}
+
+
+                            {% unless note.hide_in_nav %}
+
+
+                                {% if page.url == note.url %}
+
+                                    <li
+                                        class="chapter active"
+                                        data-path="{{ site.baseurl }}{{ note.url }}"
+                                    >
+
+                                {% else %}
+
+                                    <li
+                                        class="chapter"
+                                        data-path="{{ site.baseurl }}{{ note.url }}"
+                                    >
+
                                 {% endif %}
-                            </li>
+
+
+                                    <a
+                                        href="{{ site.baseurl }}{{ note.url }}"
+                                        onclick="pageScrollToTop(this)"
+                                    >
+
+                                        {{ note.title | escape }}
+
+                                    </a>
+
+
+                                    <!-- 当前页面展开文章内部目录 -->
+
+                                    {% if site.toc.enabled
+                                        and page.url == note.url
+                                    %}
+
+                                        {% include toc.html
+                                            html=content
+                                            h_min=site.toc.h_min
+                                            h_max=site.toc.h_max
+                                        %}
+
+                                    {% endif %}
+
+
+                                </li>
+
+
+                            {% endunless %}
+
+
                         {% endfor %}
 
-                        {% if reversed_posts.size > 0 %}
-                            <li class="divider"></li>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                {% for collection in site.collections %}
-                    <!-- <p>{{ collection.label }}</p> -->
-                    {% if collection.output %}
-                        {% if collection.label == "posts" %}
-                            {% assign reversed_posts = site[collection.label] | reverse %}
-                        {% else %}
-                            {% assign reversed_posts = site[collection.label] %}
-                        {% endif %}
 
-                        {% for post in reversed_posts %}
-                            {% if page.url == post.url %}
-                            <li class="chapter active" data-level="1.2" data-path="{{site.baseurl}}{{post.url}}">
-                            {% else %}
-                            <li class="chapter" data-level="1.1" data-path="{{site.baseurl}}{{post.url}}">
-                            {% endif %}
-                                <a href="{{site.baseurl}}{{post.url}}" onclick="pageScrollToTop(this)">
-                                    {{ post.title | escape }}
-                                </a>
-                                {% if site.toc.enabled %}
-                                    {% if page.url == post.url %}
-                                        {% include toc.html html=content h_min=site.toc.h_min h_max=site.toc.h_max %}
-                                    {% endif %}
-                                {% endif %}
-                            </li>
-                        {% endfor %}
+                        <li class="divider"></li>
 
-                        {% if reversed_posts.size > 0 %}
-                            <li class="divider"></li>
-                        {% endif %}
+
                     {% endif %}
+
+
                 {% endfor %}
+
+
             {% endif %}
+
+
+
+            <!-- ========================= -->
+            <!-- Learning Logs -->
+            <!-- ========================= -->
+
+
+            {% if site.posts.size > 0 %}
+
+
+                <li class="header">
+
+                    学习日志
+
+                </li>
+
+
+                {% for post in site.posts %}
+
+
+                    {% unless post.hide_in_nav %}
+
+
+                        {% if page.url == post.url %}
+
+                            <li
+                                class="chapter active"
+                                data-path="{{ site.baseurl }}{{ post.url }}"
+                            >
+
+                        {% else %}
+
+                            <li
+                                class="chapter"
+                                data-path="{{ site.baseurl }}{{ post.url }}"
+                            >
+
+                        {% endif %}
+
+
+                            <a
+                                href="{{ site.baseurl }}{{ post.url }}"
+                                onclick="pageScrollToTop(this)"
+                            >
+
+                                {{ post.title | escape }}
+
+                            </a>
+
+
+                            {% if site.toc.enabled
+                                and page.url == post.url
+                            %}
+
+                                {% include toc.html
+                                    html=content
+                                    h_min=site.toc.h_min
+                                    h_max=site.toc.h_max
+                                %}
+
+                            {% endif %}
+
+
+                        </li>
+
+
+                    {% endunless %}
+
+
+                {% endfor %}
+
+
+                <li class="divider"></li>
+
+
+            {% endif %}
+
+
+
+            <!-- ========================= -->
+            <!-- Other Pages -->
+            <!-- ========================= -->
+
+
+            {% assign others_collection =
+                site.collections
+                | where: "label", "others"
+                | first
+            %}
+
+
+            {% if others_collection %}
+
+
+                {% assign other_pages =
+                    others_collection.docs
+                    | sort: "order"
+                %}
+
+
+                {% if other_pages.size > 0 %}
+
+
+                    <li class="header">
+
+                        其他
+
+                    </li>
+
+
+                    {% for other in other_pages %}
+
+
+                        {% unless other.hide_in_nav %}
+
+
+                            {% if page.url == other.url %}
+
+                                <li
+                                    class="chapter active"
+                                    data-path="{{ site.baseurl }}{{ other.url }}"
+                                >
+
+                            {% else %}
+
+                                <li
+                                    class="chapter"
+                                    data-path="{{ site.baseurl }}{{ other.url }}"
+                                >
+
+                            {% endif %}
+
+
+                                <a
+                                    href="{{ site.baseurl }}{{ other.url }}"
+                                    onclick="pageScrollToTop(this)"
+                                >
+
+                                    {{ other.title | escape }}
+
+                                </a>
+
+
+                                {% if site.toc.enabled
+                                    and page.url == other.url
+                                %}
+
+                                    {% include toc.html
+                                        html=content
+                                        h_min=site.toc.h_min
+                                        h_max=site.toc.h_max
+                                    %}
+
+                                {% endif %}
+
+
+                            </li>
+
+
+                        {% endunless %}
+
+
+                    {% endfor %}
+
+
+                {% endif %}
+
+
+            {% endif %}
+
+
         </ul>
+
+
     </nav>
+
+
 </div>
