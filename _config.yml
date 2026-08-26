@@ -72,7 +72,7 @@ navigation_sections:
 # Favicon
 # -------------------------
 
-favicon_path: /assets/gitbook/images/favicon.ico
+favicon_path: assets/gitbook/images/favicon.ico
 
 
 # -------------------------
