@@ -1,85 +1,215 @@
-# Configurations
-title:            Gud's Notebook
-longtitle:        Gud's Notebook
-author:           Gud
+# =========================================================
+# Gud's Notebook - Jekyll GitBook Configuration
+# =========================================================
+
+# -------------------------
+# Site
+# -------------------------
+
+lang:              zh-CN
+
+title:             Gud's Notebook
+longtitle:         Gud's Notebook
+
+author:            Gud
 email:
+
 description: >
-  个人学习、编程、数学建模与项目记录。
+  个人学习、编程、数学建模、AI、论文阅读与项目实践记录。
 
-version:          1.0
-gitbook_version:  3.2.3
+version:           1.0
+gitbook_version:   3.2.3
 
-# GitHub Pages 地址
-url:              'https://gud455.github.io'
-baseurl:          ''
-rss:              RSS
 
-# 使用 Jekyll Gitbook 远程主题
+# -------------------------
+# GitHub Pages
+# -------------------------
+
+url:               'https://gud455.github.io'
+baseurl:           ''
+
+rss:               RSS
+
+
+# -------------------------
+# Theme
+# -------------------------
+
 remote_theme: sighingnow/jekyll-gitbook
 
-# 文章目录设置
+
+# -------------------------
+# Table of Contents
+# -------------------------
+
 toc:
   enabled: true
-  h_min:   1
-  h_max:   3
+  enabled_index: true
+  h_min: 1
+  h_max: 3
 
-# 网站图标
-favicon_path:     /assets/gitbook/images/favicon.ico
 
-# Markdown 渲染引擎
-markdown:         kramdown
+# -------------------------
+# Sidebar Sections
+# -------------------------
+
+navigation_sections:
+
+  - title: 数学建模
+    category: modeling
+
+  - title: 编程
+    category: programming
+
+  - title: AI
+    category: ai
+
+  - title: 论文阅读
+    category: papers
+
+
+# -------------------------
+# Favicon
+# -------------------------
+
+favicon_path: /assets/gitbook/images/favicon.ico
+
+
+# -------------------------
+# Markdown
+# -------------------------
+
+markdown: kramdown
 
 kramdown:
-  auto_ids:               true
-  input:                  GFM
-  math_engine:            mathjax
-  smart_quotes:           lsquo,rsquo,ldquo,rdquo
-  toc_levels:             1..6
-  syntax_highlighter:     rouge
-  syntax_highlighter_opts:
-    guess_lang:           true
 
-# 代码高亮风格
+  auto_ids: true
+
+  input: GFM
+
+  math_engine: mathjax
+
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+
+  toc_levels: 1..6
+
+  syntax_highlighter: rouge
+
+  syntax_highlighter_opts:
+
+    guess_lang: true
+
+
 syntax_highlighter_style: colorful
 
-markdown_ext:             markdown,mkdown,mkdn,mkd,md
+markdown_ext: markdown,mkdown,mkdn,mkd,md
 
-# 文章永久链接
-permalink:                /:categories/:year-:month-:day-:title:output_ext
 
-# Disqus 评论
-# 如果以后使用 Disqus，可以取消注释并填入自己的 shortname
-# disqushandler: your-disqus-shortname
+# -------------------------
+# Posts
+# -------------------------
 
-exclude:
-  - _drafts
+permalink: /logs/:year-:month-:day-:title:output_ext
 
+
+# -------------------------
 # Collections
+# -------------------------
+
 collections:
+
   pages:
+
     output: true
-    permalink: /:collection/:path/
+
+    sort_by: order
+
+    permalink: /notes/:path/
+
 
   others:
+
     output: true
-    permalink: /:collection/:path/
 
-# 左侧 GitBook 目录中的内容顺序
-ordered_collections:
-  - posts
-  - pages
-  - others
+    sort_by: order
 
-# 页面正文宽度
-page_width: 800px
+    permalink: /others/:path/
 
-# Jekyll 构建配置
-destination:      ./_site
-incremental:      false
-regenerate:       true
 
-# 插件
+# -------------------------
+# Default Front Matter
+# -------------------------
+
+defaults:
+
+  # 学习日志
+  - scope:
+
+      path: ''
+
+      type: posts
+
+    values:
+
+      layout: post
+
+      author: Gud
+
+
+  # 知识笔记
+  - scope:
+
+      path: ''
+
+      type: pages
+
+    values:
+
+      layout: post
+
+      author: Gud
+
+
+  # About 等页面
+  - scope:
+
+      path: ''
+
+      type: others
+
+    values:
+
+      layout: post
+
+      author: Gud
+
+
+# -------------------------
+# Layout
+# -------------------------
+
+page_width: 900px
+
+
+# -------------------------
+# Build
+# -------------------------
+
+destination: ./_site
+
+incremental: false
+
+regenerate: true
+
+
+# -------------------------
+# Plugins
+# -------------------------
+
 plugins:
+
   - jekyll-feed
+
   - jekyll-readme-index
+
   - jemoji
