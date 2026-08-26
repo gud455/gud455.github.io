@@ -596,3 +596,266 @@
     }
 
 }
+
+/*
+ * =========================================================
+ * 20. Knowledge Components
+ * =========================================================
+ */
+
+
+/* =========================================================
+ * MathJax
+ * ========================================================= */
+
+
+/*
+ * 块级公式不要紧贴正文
+ */
+
+.markdown-section mjx-container[display="true"] {
+    margin-top: 1.5em !important;
+    margin-bottom: 1.5em !important;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+
+/*
+ * 手机端长公式允许横向滚动
+ */
+
+@media (max-width: 768px) {
+
+    .markdown-section mjx-container {
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+}
+
+
+/* =========================================================
+ * Tip
+ * ========================================================= */
+
+.markdown-section blockquote.block-tip {
+    margin: 1.5em 0;
+
+    padding: 14px 16px;
+
+    color: #215d42;
+
+    background: #edf8f3;
+
+    border-left: 4px solid #42b983;
+    border-radius: 0 6px 6px 0;
+}
+
+
+.markdown-section blockquote.block-tip h5 {
+    margin-top: 0;
+    margin-bottom: 6px;
+
+    color: #27845d;
+
+    font-size: 0.95em;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+ * Warning
+ * ========================================================= */
+
+.markdown-section blockquote.block-warning {
+    margin: 1.5em 0;
+
+    padding: 14px 16px;
+
+    color: #6b5900;
+
+    background: #fff9df;
+
+    border-left: 4px solid #e7c000;
+    border-radius: 0 6px 6px 0;
+}
+
+
+.markdown-section blockquote.block-warning h5 {
+    margin-top: 0;
+    margin-bottom: 6px;
+
+    color: #9a7900;
+
+    font-size: 0.95em;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+ * Danger
+ * ========================================================= */
+
+.markdown-section blockquote.block-danger {
+    margin: 1.5em 0;
+
+    padding: 14px 16px;
+
+    color: #7f1d1d;
+
+    background: #fff1f1;
+
+    border-left: 4px solid #dc2626;
+    border-radius: 0 6px 6px 0;
+}
+
+
+.markdown-section blockquote.block-danger h5 {
+    margin-top: 0;
+    margin-bottom: 6px;
+
+    color: #b91c1c;
+
+    font-size: 0.95em;
+    font-weight: 700;
+}
+
+
+/*
+ * 提示框最后一段不要留下多余底部空间
+ */
+
+.markdown-section blockquote.block-tip p:last-child,
+.markdown-section blockquote.block-warning p:last-child,
+.markdown-section blockquote.block-danger p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+ * Dark Theme - Knowledge Blocks
+ * ========================================================= */
+
+.book.color-theme-2
+.markdown-section blockquote.block-tip {
+    color: #a7e3c8;
+
+    background: #1f3932;
+
+    border-left-color: #42b983;
+}
+
+
+.book.color-theme-2
+.markdown-section blockquote.block-warning {
+    color: #eadb8b;
+
+    background: #40391f;
+
+    border-left-color: #e7c000;
+}
+
+
+.book.color-theme-2
+.markdown-section blockquote.block-danger {
+    color: #f0aaaa;
+
+    background: #442629;
+
+    border-left-color: #dc5b5b;
+}
+
+
+/* =========================================================
+ * Mermaid
+ * ========================================================= */
+
+
+/*
+ * Mermaid 渲染后不应该继续显示成普通灰色代码框
+ */
+
+.markdown-section pre:has(code.language-mermaid[data-processed="true"]) {
+    padding: 20px;
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+
+    text-align: center;
+
+    overflow-x: auto;
+}
+
+
+/*
+ * Mermaid SVG 居中
+ */
+
+.markdown-section .language-mermaid svg {
+    display: block;
+
+    max-width: 100%;
+
+    height: auto;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================================
+ * Keyboard Key
+ * ========================================================= */
+
+.markdown-section kbd {
+    display: inline-block;
+
+    padding: 2px 6px;
+
+    font-family: inherit;
+    font-size: 0.85em;
+    line-height: 1.4;
+
+    color: #374151;
+
+    background: #f8fafc;
+
+    border: 1px solid #cbd5e1;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+ * Details / Summary
+ * ========================================================= */
+
+.markdown-section details {
+    margin: 1.3em 0;
+
+    padding: 10px 14px;
+
+    background: #fafafa;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+
+.markdown-section details summary {
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.markdown-section details > *:last-child {
+    margin-bottom: 0;
+}
