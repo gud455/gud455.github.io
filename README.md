@@ -4,7 +4,6 @@ title: Gud's Notebook
 permalink: /
 ---
 
-# Gud's Notebook
 
 欢迎来到我的个人知识库。
 
