@@ -184,7 +184,7 @@ collections:
 
     sort_by: order
 
-    permalink: /notes/:path/
+    permalink: /:path/
 
 
   others:
