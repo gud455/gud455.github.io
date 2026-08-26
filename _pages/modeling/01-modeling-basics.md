@@ -1,6 +1,7 @@
 ---
 title: 数学建模基本流程
 category: modeling
+group: basics
 order: 1
 ---
 
