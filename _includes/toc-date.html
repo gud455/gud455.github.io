@@ -2,28 +2,27 @@
 
     <script type="text/javascript">
 
-        // 点击不同页面时让正文回到顶部
+        /*
+         * 点击页面链接以后，让正文滚动回顶部。
+         */
         function pageScrollToTop(element) {
 
             $('div.body-inner').animate({
                 scrollTop: 0
             });
 
-            $(element)
-                .parent()
-                .find('li>ul>li')
-                .removeClass('active');
-
             return true;
         }
 
 
-        // 手机端点击文章内部目录
+        /*
+         * 手机端文章内部目录跳转。
+         */
         function mobilePageScrollToAnchor(element) {
 
             $(element)
-                .closest('li.chapter')
-                .find('ul>li')
+                .closest('li')
+                .siblings()
                 .removeClass('active');
 
             $(element)
@@ -45,7 +44,9 @@
                             target.get(0).offsetTop
 
                     });
+
                 }
+
             }
 
             return true;
@@ -57,9 +58,9 @@
     <nav role="navigation">
 
 
-        <!-- ========================= -->
+        <!-- ======================================== -->
         <!-- Search -->
-        <!-- ========================= -->
+        <!-- ======================================== -->
 
         <div
             id="book-search-input"
@@ -79,9 +80,7 @@
             role="search"
         >
 
-            <a
-                href="{{ site.baseurl }}/assets/search.html"
-            >
+            <a href="{{ site.baseurl }}/assets/search.html">
 
                 搜索
 
@@ -93,26 +92,17 @@
         <ul class="summary">
 
 
-            <!-- ========================= -->
+            <!-- ======================================== -->
             <!-- Home -->
-            <!-- ========================= -->
+            <!-- ======================================== -->
 
-            {% if page.url == "/" or page.url == "/index.html" %}
-
-                <li
-                    class="chapter active"
-                    data-path="{{ site.baseurl }}"
-                >
-
-            {% else %}
-
-                <li
-                    class="chapter"
-                    data-path="{{ site.baseurl }}"
-                >
-
-            {% endif %}
-
+            <li
+                class="chapter
+                {% if page.url == '/' or page.url == '/index.html' %}
+                    active expanded
+                {% endif %}"
+                data-level="home"
+            >
 
                 <a
                     href="{{ site.baseurl }}/"
@@ -143,9 +133,10 @@
             <li class="divider"></li>
 
 
-            <!-- ========================= -->
+
+            <!-- ======================================== -->
             <!-- Knowledge Base -->
-            <!-- ========================= -->
+            <!-- ======================================== -->
 
 
             {% assign pages_collection =
@@ -171,68 +162,301 @@
                     {% if section_pages.size > 0 %}
 
 
-                        <li class="header">
+                        <!-- 查找当前分类的首页 -->
 
-                            {{ section.title }}
-
-                        </li>
+                        {% assign section_root = false %}
 
 
-                        {% for note in section_pages %}
+                        {% for candidate in section_pages %}
 
+                            {% if candidate.nav_root %}
 
-                            {% unless note.hide_in_nav %}
+                                {% assign section_root = candidate %}
 
+                                {% break %}
 
-                                {% if page.url == note.url %}
-
-                                    <li
-                                        class="chapter active"
-                                        data-path="{{ site.baseurl }}{{ note.url }}"
-                                    >
-
-                                {% else %}
-
-                                    <li
-                                        class="chapter"
-                                        data-path="{{ site.baseurl }}{{ note.url }}"
-                                    >
-
-                                {% endif %}
-
-
-                                    <a
-                                        href="{{ site.baseurl }}{{ note.url }}"
-                                        onclick="pageScrollToTop(this)"
-                                    >
-
-                                        {{ note.title | escape }}
-
-                                    </a>
-
-
-                                    <!-- 当前页面展开文章内部目录 -->
-
-                                    {% if site.toc.enabled
-                                        and page.url == note.url
-                                    %}
-
-                                        {% include toc.html
-                                            html=content
-                                            h_min=site.toc.h_min
-                                            h_max=site.toc.h_max
-                                        %}
-
-                                    {% endif %}
-
-
-                                </li>
-
-
-                            {% endunless %}
-
+                            {% endif %}
 
                         {% endfor %}
+
+
+
+                        <!-- 计算真正的子页面数量 -->
+
+                        {% assign child_count =
+                            section_pages.size
+                        %}
+
+
+                        {% if section_root %}
+
+                            {% assign child_count =
+                                child_count
+                                | minus: 1
+                            %}
+
+                        {% endif %}
+
+
+
+                        <!-- 判断当前页面是否属于本分类 -->
+
+                        {% assign section_current = false %}
+
+
+                        {% if page.category == section.category %}
+
+                            {% assign section_current = true %}
+
+                        {% endif %}
+
+
+
+                        <!-- ======================================== -->
+                        <!-- 一级目录 -->
+                        <!-- ======================================== -->
+
+                        <li
+                            class="chapter nav-section
+                            {% if section_current %}
+                                expanded
+                            {% endif %}"
+                            data-level="section-{{ section.category }}"
+                        >
+
+
+                            {% if section_root %}
+
+                                <a
+                                    href="{{ site.baseurl }}{{ section_root.url }}"
+                                    onclick="pageScrollToTop(this)"
+                                >
+
+                                    {{ section.title | escape }}
+
+                                </a>
+
+                            {% else %}
+
+                                <span>
+
+                                    {{ section.title | escape }}
+
+                                </span>
+
+                            {% endif %}
+
+
+
+                            <!-- ======================================== -->
+                            <!-- 二级目录 -->
+                            <!-- ======================================== -->
+
+
+                            {% if child_count > 0 %}
+
+                                <ul class="articles">
+
+
+                                    {% for group in section.groups %}
+
+
+                                        {% assign group_pages =
+                                            section_pages
+                                            | where: "group", group.key
+                                            | sort: "order"
+                                        %}
+
+
+                                        {% if group_pages.size > 0 %}
+
+
+                                            {% assign group_current = false %}
+
+
+                                            {% if page.category == section.category
+                                                and page.group == group.key
+                                            %}
+
+                                                {% assign group_current = true %}
+
+                                            {% endif %}
+
+
+
+                                            <li
+                                                class="nav-group
+                                                {% if group_current %}
+                                                    expanded
+                                                {% endif %}"
+                                                data-level="group-{{ section.category }}-{{ group.key }}"
+                                            >
+
+
+                                                <span>
+
+                                                    {{ group.title | escape }}
+
+                                                </span>
+
+
+
+                                                <!-- ======================================== -->
+                                                <!-- 三级页面 -->
+                                                <!-- ======================================== -->
+
+
+                                                <ul>
+
+
+                                                    {% for note in group_pages %}
+
+
+                                                        {% unless note.hide_in_nav
+                                                            or note.nav_root
+                                                        %}
+
+
+                                                            {% assign note_current = false %}
+
+
+                                                            {% if page.url == note.url %}
+
+                                                                {% assign note_current = true %}
+
+                                                            {% endif %}
+
+
+                                                            <li
+                                                                class="nav-page
+                                                                {% if note_current %}
+                                                                    active expanded
+                                                                {% endif %}"
+                                                                data-level="page-{{ section.category }}-{{ group.key }}-{{ forloop.index }}"
+                                                            >
+
+
+                                                                <a
+                                                                    href="{{ site.baseurl }}{{ note.url }}"
+                                                                    onclick="pageScrollToTop(this)"
+                                                                >
+
+                                                                    {{ note.title | escape }}
+
+                                                                </a>
+
+
+
+                                                                <!-- 当前文章内部目录 -->
+
+
+                                                                {% if site.toc.enabled
+                                                                    and note_current
+                                                                %}
+
+                                                                    {% include toc.html
+                                                                        html=content
+                                                                        h_min=site.toc.h_min
+                                                                        h_max=site.toc.h_max
+                                                                    %}
+
+                                                                {% endif %}
+
+
+                                                            </li>
+
+
+                                                        {% endunless %}
+
+
+                                                    {% endfor %}
+
+
+                                                </ul>
+
+
+                                            </li>
+
+
+                                        {% endif %}
+
+
+                                    {% endfor %}
+
+
+
+                                    <!-- ======================================== -->
+                                    <!-- 没有 group 的普通页面 -->
+                                    <!-- ======================================== -->
+
+
+                                    {% for note in section_pages %}
+
+
+                                        {% unless note.nav_root
+                                            or note.group
+                                            or note.hide_in_nav
+                                        %}
+
+
+                                            {% assign note_current = false %}
+
+
+                                            {% if page.url == note.url %}
+
+                                                {% assign note_current = true %}
+
+                                            {% endif %}
+
+
+                                            <li
+                                                class="nav-page
+                                                {% if note_current %}
+                                                    active expanded
+                                                {% endif %}"
+                                                data-level="page-{{ section.category }}-direct-{{ forloop.index }}"
+                                            >
+
+
+                                                <a
+                                                    href="{{ site.baseurl }}{{ note.url }}"
+                                                    onclick="pageScrollToTop(this)"
+                                                >
+
+                                                    {{ note.title | escape }}
+
+                                                </a>
+
+
+                                                {% if site.toc.enabled
+                                                    and note_current
+                                                %}
+
+                                                    {% include toc.html
+                                                        html=content
+                                                        h_min=site.toc.h_min
+                                                        h_max=site.toc.h_max
+                                                    %}
+
+                                                {% endif %}
+
+
+                                            </li>
+
+
+                                        {% endunless %}
+
+
+                                    {% endfor %}
+
+
+                                </ul>
+
+
+                            {% endif %}
+
+
+                        </li>
 
 
                         <li class="divider"></li>
@@ -248,9 +472,9 @@
 
 
 
-            <!-- ========================= -->
+            <!-- ======================================== -->
             <!-- Learning Logs -->
-            <!-- ========================= -->
+            <!-- ======================================== -->
 
 
             {% if site.posts.size > 0 %}
@@ -269,21 +493,23 @@
                     {% unless post.hide_in_nav %}
 
 
+                        {% assign post_current = false %}
+
+
                         {% if page.url == post.url %}
 
-                            <li
-                                class="chapter active"
-                                data-path="{{ site.baseurl }}{{ post.url }}"
-                            >
-
-                        {% else %}
-
-                            <li
-                                class="chapter"
-                                data-path="{{ site.baseurl }}{{ post.url }}"
-                            >
+                            {% assign post_current = true %}
 
                         {% endif %}
+
+
+                        <li
+                            class="chapter
+                            {% if post_current %}
+                                active expanded
+                            {% endif %}"
+                            data-level="log-{{ forloop.index }}"
+                        >
 
 
                             <a
@@ -297,7 +523,7 @@
 
 
                             {% if site.toc.enabled
-                                and page.url == post.url
+                                and post_current
                             %}
 
                                 {% include toc.html
@@ -325,9 +551,9 @@
 
 
 
-            <!-- ========================= -->
+            <!-- ======================================== -->
             <!-- Other Pages -->
-            <!-- ========================= -->
+            <!-- ======================================== -->
 
 
             {% assign others_collection =
@@ -362,21 +588,23 @@
                         {% unless other.hide_in_nav %}
 
 
+                            {% assign other_current = false %}
+
+
                             {% if page.url == other.url %}
 
-                                <li
-                                    class="chapter active"
-                                    data-path="{{ site.baseurl }}{{ other.url }}"
-                                >
-
-                            {% else %}
-
-                                <li
-                                    class="chapter"
-                                    data-path="{{ site.baseurl }}{{ other.url }}"
-                                >
+                                {% assign other_current = true %}
 
                             {% endif %}
+
+
+                            <li
+                                class="chapter
+                                {% if other_current %}
+                                    active expanded
+                                {% endif %}"
+                                data-level="other-{{ forloop.index }}"
+                            >
 
 
                                 <a
@@ -390,7 +618,7 @@
 
 
                                 {% if site.toc.enabled
-                                    and page.url == other.url
+                                    and other_current
                                 %}
 
                                     {% include toc.html
