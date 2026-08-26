@@ -1,6 +1,7 @@
 ---
 title: 论文阅读
 category: papers
+nav_root: true
 order: 0
 ---
 
