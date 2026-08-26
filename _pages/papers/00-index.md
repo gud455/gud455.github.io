@@ -4,7 +4,6 @@ category: papers
 order: 0
 ---
 
-# 论文阅读
 
 这里记录论文阅读以及论文复现。
 
