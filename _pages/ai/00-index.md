@@ -1,9 +1,9 @@
 ---
 title: AI
 category: ai
+nav_root: true
 order: 0
 ---
-
 
 这里记录 AI 工具以及 AI 辅助学习、开发和研究的实践。
 
