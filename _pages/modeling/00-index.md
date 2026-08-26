@@ -1,6 +1,7 @@
 ---
 title: 数学建模
 category: modeling
+nav_root: true
 order: 0
 ---
 
