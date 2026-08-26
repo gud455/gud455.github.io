@@ -1,5 +1,126 @@
-/* This file is kept intentionally blank inside the jekyll-github-theme
- * It gets imported at the end of custom.css
- * Its purpose is for users of the theme to be able to add css rules from a blank file
- *   these get simply added to the ones already active in the layout.
+/*
+ * Gud's Notebook
+ * Local custom styles
  */
+
+
+/* =========================================
+ * Sidebar
+ * ========================================= */
+
+
+/* 一级知识分类 */
+
+.book .book-summary ul.summary li.nav-section > a,
+.book .book-summary ul.summary li.nav-section > span {
+    font-weight: 600;
+}
+
+
+/* 二级分组 */
+
+.book .book-summary ul.summary li.nav-group {
+    position: relative;
+}
+
+
+.book .book-summary ul.summary li.nav-group > span {
+    display: block;
+
+    position: relative;
+
+    padding-top: 8px;
+    padding-right: 15px;
+    padding-bottom: 8px;
+    padding-left: 42px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: default;
+}
+
+
+/* 三级文章 */
+
+.book .book-summary ul.summary li.nav-group li.nav-page > a {
+    padding-left: 52px;
+}
+
+
+/* 当前文章 */
+
+.book .book-summary ul.summary li.nav-page.active > a {
+    font-weight: 600;
+}
+
+
+/* 当前一级分类 */
+
+.book .book-summary ul.summary li.nav-section.expanded > a {
+    font-weight: 600;
+}
+
+
+/* 折叠箭头稍微对齐 */
+
+.book .book-summary .exc-trigger {
+    top: 11px;
+}
+
+
+/* 分割线 */
+
+.book .book-summary ul.summary li.divider {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+
+/* =========================================
+ * Main Content
+ * ========================================= */
+
+.book .book-body .page-wrapper .page-inner {
+    max-width: 900px;
+}
+
+
+/* 中文正文阅读体验 */
+
+.book .book-body .markdown-section {
+    line-height: 1.8;
+}
+
+
+/* 标题间距 */
+
+.markdown-section h2 {
+    margin-top: 2em;
+}
+
+
+.markdown-section h3 {
+    margin-top: 1.5em;
+}
+
+
+/* 表格 */
+
+.markdown-section table {
+    display: table;
+
+    width: 100%;
+}
+
+
+/* 图片 */
+
+.markdown-section img {
+    display: block;
+
+    max-width: 100%;
+
+    margin-left: auto;
+    margin-right: auto;
+}
