@@ -53,19 +53,79 @@ toc:
 # Sidebar Sections
 # -------------------------
 
+# -------------------------
+# Sidebar Navigation
+# -------------------------
+
 navigation_sections:
 
   - title: 数学建模
     category: modeling
 
+    groups:
+
+      - title: 建模基础
+        key: basics
+
+      - title: 数据处理
+        key: data
+
+      - title: 评价模型
+        key: evaluation
+
+      - title: 预测模型
+        key: prediction
+
+      - title: 优化模型
+        key: optimization
+
+      - title: 图论
+        key: graph
+
+
   - title: 编程
     category: programming
+
+    groups:
+
+      - title: Python
+        key: python
+
+      - title: C / C++
+        key: cpp
+
+      - title: 开发工具
+        key: tools
+
 
   - title: AI
     category: ai
 
+    groups:
+
+      - title: AI 辅助学习
+        key: learning
+
+      - title: AI 编程
+        key: coding
+
+      - title: AI + 数学建模
+        key: modeling
+
+      - title: AI + 论文阅读
+        key: papers
+
+
   - title: 论文阅读
     category: papers
+
+    groups:
+
+      - title: 阅读方法
+        key: reading
+
+      - title: 论文复现
+        key: reproduction
 
 
 # -------------------------
