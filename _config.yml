@@ -1,31 +1,34 @@
 # Configurations
-title:            Jekyll Gitbook
-longtitle:        Jekyll Gitbook
-author:           HE Tao
-email:            sighingnow@gmail.com
+title:            Gud's Notebook
+longtitle:        Gud's Notebook
+author:           Gud
+email:
 description: >
-  Build Jekyll site with the GitBook style.
+  个人学习、编程、数学建模与项目记录。
 
 version:          1.0
 gitbook_version:  3.2.3
 
-url:              'https://sighingnow.github.io'
-baseurl:          '/jekyll-gitbook'
+# GitHub Pages 地址
+url:              'https://gud455.github.io'
+baseurl:          ''
 rss:              RSS
 
-# bootstrap: use the remote theme for the site itself
+# 使用 Jekyll Gitbook 远程主题
 remote_theme: sighingnow/jekyll-gitbook
 
+# 文章目录设置
 toc:
   enabled: true
   h_min:   1
   h_max:   3
 
-# customize the link favicon in header, will be {{site.baseurl}}/{{site.favicon_path}}
+# 网站图标
 favicon_path:     /assets/gitbook/images/favicon.ico
 
-# markdown render engine.
+# Markdown 渲染引擎
 markdown:         kramdown
+
 kramdown:
   auto_ids:               true
   input:                  GFM
@@ -36,38 +39,46 @@ kramdown:
   syntax_highlighter_opts:
     guess_lang:           true
 
+# 代码高亮风格
 syntax_highlighter_style: colorful
 
 markdown_ext:             markdown,mkdown,mkdn,mkd,md
 
-# Permalinks
+# 文章永久链接
 permalink:                /:categories/:year-:month-:day-:title:output_ext
 
-# Disqus comments
-# disqushandler:            sighingnow
+# Disqus 评论
+# 如果以后使用 Disqus，可以取消注释并填入自己的 shortname
+# disqushandler: your-disqus-shortname
 
 exclude:
   - _drafts
 
+# Collections
 collections:
   pages:
     output: true
     permalink: /:collection/:path/
+
   others:
     output: true
     permalink: /:collection/:path/
 
+# 左侧 GitBook 目录中的内容顺序
 ordered_collections:
   - posts
   - pages
   - others
 
+# 页面正文宽度
 page_width: 800px
 
+# Jekyll 构建配置
 destination:      ./_site
 incremental:      false
 regenerate:       true
 
+# 插件
 plugins:
   - jekyll-feed
   - jekyll-readme-index
