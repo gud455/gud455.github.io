@@ -4,7 +4,6 @@ category: programming
 order: 0
 ---
 
-# 编程
 
 这里记录编程学习以及开发过程中值得长期保存的知识。
 
