@@ -1,0 +1,16 @@
+- title: Denoising Diffusion Probabilistic Models
+  short: DDPM
+  source: Ho, Jain & Abbeel · 2020
+  status: 已完成复现
+  description: 我从加噪、噪声预测和反向采样入手，建立扩散模型的基础理解。
+  paper: https://arxiv.org/abs/2006.11239
+  code: https://github.com/hojonathanho/diffusion
+  note: /records/ddpm/
+- title: 'CDDFuse: Correlation-Driven Dual-Branch Feature Decomposition for Multi-Modality Image Fusion'
+  short: CDDFuse
+  source: Zhao et al. · CVPR 2023
+  status: 已完成复现
+  description: 我关注模态共有与特有信息的分解，以及它们如何参与图像融合。
+  paper: https://arxiv.org/abs/2211.14461
+  code: https://github.com/Zhaozixiang1228/MMIF-CDDFuse
+  note: /records/cddfuse/

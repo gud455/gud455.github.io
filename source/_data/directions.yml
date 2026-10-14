@@ -1,0 +1,15 @@
+- number: '01'
+  title: 多模态图像融合
+  english: Multimodal Image Fusion
+  description: 以红外与可见光为起点，学习如何兼顾目标信息、纹理细节与两种模态的互补性。
+  tags: [红外 / 可见光, 特征分解, Transformer]
+- number: '02'
+  title: 退化感知扩散先验
+  english: Degradation-aware Diffusion Prior
+  description: 围绕暗光与强噪声场景，探索空间退化信息如何参与条件去噪与先验建模。
+  tags: [条件扩散, 噪声先验, 空间退化]
+- number: '03'
+  title: 轻量化与可靠复现
+  english: Efficient & Reproducible Learning
+  description: 从少步采样、紧凑模块与实验记录入手，理解方法的计算代价和结果的可重复性。
+  tags: [少步采样, PyTorch, 实验记录]

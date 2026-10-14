@@ -1,0 +1,15 @@
+- label: 首页
+  key: home
+  url: /
+- label: 研究记录
+  key: research
+  url: /research/
+- label: 论文阅读
+  key: papers
+  url: /papers/
+- label: 项目实践
+  key: projects
+  url: /projects/
+- label: 学习笔记
+  key: notes
+  url: /notes/

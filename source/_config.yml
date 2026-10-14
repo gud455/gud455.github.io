@@ -1,0 +1,49 @@
+# Gud 的科研与学习记录，保留 Jekyll 和原有笔记 URL。
+lang: zh-CN
+timezone: Asia/Shanghai
+title: Gud · 科研与学习
+author: Gud
+description: 中国矿业大学（北京）计算机科学与技术本科生，记录多模态图像融合、扩散模型、论文复现与课程实践。
+url: https://gud455.github.io
+baseurl: ''
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    guess_lang: true
+permalink: /logs/:year-:month-:day-:title:output_ext
+collections:
+  pages:
+    output: true
+    permalink: /:path/
+  others:
+    output: true
+    permalink: /others/:path/
+  records:
+    output: true
+    permalink: /records/:path/
+defaults:
+  - scope:
+      path: ''
+    values:
+      layout: post
+      nav_section: notes
+  - scope:
+      path: ''
+      type: records
+    values:
+      layout: record
+      author: Gud
+plugins: []
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - scripts
+  - tests
+  - vendor
+  - .openai
+destination: ./_site

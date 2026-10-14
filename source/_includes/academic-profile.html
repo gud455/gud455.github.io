@@ -1,0 +1,13 @@
+<aside class="profile" aria-label="个人简介">
+  <div class="profile-mark" aria-hidden="true">g<span>.</span></div>
+  <h2 class="profile-name">{{ site.data.profile.name | escape }}</h2>
+  <p class="profile-role">{{ site.data.profile.stage | escape }}<span> · </span>{{ site.data.profile.major | escape }}</p>
+  <p class="profile-university">{{ site.data.profile.university | escape }}</p>
+  <p class="profile-intro">{{ site.data.profile.intro | escape }}</p>
+  <ul class="profile-meta">
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>{{ site.data.profile.location | escape }}</li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5-7 7 7 7m8-14 7 7-7 7m-3-17-2 20"/></svg><a href="{{ site.data.profile.github }}">github.com/gud455</a></li>
+  </ul>
+  <div class="profile-interests">{% for interest in site.data.profile.interests %}<span>{{ interest | escape }}</span>{% endfor %}</div>
+  <p class="profile-caption">从理解出发，在实践中记录。</p>
+</aside>

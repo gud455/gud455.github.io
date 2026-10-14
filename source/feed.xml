@@ -1,0 +1,22 @@
+---
+layout: null
+permalink: /feed.xml
+---
+<?xml version="1.0" encoding="utf-8"?>
+{% assign records = site.records | sort: 'updated' | reverse %}
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title | xml_escape }}</title>
+  <subtitle>{{ site.description | xml_escape }}</subtitle>
+  <id>{{ '/' | absolute_url | xml_escape }}</id>
+  <link href="{{ '/feed.xml' | absolute_url }}" rel="self"/>
+  <link href="{{ '/' | absolute_url }}"/>
+  <updated>{{ records.first.updated | date_to_xmlschema }}</updated>
+  <author><name>{{ site.author | xml_escape }}</name></author>
+  {% for record in records %}<entry>
+    <title>{{ record.title | xml_escape }}</title>
+    <id>{{ record.url | absolute_url | xml_escape }}</id>
+    <link href="{{ record.url | absolute_url }}"/>
+    <updated>{{ record.updated | date_to_xmlschema }}</updated>
+    <summary type="text">{{ record.summary | xml_escape }}</summary>
+  </entry>{% endfor %}
+</feed>

@@ -1,0 +1,16 @@
+---
+layout: academic
+---
+<header class="page-heading"><p class="eyebrow">{{ page.eyebrow | escape }}</p><h1>{{ page.title | escape }}</h1><p class="page-lead">{{ page.description | escape }}</p></header>
+<div class="collection-intro prose">{{ content }}</div>
+{% if page.paper_list %}<section class="paper-list" aria-label="阅读与复现的原论文">{% for paper in site.data.papers %}<article class="paper-item"><div class="paper-abbr">{{ paper.short | escape }}</div><div><p class="paper-source">{{ paper.source | escape }} <span>· {{ paper.status | escape }}</span></p><h2>{{ paper.title | escape }}</h2><p>{{ paper.description | escape }}</p><div class="paper-links"><a href="{{ paper.note | relative_url }}">我的复现记录 ↗</a><a href="{{ paper.paper }}">原论文 ↗</a><a href="{{ paper.code }}">作者代码 ↗</a></div></div></article>{% endfor %}</section>{% endif %}
+{% assign records = site.records | sort: 'order' %}{% if page.record_section %}{% assign records = records | where: 'section', page.record_section %}{% endif %}
+<section class="record-browser" aria-label="{{ page.title | escape }}筛选" data-record-browser>
+  <div class="record-controls" hidden>
+    <label class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">搜索标题、关键词与正文</span><input type="search" placeholder="搜索标题、关键词或正文…" data-record-search autocomplete="off"><kbd aria-hidden="true">/</kbd></label>
+    <div class="filter-tabs" role="group" aria-label="按关键词筛选"><button type="button" data-filter="all" aria-pressed="true">全部</button>{% for filter in page.filters %}<button type="button" data-filter="{{ filter | escape }}" aria-pressed="false">{{ filter | escape }}</button>{% endfor %}</div>
+    <p class="result-count" data-result-count aria-live="polite"></p>
+  </div>
+  {% include record-list.html records=records %}
+  <div class="empty-state" data-empty-state hidden><p>没有找到匹配的记录。</p><button type="button" data-reset>清除搜索与筛选</button></div>
+</section>

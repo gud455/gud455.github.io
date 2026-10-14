@@ -1,0 +1,28 @@
+---
+layout: home
+title: 关于我
+nav_section: home
+permalink: /
+---
+<section id="about" class="about-section">
+  <p class="eyebrow">ABOUT ME</p><h1>你好，我是 Gud<span class="title-dot">.</span></h1>
+  <p class="intro-lead">一名学习计算机视觉的本科生，<br class="desktop-break">正在把论文里的想法变成自己的理解与实践。</p>
+  <p>我就读于<strong>中国矿业大学（北京）计算机科学与技术专业</strong>，目前是本科三年级。我的兴趣集中在<strong>多模态图像融合、扩散模型与退化感知先验</strong>，尤其关注暗光、噪声等条件下红外与可见光信息的互补。</p>
+  <p>我已完成 DDPM 与 CDDFuse 的复现，也在持续学习 Transformer、PyTorch 和视觉基础。这里记录我的论文阅读、复现过程、研究思考与课程项目。</p>
+  <div class="about-links"><a href="{{ '/research/' | relative_url }}">了解我的研究兴趣 <span aria-hidden="true">→</span></a><a href="{{ '/projects/' | relative_url }}">查看项目实践 <span aria-hidden="true">↗</span></a></div>
+</section>
+<aside class="focus-note"><span class="focus-dot" aria-hidden="true"></span><div><p class="focus-label">当前关注</p><p>空间退化感知扩散先验：如何让先验更有效，也更轻量。</p><a href="{{ '/records/spatial-degradation-prior/' | relative_url }}">阅读模块设计记录 →</a></div><span class="focus-state">探索中</span></aside>
+<section class="home-section" id="research">
+  <div class="section-heading"><div><p class="eyebrow">RESEARCH INTERESTS</p><h2>研究兴趣</h2></div><a href="{{ '/research/' | relative_url }}">研究记录 <span aria-hidden="true">↗</span></a></div>
+  <div class="directions">{% for direction in site.data.directions %}<article class="direction"><span class="direction-number">{{ direction.number }}</span><div><h3>{{ direction.title }}</h3><p class="direction-en">{{ direction.english }}</p><p>{{ direction.description }}</p><div class="tags">{% for tag in direction.tags %}<span>{{ tag }}</span>{% endfor %}</div></div></article>{% endfor %}</div>
+</section>
+<section class="home-section" id="recent">
+  <div class="section-heading"><div><p class="eyebrow">RECENT NOTES</p><h2>近期记录</h2></div><a href="{{ '/notes/' | relative_url }}">全部记录 <span aria-hidden="true">↗</span></a></div>
+  {% assign recent = site.records | where: 'featured', true | sort: 'order' %}<div class="recent-list">{% for record in recent limit:4 %}<a class="recent-row" href="{{ record.url | relative_url }}"><span class="recent-date">{{ record.period }}</span><span class="recent-title">{{ record.title }}<small>{{ record.kind }} · {{ record.status }}</small></span><span class="recent-arrow" aria-hidden="true">↗</span></a>{% endfor %}</div>
+</section>
+<section class="home-section" id="projects">
+  <div class="section-heading"><div><p class="eyebrow">SELECTED PRACTICE</p><h2>项目实践</h2></div><a href="{{ '/projects/' | relative_url }}">全部项目 <span aria-hidden="true">↗</span></a></div>
+  <a class="project-feature" href="{{ '/records/ddpm/' | relative_url }}"><div class="project-visual" aria-hidden="true"><svg viewBox="0 0 150 100"><g fill="#adc0d6"><circle cx="21" cy="19" r="3"/><circle cx="44" cy="35" r="2"/><circle cx="16" cy="61" r="4"/><circle cx="38" cy="81" r="3"/><circle cx="57" cy="13" r="2"/><circle cx="57" cy="63" r="3"/><circle cx="33" cy="54" r="2"/><circle cx="16" cy="38" r="2"/></g><path d="M70 50h22m-6-6 6 6-6 6" fill="none" stroke="#607b9a" stroke-width="2"/><path d="M105 72V32h27v40Z" fill="#dde7f0"/><path d="m99 33 20-17 20 17" fill="none" stroke="#486785" stroke-width="3"/><path d="M115 72V53h9v19" fill="#7891aa"/></svg></div><div><p class="project-kicker">扩散模型 · 已完成复现</p><h3>DDPM：从加噪到反向采样 <span aria-hidden="true">↗</span></h3><p>以噪声预测、时间步编码和训练采样流程为线索，建立扩散模型的基础理解。</p><div class="tags"><span>PyTorch</span><span>Diffusion</span></div></div></a>
+  <a class="project-feature" href="{{ '/records/automata/' | relative_url }}"><div class="project-visual" aria-hidden="true"><svg viewBox="0 0 150 100" fill="none" stroke="#5a7591" stroke-width="2"><circle cx="36" cy="50" r="17"/><circle cx="113" cy="50" r="17"/><circle cx="113" cy="50" r="12"/><path d="M53 50h42m-7-5 7 5-7 5M17 23h19v10"/><path d="M36 33c-19-22 21-23 7 0m67 0c-16-22 21-23 7 0"/><path d="M19 50H4m9-5 6 5-6 5"/></svg></div><div><p class="project-kicker">编译原理 · 课程项目</p><h3>Automata：DFA 到正规式 <span aria-hidden="true">↗</span></h3><p>把自动机理论中的状态消元落实为算法实现，并尝试用交互界面解释计算过程。</p><div class="tags"><span>C++</span><span>自动机</span></div></div></a>
+</section>
+<section class="home-section learning-summary"><div><p class="eyebrow">LEARNING IN PUBLIC</p><h2>把学习过程留下来</h2><p>除了科研方向，我也记录编译原理、计算机图形学和深度学习基础。对我而言，能解释清楚一个算法、复现一个方法、定位一次错误，都是值得保存的进展。</p></div><a href="{{ '/notes/' | relative_url }}">进入学习笔记 →</a></section>

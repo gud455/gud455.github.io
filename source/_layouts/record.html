@@ -1,0 +1,14 @@
+---
+layout: academic
+---
+<article class="article">
+  <header class="page-heading">
+    <a class="breadcrumb" href="{{ page.back_url | default: '/notes/' | relative_url }}">← {{ page.back_label | default: '全部记录' | escape }}</a>
+    <div class="record-meta"><span>{{ page.kind | escape }}</span><span class="status">{{ page.status | escape }}</span></div>
+    <h1>{{ page.title | escape }}</h1><p class="page-lead">{{ page.summary | escape }}</p>
+    <div class="article-meta">Gud <span>·</span> 整理于 <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: '%Y.%m.%d' }}</time></div>
+    <div class="tags">{% for tag in page.tags %}<span>{{ tag | escape }}</span>{% endfor %}</div>
+  </header>
+  <div class="prose">{{ content }}</div>
+  <footer class="article-end"><p>这是一份个人学习与实践记录；后续实验、理解和实现会继续补充。</p><a href="{{ page.back_url | default: '/notes/' | relative_url }}">返回{{ page.back_label | default: '学习记录' | escape }} →</a></footer>
+</article>

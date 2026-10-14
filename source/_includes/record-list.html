@@ -1,0 +1,7 @@
+<div class="record-list">
+{% for record in include.records %}<article class="record-item" data-record data-tags="{{ record.tags | join: '|' | escape }}" data-search="{{ record.title | append: ' ' | append: record.summary | append: ' ' | append: record.status | append: ' ' | append: record.content | strip_html | normalize_whitespace | escape }} {{ record.tags | join: ' ' | escape }}">
+  <div class="record-meta"><span>{{ record.kind | escape }}</span><span class="status{% if record.status == '已完成复现' %} status-done{% endif %}">{{ record.status | escape }}</span></div>
+  <h3><a href="{{ record.url | relative_url }}">{{ record.title | escape }} <span aria-hidden="true">↗</span></a></h3><p>{{ record.summary | escape }}</p>
+  <div class="record-bottom"><div class="tags">{% for tag in record.tags %}<span>{{ tag | escape }}</span>{% endfor %}</div><span class="record-period">{{ record.period | escape }}</span></div>
+</article>{% endfor %}
+</div>
