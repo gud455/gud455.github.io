@@ -1,0 +1,31 @@
+---
+layout: course
+title: 神经网络与反向传播：从计算到梯度
+summary: 已学习 CS231n Lecture 4。通过激活函数与计算图，回看非线性表征、链式法则和分支梯度。
+course: cs231n
+lecture: 4
+status: 已学习 · 记录已整理
+updated: 2026-10-15
+nav_section: courses
+permalink: /courses/cs231n/lecture-04/
+tags: [神经网络, ReLU, 反向传播, 计算图]
+course_styles: true
+backprop_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 04</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从线性分类器走向带非线性激活的多层感知机，学习了隐藏层、ReLU 等激活函数，以及计算图上的前向计算与反向传播。标量例子之后，进一步接触向量、Jacobian 和矩阵乘法的梯度。</p><div class="learning-keypoints"><span>01 <strong>从线性到非线性</strong><small>隐藏层 / 激活函数</small></span><span>02 <strong>沿计算图求导</strong><small>局部导数 × 上游梯度</small></span><span>03 <strong>让梯度正确汇合</strong><small>分支累加 / 维度检查</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>层数本身不产生非线性。</strong>若移除中间的非线性激活，多层仿射变换仍可合并为一个仿射变换。</li><li><strong>反向传播与参数更新是两个环节。</strong>前者沿计算图应用链式法则来计算梯度；优化器再使用这些梯度更新参数。</li><li><strong>共享变量的梯度要累加。</strong>同一变量经过多条路径影响输出时，需要合并所有路径的贡献；张量梯度的形状应与原张量相同。</li></ol>
+<h2 id="nonlinearity">实验 01 / 激活函数为什么重要？</h2>
+<p>这个两层小网络只有一个输入、两个隐藏单元和一个输出。切换 ReLU 与恒等映射，观察输出曲线；移动查询点，再看隐藏单元如何组成最终分数。</p>
+{% include nonlinearity-lab.html %}
+<h2 id="backpropagation">实验 02 / 梯度怎样沿计算图返回？</h2>
+<p>先看课件中的标量例子 f = (x + y)z，再加入一条 x² 分支。逐步查看上游梯度、局部导数与最终结果，特别留意同一个 x 经两条路径产生的贡献。</p>
+{% include backprop-lab.html %}
+<h2 id="shapes">从标量到矩阵，我需要检查什么？</h2>
+<p>不必总是显式构造完整 Jacobian。先写清每个张量的形状，再检查向量化的梯度计算。以下采用批次样本按行排列的约定，G = ∂L/∂Y。</p>
+<table><thead><tr><th>对象</th><th>计算关系</th><th>形状</th></tr></thead><tbody><tr><td>前向输出</td><td>Y = XW</td><td>X：N×D；W：D×M；Y：N×M</td></tr><tr><td>输入梯度</td><td>∂L/∂X = GWᵀ</td><td>N×D</td></tr><tr><td>权重梯度</td><td>∂L/∂W = XᵀG</td><td>D×M</td></tr><tr><td>偏置梯度</td><td>对 G 沿批次维求和</td><td>若逐行广播 b：1×M，则梯度也是 1×M</td></tr></tbody></table>
+<h2 id="research-link">与我写视觉模块有什么联系？</h2>
+<p>设计先验、门控或残差分支时，我需要弄清每条路径是否参与求导，以及共享特征处的梯度如何汇合。前向结果能算出来只是第一步，理解计算图也有助于检查训练中的梯度流向与中间量保存。</p>
+<details class="course-review"><summary>展开 / ReLU 在零点怎么求导？</summary><p>ReLU 在零点不可微，具体实现需要选择一个约定；很多实现使用 0。本页第一个演示只显示前向值，不用它做零点附近的梯度检查。第二个演示采用光滑多项式，可直接与中心差分比较。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-03/' | relative_url }}">← 回看 Lecture 3：正则化与优化</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 4: Neural Networks and Backpropagation》，Stanford CS231n 10th Anniversary，2025 年 4 月 10 日。神经网络与激活：课件标号 23–34；计算图与标量反传：54–104；反传实现：105–119；向量、Jacobian 与矩阵梯度：120–150。</p><p>本页为精简学习记录。演示使用手工设定的网络和已知函数，没有进行模型训练，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

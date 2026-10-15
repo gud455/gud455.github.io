@@ -135,7 +135,7 @@ for record_path in (source_root / '_courses').glob('*.html'):
     for name in ('notes/index.html', 'assets/search_plus_index.json', 'feed.xml'):
         if url in (root / name).read_text(encoding='utf-8'):
             errors.append(f'Course appeared in research-only list: {name}')
-    markers = ('data-ridge-lab', 'data-optimizer-lab', 'lecture3.js') if 'optimization_labs: true' in header else ('data-knn-lab', 'data-linear-lab', 'courses.js')
+    markers = ('data-nonlinearity-lab','data-backprop-lab','lecture4.js') if 'backprop_labs: true' in header else ('data-ridge-lab', 'data-optimizer-lab', 'lecture3.js') if 'optimization_labs: true' in header else ('data-knn-lab', 'data-linear-lab', 'courses.js')
     for item in markers:
         if item not in text:
             errors.append(f'Missing course interaction: {url} -> {item}')

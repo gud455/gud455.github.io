@@ -26,4 +26,5 @@ optimization_labs: true
 <div class="course-practice-notes"><div><h3>先确认梯度，再换优化器</h3><p>数值梯度慢，但可以检查解析梯度或自动微分的实现。检查时需要固定输入和随机性，留意非光滑点及差分步长。</p></div><div><h3>区分 Adam 的 L2 与 AdamW</h3><p>把 L2 项加入梯度，会影响 Adam 的一阶、二阶矩估计；AdamW 将权重衰减与这条自适应梯度路径解耦。它们通常不等价。</p></div><div><h3>评价模型时也记录优化过程</h3><p>在我做融合与先验实验时，训练预算、学习率和调度都需要明确。一次训练中的中间优势，还需要在一致预算和最终评价下检查。</p></div></div>
 <details class="course-review"><summary>展开 / 本页没有演示哪些内容？</summary><p>课件还涉及鞍点、预热、二阶优化、L-BFGS，以及神经网络与非线性的引入。本页只留下学习范围，不额外制作模型训练结论。凸二次函数上的轨迹不能代表深度网络的完整损失景观。</p></details>
 <p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-02/' | relative_url }}">← 回看 Lecture 2：从最近邻到线性分类器</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-04/' | relative_url }}">继续 Lecture 4：神经网络与反向传播 →</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 3: Regularization and Optimization》，Stanford CS231n 10th Anniversary，2025 年 4 月 8 日。正则化：课件标号 14–26；梯度与梯度检查：35–48；SGD 与优化器：49–80；学习率调度：81–89；二阶优化与后续内容：90 起。</p><p>本页为精简学习记录。演示使用自制合成样本和已知函数，不是我的模型实测结果，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
