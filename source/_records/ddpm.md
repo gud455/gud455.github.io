@@ -11,8 +11,10 @@ math: true
 tags:
 - Diffusion
 - PyTorch
+- 可视化
+- 复现
 nav_section: projects
-updated: '2026-10-14'
+updated: '2026-10-15'
 back_url: /projects/
 back_label: 项目实践
 ---
@@ -41,6 +43,12 @@ $$
 
 我的理解是：训练时可以直接构造随机时间步的样本，而采样时需要从噪声出发按反向过程逐步更新。两者的流程不能混淆。
 
+<h2 id="forward-demo">前向加噪：把公式变成可以操作的图</h2>
+
+{% include diffusion-lab.html %}
+
+上面的演示只计算已知的前向分布。噪声预测网络需要在训练中学习；反向采样依赖模型输出，不能通过把滑块往回拖就得到模型恢复结果。
+
 ## 我重点学习的实现部分
 
 - **时间步编码**：理解正弦位置编码如何表示不同时间步。
@@ -58,3 +66,4 @@ $$
 
 - [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)，Ho、Jain、Abbeel，2020。
 - [作者实现](https://github.com/hojonathanho/diffusion)。
+

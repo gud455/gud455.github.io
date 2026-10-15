@@ -6,7 +6,7 @@ kind: 论文阅读
 status: 持续阅读
 period: 持续阅读
 order: 3
-featured: true
+featured: false
 tags:
 - Diffusion
 - 图像融合
@@ -38,3 +38,8 @@ back_label: 论文阅读
 ## 我的下一步
 
 我会继续围绕退化感知、噪声先验与条件 Transformer 阅读相关方法，优先寻找能够清楚解释、具备复现条件、与我的模块设计直接相关的工作。
+
+
+## 近期阅读与实验
+
+我已把近期 Diff-IF、DiffIR、DSPFusion 的阅读问题和实践状态整理为[研究阅读地图]({{ '/records/diffusion-fusion-reading/' | relative_url }})，并与 [SDADP v0.2 阶段实验]({{ '/records/sdadp-v02-results/' | relative_url }})相互链接。

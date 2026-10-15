@@ -1,0 +1,16 @@
+- date: '2026.10.15'
+  label: 阶段实验
+  title: SDADP v0.2：保留负结果，重新审视扩散的必要性
+  detail: 先验恢复、完整融合、可靠度门控与交叉适配器评价。
+  url: /records/sdadp-v02-results/
+- date: '2026.10.14'
+  label: 论文复现
+  title: DSPFusion：968 对批量推理完成
+  detail: Stage II 已确认至 490k；全量定量评估仍待完成。
+  url: /records/dspfusion-reproduction/
+- date: '2026.10'
+  label: 方法复盘
+  title: 从 DDPM、CDDFuse 走向条件先验
+  detail: 把复现经历连接到输入、目标、信息来源与验证方式。
+  url: /records/fusion-reproduction-log/
+

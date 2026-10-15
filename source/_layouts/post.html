@@ -1,8 +1,4 @@
 ---
 layout: academic
 ---
-<article class="article">
-  <header class="page-heading"><p class="eyebrow">学习与实践 / NOTEBOOK</p><h1>{{ page.title | escape }}</h1>{% if page.summary %}<p class="page-lead">{{ page.summary | escape }}</p>{% endif %}</header>
-  <div class="prose">{{ content }}</div>
-  <p class="article-back"><a href="{{ '/notes/' | relative_url }}">← 返回学习笔记</a></p>
-</article>
+<article class="article"><header class="page-heading"><div class="page-register"><span>LEARNING NOTES / ARCHIVE</span><span>GUD</span></div><h1>{{ page.title | escape }}</h1>{% if page.summary %}<p class="page-lead">{{ page.summary | escape }}</p>{% endif %}</header><div class="prose">{{ content }}</div><p class="article-back"><a href="{{ '/notes/' | relative_url }}">← 返回学习笔记</a></p></article>

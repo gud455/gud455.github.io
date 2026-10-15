@@ -1,0 +1,48 @@
+﻿stage,condition,method,value,metric,reference_required
+prior,vis,观测 latent,0.287035,latent RMSE ↓,no
+prior,vis,Direct residual,0.260359,latent RMSE ↓,no
+prior,vis,Diffusion · K1,0.274096,latent RMSE ↓,no
+prior,vis,Diffusion · K4,0.286625,latent RMSE ↓,no
+prior,vis,Diffusion · K8,0.292138,latent RMSE ↓,no
+prior,ir,观测 latent,0.103720,latent RMSE ↓,no
+prior,ir,Direct residual,0.102461,latent RMSE ↓,no
+prior,ir,Diffusion · K1,0.102539,latent RMSE ↓,no
+prior,ir,Diffusion · K4,0.102754,latent RMSE ↓,no
+prior,ir,Diffusion · K8,0.102446,latent RMSE ↓,no
+fusion,original-5000,独立无先验基线,0.021819,fusion total ↓,no
+fusion,original-5000,prior_on,0.026101,fusion total ↓,no
+fusion,original-5000,prior_off,0.026296,fusion total ↓,no
+fusion,synthetic-5000,独立无先验基线,0.029221,fusion total ↓,no
+fusion,synthetic-5000,prior_on,0.032683,fusion total ↓,no
+fusion,synthetic-5000,prior_off,0.033083,fusion total ↓,no
+fusion,original-10000,独立无先验基线,0.019021,fusion total ↓,no
+fusion,original-10000,prior_on,0.018908,fusion total ↓,no
+fusion,original-10000,prior_off,0.018770,fusion total ↓,no
+fusion,synthetic-10000,独立无先验基线,0.027150,fusion total ↓,no
+fusion,synthetic-10000,prior_on,0.026389,fusion total ↓,no
+fusion,synthetic-10000,prior_off,0.026471,fusion total ↓,no
+fusion,original-20000,独立无先验基线,0.016559,fusion total ↓,no
+fusion,original-20000,prior_on,0.016652,fusion total ↓,no
+fusion,original-20000,prior_off,0.016714,fusion total ↓,no
+fusion,synthetic-20000,独立无先验基线,0.024796,fusion total ↓,no
+fusion,synthetic-20000,prior_on,0.024835,fusion total ↓,no
+fusion,synthetic-20000,prior_off,0.025080,fusion total ↓,no
+gate,vis,Direct raw,0.260359,latent RMSE ↓,no
+gate,vis,原 R gate,0.276446,latent RMSE ↓,no
+gate,vis,probe spatial,0.277858,latent RMSE ↓,no
+gate,vis,probe image mean,0.277669,latent RMSE ↓,no
+gate,ir,Direct raw,0.102461,latent RMSE ↓,no
+gate,ir,原 R gate,0.103624,latent RMSE ↓,no
+gate,ir,probe spatial,0.103298,latent RMSE ↓,no
+gate,ir,probe image mean,0.103166,latent RMSE ↓,no
+adapter,original,固定独立基线,0.016559,fusion total ↓,no
+adapter,original,预测 × 预测,0.016609,fusion total ↓,no
+adapter,original,参考 × 参考,0.016559,fusion total ↓,yes
+adapter,original,预测 × 参考,0.019408,fusion total ↓,no
+adapter,original,参考 × 预测,0.016559,fusion total ↓,yes
+adapter,synthetic,固定独立基线,0.024796,fusion total ↓,no
+adapter,synthetic,预测 × 预测,0.024694,fusion total ↓,no
+adapter,synthetic,参考 × 参考,0.018535,fusion total ↓,yes
+adapter,synthetic,预测 × 参考,0.025759,fusion total ↓,no
+adapter,synthetic,参考 × 预测,0.024425,fusion total ↓,yes
+

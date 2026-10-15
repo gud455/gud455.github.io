@@ -20,3 +20,4 @@
 
     {%- include metadata.json.tpl -%}
 }
+

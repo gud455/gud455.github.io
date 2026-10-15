@@ -1,4 +1,5 @@
 ---
+archived: true
 title: 我的 PyTorch Notebook 学习路线
 summary: 以 Jupyter Notebook 为学习载体，串联张量、自动求导、线性回归和分类基础。
 section: notes
@@ -39,3 +40,4 @@ back_label: 学习笔记
 扩散模型与图像融合的代码都建立在这些基础上。理解张量变化、梯度和训练循环，可以帮助我更好地阅读残差模块、注意力模块与复杂模型的实现。
 
 目前我正在持续学习。这份页面记录学习路线，不表示相关课程与所有 Notebook 实验已经全部完成。
+

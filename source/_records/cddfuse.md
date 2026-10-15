@@ -11,6 +11,7 @@ tags:
 - 图像融合
 - PyTorch
 - Transformer
+- 复现
 nav_section: projects
 updated: '2026-10-14'
 back_url: /projects/
@@ -45,3 +46,4 @@ CDDFuse 围绕相关性驱动的特征分解，把模态共有信息和模态特
 
 - [CDDFuse 论文](https://arxiv.org/abs/2211.14461)，Zhao 等，CVPR 2023。
 - [作者代码 MMIF-CDDFuse](https://github.com/Zhaozixiang1228/MMIF-CDDFuse)。
+

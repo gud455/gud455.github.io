@@ -1,13 +1,10 @@
-<aside class="profile" aria-label="个人简介">
-  <div class="profile-mark" aria-hidden="true">g<span>.</span></div>
-  <h2 class="profile-name">{{ site.data.profile.name | escape }}</h2>
-  <p class="profile-role">{{ site.data.profile.stage | escape }}<span> · </span>{{ site.data.profile.major | escape }}</p>
+<aside class="profile" aria-label="个人简介与档案导航">
+  <p class="eyebrow"><span class="small-square" aria-hidden="true"></span> PERSONAL FILE / 00</p>
+  <div class="profile-name">{{ site.data.profile.name | escape }}<span>↗</span></div>
+  <p class="profile-role">{{ site.data.profile.stage | escape }}<br>{{ site.data.profile.major | escape }}</p>
   <p class="profile-university">{{ site.data.profile.university | escape }}</p>
   <p class="profile-intro">{{ site.data.profile.intro | escape }}</p>
-  <ul class="profile-meta">
-    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>{{ site.data.profile.location | escape }}</li>
-    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5-7 7 7 7m8-14 7 7-7 7m-3-17-2 20"/></svg><a href="{{ site.data.profile.github }}">github.com/gud455</a></li>
-  </ul>
-  <div class="profile-interests">{% for interest in site.data.profile.interests %}<span>{{ interest | escape }}</span>{% endfor %}</div>
-  <p class="profile-caption">从理解出发，在实践中记录。</p>
+  <dl class="profile-ledger"><div><dt>BASE</dt><dd>{{ site.data.profile.location | escape }}</dd></div><div><dt>FOCUS</dt><dd>多模态视觉 / 扩散模型</dd></div><div><dt>INDEX</dt><dd>{% assign public_records = site.records | where_exp: 'record', 'record.archived != true' %}{{ public_records | size }} 份科研记录</dd></div></dl>
+  <a class="profile-github" href="{{ site.data.profile.github }}">github.com/gud455 ↗</a>
+  <div class="profile-navigation"><p class="eyebrow">EXPLORE THE ARCHIVE</p>{% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.nav_section == item.key %} aria-current="page"{% endif %}><span>0{{ forloop.index0 }}</span>{{ item.label | escape }}<span aria-hidden="true">↗</span></a>{% endfor %}</div>
 </aside>

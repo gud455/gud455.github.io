@@ -1,0 +1,16 @@
+{% assign chart = site.data.experiments[include.chart] %}{% assign initial = chart.variants | where: 'key', chart.initial | first %}
+<figure class="experiment-figure" data-experiment>
+  <div class="figure-register"><span>FIG / {{ chart.number }}</span><span>MEASURED · 2026.10.15</span></div>
+  <figcaption><strong>{{ chart.title }}</strong><span>{{ chart.scope }}</span></figcaption>
+  <div class="experiment-controls" hidden><label>查看条件 <select data-experiment-variant>{% for variant in chart.variants %}<option value="{{ variant.key }}"{% if variant.key == chart.initial %} selected{% endif %}>{{ variant.label }}</option>{% endfor %}</select></label><span>{{ chart.unit }}</span></div>
+  <p class="plot-context" data-plot-context>{{ initial.label }} · {{ chart.unit }}</p>
+  <div class="bar-chart" aria-label="{{ chart.title }}，横轴从 0 开始">
+    {% for item in chart.labels %}{% assign i = forloop.index0 %}{% assign value = initial.values[i] %}{% assign delta = value | minus: initial.values.first | divided_by: initial.values.first | times: 100 %}<div class="bar-row{% if item.kind %} bar-{{ item.kind }}{% endif %}" data-bar-row><span class="bar-label">{{ item.name }}</span><span class="bar-track" aria-hidden="true"><span class="bar-fill" data-bar-fill style="width:{{ value | divided_by: chart.max | times: 100 }}%"></span></span><span class="bar-value"><span data-bar-value>{{ value | round: 6 }}</span><small data-bar-delta>{% if forloop.first %}参照{% else %}{% if delta > 0 %}+{% endif %}{{ delta | round: 2 }}%{% endif %}</small></span></div>{% endfor %}
+    <div class="bar-axis" aria-hidden="true"><span>0</span><span>{{ chart.max }}</span></div>
+  </div>
+  <p class="plot-insight" data-plot-insight aria-live="polite">{{ initial.blurb }}</p>
+  <details class="figure-data"><summary>查看全部条件的数值表</summary><div class="table-scroll" tabindex="0" role="region" aria-label="完整实验数值表"><table><thead><tr><th>条件</th>{% for item in chart.labels %}<th>{{ item.name }}</th>{% endfor %}</tr></thead><tbody>{% for variant in chart.variants %}<tr><th>{{ variant.label }}</th>{% for value in variant.values %}<td>{{ value | round: 6 }}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div></details>
+  <p class="figure-source">来源：SDADP v0.2 阶段实验汇总。百分比相对图内参照，按已舍入报告值计算；无多种子误差条。<a href="{{ '/assets/academic/sdadp-v02-chart-data.csv' | relative_url }}" download>下载图表数据 CSV ↧</a></p>
+  <script type="application/json" data-experiment-data>{{ chart | jsonify }}</script>
+</figure>
+

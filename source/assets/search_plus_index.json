@@ -2,10 +2,11 @@
 layout: null
 ---
 {
-{% for record in site.records %}{{ record.url | relative_url | jsonify }}: {
+{% assign records = site.records | where_exp: 'record', 'record.archived != true' %}{% for record in records %}{{ record.url | relative_url | jsonify }}: {
   "title": {{ record.title | jsonify }},
   "keywords": {{ record.tags | join: ' ' | jsonify }},
   "url": {{ record.url | relative_url | jsonify }},
   "body": {{ record.content | strip_html | normalize_whitespace | jsonify }}
 }{% unless forloop.last %},{% endunless %}{% endfor %}
 }
+

@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, unquote
 import json
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -39,7 +40,10 @@ required = ['index.html', 'research/index.html', 'papers/index.html',
             'modeling/index.html', 'modeling/evaluation/topsis/index.html',
             'programming/python/python-basics/index.html',
             'records/ddpm/index.html', 'assets/academic/site.css',
-            'assets/academic/site.js', 'feed.xml']
+            'assets/academic/site.js', 'assets/academic/field.js',
+            'assets/academic/field-001.svg', 'assets/academic/notebook.css',
+            'assets/academic/notebook.js', 'assets/academic/diffusion-plate.svg',
+            'assets/academic/sdadp-v02-chart-data.csv', 'feed.xml']
 for name in required:
     if not (root / name).is_file():
         errors.append(f'Missing output: {name}')
@@ -74,21 +78,48 @@ for path, page in pages.items():
         elif target.fragment and dest in pages and unquote(target.fragment) not in pages[dest].ids:
             errors.append(f'Missing anchor: {path.relative_to(root)} -> {ref}')
 
-expected = {'research/index.html': 2, 'papers/index.html': 2,
-            'projects/index.html': 4, 'notes/index.html': 11}
+source_root = Path(__file__).resolve().parents[1]
+active_records = []
+for record_path in (source_root / '_records').glob('*.md'):
+    header = record_path.read_text(encoding='utf-8').split('---', 2)[1]
+    if re.search(r'^archived:\s*true\s*$', header, re.M):
+        continue
+    section = re.search(r'^section:\s*\"?([^\"\n]+)', header, re.M).group(1).strip()
+    active_records.append((record_path.stem, section))
+total = len(active_records)
+expected = {section + '/index.html': sum(s == section for _, s in active_records)
+            for section in ('research', 'papers', 'projects')}
+expected['notes/index.html'] = total
 for name, count in expected.items():
     page = pages.get(root / name)
     if page and len(page.records) != count:
         errors.append(f'Wrong record count for {name}: {len(page.records)} instead of {count}')
 if (root / 'assets/search_plus_index.json').exists():
     index = json.loads((root / 'assets/search_plus_index.json').read_text(encoding='utf-8'))
-    if len(index) != 11:
+    if len(index) != total:
         errors.append(f'Wrong search index count: {len(index)}')
 if (root / 'feed.xml').exists():
     feed = ET.parse(root / 'feed.xml')
-    if len(feed.findall('{http://www.w3.org/2005/Atom}entry')) != 11:
-        errors.append('Research feed must contain all 11 records')
+    if len(feed.findall('{http://www.w3.org/2005/Atom}entry')) != total:
+        errors.append(f'Research feed must contain all {total} active research records')
+for slug, _ in active_records:
+    path = root / 'records' / slug / 'index.html'
+    if not path.exists():
+        errors.append(f'Missing research record: {slug}')
+    elif 'notebook.js' not in path.read_text(encoding='utf-8'):
+        errors.append(f'Missing notebook interaction script: {slug}')
+for slug in ('compiler-input', 'graphics-foundations', 'automata', 'software-renderer', 'pytorch-learning'):
+    for name in ('index.html', 'notes/index.html', 'projects/index.html', 'assets/search_plus_index.json', 'feed.xml'):
+        if f'/records/{slug}/' in (root / name).read_text(encoding='utf-8'):
+            errors.append(f'Historical course content is exposed in research index: {name} -> {slug}')
+for path in (root / 'records').glob('*/index.html'):
+    text = path.read_text(encoding='utf-8')
+    for payload in re.findall(r'<script type="application/json" data-experiment-data="?"?>(.*?)</script>', text, re.S):
+        chart = json.loads(payload)
+        if any(len(v['values']) != len(chart['labels']) for v in chart['variants']):
+            errors.append(f'Invalid chart data: {path}')
 if errors:
     print('\n'.join(errors))
     raise SystemExit(1)
-print(f'Validated {len(pages)} HTML pages, internal links, redirects and 11 learning records.')
+print(f'Validated {len(pages)} HTML pages, internal links, redirects and {total} active research records.')
+

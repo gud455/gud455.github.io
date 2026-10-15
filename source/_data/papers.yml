@@ -14,3 +14,12 @@
   paper: https://arxiv.org/abs/2211.14461
   code: https://github.com/Zhaozixiang1228/MMIF-CDDFuse
   note: /records/cddfuse/
+
+- title: 'DSPFusion: Image Fusion via Degradation and Semantic Dual-Prior Guidance'
+  short: DSPFusion
+  source: Tang et al. · 作者工作
+  status: 批量推理完成 / 评估中
+  description: 围绕退化与语义先验开展复现，记录两阶段训练与同协议评估。
+  paper: https://arxiv.org/abs/2503.23355
+  code: https://github.com/Linfeng-Tang/DSPFusion
+  note: /records/dspfusion-reproduction/

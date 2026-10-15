@@ -1,0 +1,10 @@
+<figure class="diffusion-lab" data-diffusion-lab>
+  <div class="figure-register"><span>FIG / 05</span><span>MATHEMATICAL DEMO</span></div>
+  <figcaption><strong>拖动时间步，观察信号与噪声的权重</strong><span>线性 β：0.0001 → 0.02，T=1000 · 合成靶标，非训练模型输出</span></figcaption>
+  <img data-diffusion-fallback src="{{ '/assets/academic/diffusion-plate.svg' | relative_url }}" alt="t=500 时的合成靶标、固定高斯噪声和前向加噪图像；可读公式在下方">
+  <div class="diffusion-canvases" data-diffusion-canvases hidden><div><span>01 / 合成靶标 x₀</span><canvas width="64" height="40" role="img" aria-label="原始合成靶标"></canvas></div><div><span>02 / 固定噪声 ε</span><canvas width="64" height="40" role="img" aria-label="由固定种子产生的高斯噪声"></canvas></div><div><span>03 / 前向加噪 xₜ</span><canvas width="64" height="40" role="img" aria-label="当前时间步的前向加噪图像"></canvas></div></div>
+  <div class="diffusion-controls" hidden><label>时间步 t = <output data-time-label>500</output><input data-diffusion-time type="range" min="0" max="1000" step="10" value="500" aria-label="扩散前向时间步"></label><div><button type="button" data-next-noise>换噪声种子 ↻</button><button type="button" data-reset-noise>重置</button><span>SEED <span data-noise-seed>455</span></span></div></div>
+  <div class="coefficient-strip"><span>信号系数 √ᾱ <strong data-signal-value>0.2803</strong></span><span>噪声系数 √(1−ᾱ) <strong data-noise-value>0.9599</strong></span><span>SNR <strong data-snr-value>0.0853</strong></span></div>
+  <p class="figure-source">按 xₜ = √ᾱₜ x₀ + √(1−ᾱₜ) ε 计算。改变 t 时固定同一 ε，便于观察各时间步的边际分布；不是逐步马尔可夫轨迹，也没有运行反向采样。显示时将数值裁剪到灰度范围，数学计算保留原值。</p>
+</figure>
+

@@ -7,9 +7,10 @@
 - label: 论文阅读
   key: papers
   url: /papers/
-- label: 项目实践
+- label: 复现实践
   key: projects
   url: /projects/
-- label: 学习笔记
+- label: 科研笔记
   key: notes
   url: /notes/
+

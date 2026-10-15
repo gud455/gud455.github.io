@@ -1,3 +1,4 @@
+const assetPath = path => require('node:path').join(__dirname, '..', path);
 // Exercise the actual browser script with a small DOM event harness; no browser dependency.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -30,7 +31,7 @@ document.querySelector = key => ({'.menu-toggle':menu,'#site-nav':navigation})[k
 document.querySelectorAll = key => key === '[data-record-browser]' ? [browser] : [];
 const location = {href:'https://gud455.github.io/notes/?q=ddpm&tag=Diffusion',search:'?q=ddpm&tag=Diffusion'};
 const history = {replaceState:(_state,_title,url) => {location.href = String(url); location.search = new URL(url).search;}};
-vm.runInNewContext(fs.readFileSync('assets/academic/site.js','utf8'), {document,location,history,navigator:{},URL,URLSearchParams,window:{setTimeout},console});
+vm.runInNewContext(fs.readFileSync(assetPath('assets/academic/site.js'),'utf8'), {document,location,history,navigator:{},URL,URLSearchParams,window:{setTimeout},console});
 const visible = () => records.map(record => !record.hidden);
 assert.deepEqual(visible(),[true,false,false]); // restore filters from URL
 assert.equal(count.textContent,'显示 1 / 3 条记录');
@@ -49,3 +50,4 @@ let prevented=false; document.activeElement=new Element();
 document.emit('keydown',{key:'/',preventDefault:()=>{prevented=true;}}); assert.equal(prevented,true); assert.equal(document.activeElement,input);
 prevented=false; document.emit('keydown',{key:'/',preventDefault:()=>{prevented=true;}}); assert.equal(prevented,false);
 console.log('Passed search, tag intersection, URL restoration, reset, menu and keyboard scenarios.');
+

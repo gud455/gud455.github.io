@@ -1,0 +1,242 @@
+{
+  "prior": {
+    "number": "01",
+    "title": "Direct 与多步扩散：先验恢复是否更好？",
+    "unit": "latent RMSE ↓",
+    "max": 0.35,
+    "initial": "vis",
+    "labels": [
+      {
+        "name": "观测 latent",
+        "kind": "baseline"
+      },
+      {
+        "name": "Direct residual",
+        "kind": "current"
+      },
+      {
+        "name": "Diffusion · K1"
+      },
+      {
+        "name": "Diffusion · K4"
+      },
+      {
+        "name": "Diffusion · K8"
+      }
+    ],
+    "variants": [
+      {
+        "key": "vis",
+        "label": "VIS / 可见光",
+        "values": [
+          0.287035,
+          0.260359,
+          0.274096,
+          0.286625,
+          0.292138
+        ],
+        "blurb": "VIS：Direct residual 比观测 latent 的 RMSE 低约 9.29%；增加扩散调用次数没有带来单调改善。"
+      },
+      {
+        "key": "ir",
+        "label": "IR / 红外",
+        "values": [
+          0.10372,
+          0.102461,
+          0.102539,
+          0.102754,
+          0.102446
+        ],
+        "blurb": "IR：Direct 的改善约 1.21%。K8 的极小差异没有重复验证，不能据此认定稳定优势。"
+      }
+    ],
+    "scope": "5000 步先验训练 · R 辅助损失为 MSE · 不经过融合主干 · 全局 RMSE"
+  },
+  "fusion": {
+    "number": "02",
+    "title": "完整预算下，先验是否超过独立基线？",
+    "unit": "fusion total ↓",
+    "max": 0.04,
+    "initial": "synthetic-20000",
+    "labels": [
+      {
+        "name": "独立无先验基线",
+        "kind": "baseline"
+      },
+      {
+        "name": "prior_on",
+        "kind": "current"
+      },
+      {
+        "name": "prior_off"
+      }
+    ],
+    "variants": [
+      {
+        "key": "original-5000",
+        "label": "原始输入 / 5,000 步",
+        "values": [
+          0.021819,
+          0.026101,
+          0.026296
+        ],
+        "blurb": "早期快照：先验组尚未优于独立基线。"
+      },
+      {
+        "key": "synthetic-5000",
+        "label": "合成退化 / 5,000 步",
+        "values": [
+          0.029221,
+          0.032683,
+          0.033083
+        ],
+        "blurb": "先验组 5000 步快照的 total 仍高于独立基线。"
+      },
+      {
+        "key": "original-10000",
+        "label": "原始输入 / 10,000 步",
+        "values": [
+          0.019021,
+          0.018908,
+          0.01877
+        ],
+        "blurb": "中间快照的轻微优势需要放回完整训练预算评价。"
+      },
+      {
+        "key": "synthetic-10000",
+        "label": "合成退化 / 10,000 步",
+        "values": [
+          0.02715,
+          0.026389,
+          0.026471
+        ],
+        "blurb": "此快照 prior_on 约低 2.80%，该优势没有在最终预算下保留。"
+      },
+      {
+        "key": "original-20000",
+        "label": "原始输入 / 20,000 步",
+        "values": [
+          0.016559,
+          0.016652,
+          0.016714
+        ],
+        "blurb": "最终原始输入 total：先验组约高 0.56%；未证明净收益。"
+      },
+      {
+        "key": "synthetic-20000",
+        "label": "合成退化 / 20,000 步",
+        "values": [
+          0.024796,
+          0.024835,
+          0.02508
+        ],
+        "blurb": "最终合成退化 total：prior_on 约高 0.16%。on 优于 off 说明模型使用了注入，不能替代独立基线比较。"
+      }
+    ],
+    "scope": "1585 对验证 · 中心 256×256 · seed=2026 · 原始输入指未追加本轮合成退化"
+  },
+  "gate": {
+    "number": "03",
+    "title": "可靠度拟合改善，会直接变成修正收益吗？",
+    "unit": "latent RMSE ↓",
+    "max": 0.35,
+    "initial": "vis",
+    "labels": [
+      {
+        "name": "Direct raw",
+        "kind": "baseline"
+      },
+      {
+        "name": "原 R gate"
+      },
+      {
+        "name": "probe spatial",
+        "kind": "current"
+      },
+      {
+        "name": "probe image mean"
+      }
+    ],
+    "variants": [
+      {
+        "key": "vis",
+        "label": "VIS / 可见光",
+        "values": [
+          0.260359,
+          0.276446,
+          0.277858,
+          0.277669
+        ],
+        "blurb": "VIS：probe 对 R* 拟合更准确，直接用 1−R 门控后，总体恢复 RMSE 仍未改善。"
+      },
+      {
+        "key": "ir",
+        "label": "IR / 红外",
+        "values": [
+          0.102461,
+          0.103624,
+          0.103298,
+          0.103166
+        ],
+        "blurb": "IR：probe 门控比原 R 略好，但没有超过不门控的 Direct raw；空间门控也未超过每图均值。"
+      }
+    ],
+    "scope": "固定 Direct residual 5000 步权重 · probe 2000 步 · 同一先验诊断口径"
+  },
+  "adapter": {
+    "number": "04",
+    "title": "修正来源 × 适配器来源：2×2 交叉评价",
+    "unit": "fusion total ↓",
+    "max": 0.03,
+    "initial": "synthetic",
+    "labels": [
+      {
+        "name": "固定独立基线",
+        "kind": "baseline"
+      },
+      {
+        "name": "预测 × 预测",
+        "kind": "current"
+      },
+      {
+        "name": "参考 × 参考",
+        "kind": "diagnostic"
+      },
+      {
+        "name": "预测 × 参考"
+      },
+      {
+        "name": "参考 × 预测",
+        "kind": "diagnostic"
+      }
+    ],
+    "variants": [
+      {
+        "key": "original",
+        "label": "原始输入 / 不追加退化",
+        "values": [
+          0.016559,
+          0.016609,
+          0.016559,
+          0.019408,
+          0.016559
+        ],
+        "blurb": "原始输入下参考修正为零，参考输入两组回到基线；预测修正仍会引入扰动。"
+      },
+      {
+        "key": "synthetic",
+        "label": "合成退化 / 完整验证",
+        "values": [
+          0.024796,
+          0.024694,
+          0.018535,
+          0.025759,
+          0.024425
+        ],
+        "blurb": "预测 × 预测约下降 0.41%；参考 × 参考约下降 25.25%，但需要源图像。直接互换适配器没有解决预测分支问题。"
+      }
+    ],
+    "scope": "冻结同一主干与先验 · 每组适配器 1536 参数、2000 步 · 斜纹表示推理依赖参考图像"
+  }
+}
+

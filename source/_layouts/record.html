@@ -1,14 +1,18 @@
 ---
 layout: academic
 ---
-<article class="article">
-  <header class="page-heading">
-    <a class="breadcrumb" href="{{ page.back_url | default: '/notes/' | relative_url }}">← {{ page.back_label | default: '全部记录' | escape }}</a>
-    <div class="record-meta"><span>{{ page.kind | escape }}</span><span class="status">{{ page.status | escape }}</span></div>
-    <h1>{{ page.title | escape }}</h1><p class="page-lead">{{ page.summary | escape }}</p>
-    <div class="article-meta">Gud <span>·</span> 整理于 <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: '%Y.%m.%d' }}</time></div>
-    <div class="tags">{% for tag in page.tags %}<span>{{ tag | escape }}</span>{% endfor %}</div>
-  </header>
-  <div class="prose">{{ content }}</div>
-  <footer class="article-end"><p>这是一份个人学习与实践记录；后续实验、理解和实现会继续补充。</p><a href="{{ page.back_url | default: '/notes/' | relative_url }}">返回{{ page.back_label | default: '学习记录' | escape }} →</a></footer>
+<article class="article" data-research-article>
+<header class="page-heading article-heading">
+<a class="breadcrumb" href="{{ page.back_url | default: '/notes/' | relative_url }}">← {{ page.back_label | default: '全部记录' | escape }}</a>
+<div class="page-register"><span>FILE / {{ page.order | prepend: '000' | slice: -3, 3 }}</span><span>{{ page.section | upcase }}</span></div>
+<div class="record-meta"><span>{{ page.kind | escape }}</span><span class="status">{{ page.status | escape }}</span></div>
+<h1>{{ page.title | escape }}</h1><p class="page-lead">{{ page.summary | escape }}</p>
+<div class="article-ledger"><span>AUTHOR <strong>Gud</strong></span><span>UPDATED <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: '%Y.%m.%d' }}</time></span></div>
+<div class="tags">{% for tag in page.tags %}<span>{{ tag | escape }}</span>{% endfor %}</div>
+</header>
+<div class="article-tools"><span>RESEARCH NOTE / {{ page.kind | escape }}</span><span class="reading-meter" hidden><progress data-reading-progress max="100" value="0" aria-label="本篇阅读进度"></progress><span data-reading-label>0%</span></span></div>
+<details class="note-toc" data-note-toc hidden><summary>本篇导航 / CONTENTS</summary><nav class="toc-links" data-toc-links aria-label="本篇目录"></nav></details>
+<div class="prose">{{ content }}</div>
+<footer class="article-end"><span class="end-mark" aria-hidden="true">■</span><p>后续实验、理解和实现会继续补充。</p><a href="{{ page.back_url | default: '/notes/' | relative_url }}">返回{{ page.back_label | default: '科研记录' | escape }} ↗</a></footer>
+{% unless page.archived %}<nav class="related-notes" aria-label="相关科研记录"><p>CONTINUE READING / 相关记录</p>{% assign related_count = 0 %}{% assign public_records = site.records | where_exp: 'record', 'record.archived != true' | sort: 'updated' | reverse %}{% for record in public_records %}{% assign related = false %}{% if record.url != page.url %}{% for tag in page.tags %}{% if record.tags contains tag %}{% assign related = true %}{% endif %}{% endfor %}{% endif %}{% if related and related_count < 3 %}<a href="{{ record.url | relative_url }}">{{ record.title | escape }} ↗</a>{% assign related_count = related_count | plus: 1 %}{% endif %}{% endfor %}</nav>{% endunless %}
 </article>

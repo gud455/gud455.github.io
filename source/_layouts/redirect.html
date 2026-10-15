@@ -1,2 +1,3 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ page.title | escape }} · Gud</title><link rel="canonical" href="{{ page.redirect_to | absolute_url }}"><meta http-equiv="refresh" content="0;url={{ page.redirect_to | relative_url }}"></head><body><p>页面已更新。<a id="redirect-target" href="{{ page.redirect_to | relative_url }}">前往{{ page.title | escape }}</a></p><script>const target = document.getElementById('redirect-target').href;const url = new URL(target);if (location.search) url.search = location.search;if (location.hash) url.hash = location.hash;location.replace(url.href);</script></body></html>
+
