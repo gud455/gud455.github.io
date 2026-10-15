@@ -1,0 +1,8 @@
+<section class="course-lab" data-ridge-lab aria-label="L2 正则化拟合实验">
+<div class="lab-register"><span>INTERACTIVE / 03</span><span>合成回归样本 · 非真实模型实验</span></div>
+<div class="lab-controls" data-ridge-controls hidden><label>多项式次数 <output data-degree-output>9</output><input type="range" min="1" max="9" step="1" value="9" data-degree></label><label>正则化强度 λ <output data-lambda-output>0.01</output><input type="range" min="0" max="6" step="1" value="3" data-lambda aria-label="正则化强度，离散的对数间隔"></label><button type="button" data-ridge-reset>重置 ↺</button></div>
+<figure class="course-svg-plot"><div data-ridge-plot hidden></div><img data-ridge-static src="{{ '/assets/courses/regularization-static.svg' | relative_url }}" alt="九次多项式在合成训练点上的 L2 正则化拟合，默认 λ 等于 0.01"><figcaption><span class="plot-key red">实线：拟合曲线</span><span class="plot-key muted">虚线：合成生成函数</span><br>○ 训练点（10 个） · × 验证点（30 个）；横轴 x，纵轴 y。</figcaption></figure>
+<div class="ridge-metrics"><span>训练 MSE<strong data-train-mse>见静态图</strong></span><span>验证 MSE<strong data-val-mse>见静态图</strong></span><span>系数平方和<strong data-weight-norm>见静态图</strong></span></div>
+<p class="lab-result" data-ridge-result role="status">默认展示九次多项式与 λ = 0.01。启用 JavaScript 后可调整次数和强度。</p>
+<details class="lab-detail"><summary>这个实验怎样计算？</summary><p>固定一组含噪合成训练点，以最小化训练 MSE + λΣθⱼ² 求解；常数项不惩罚。多项式使用 Legendre 基底以改善数值条件，正则化针对这个基底的系数。λ 可选 0、0.0001、0.001、0.01、0.1、1、10。</p><p>验证点不参与拟合。生成函数仅用于展示已知合成规律，实际任务通常没有这样的曲线可参考。图形纵轴固定为 [−1.6, 1.6]，超出部分会被裁切，误差仍按完整预测计算。</p></details>
+</section>

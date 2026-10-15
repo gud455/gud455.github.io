@@ -118,6 +118,32 @@ for path in (root / 'records').glob('*/index.html'):
         chart = json.loads(payload)
         if any(len(v['values']) != len(chart['labels']) for v in chart['variants']):
             errors.append(f'Invalid chart data: {path}')
+# Course layout checks are independent of the research collection.
+for record_path in (source_root / '_courses').glob('*.html'):
+    source = record_path.read_text(encoding='utf-8')
+    header = source.split('---', 2)[1]
+    url = re.search(r'^permalink:\s*(.+)$', header, re.M).group(1).strip()
+    path = root / url.lstrip('/') / 'index.html'
+    if not path.is_file():
+        errors.append(f'Missing course page: {url}')
+        continue
+    text = path.read_text(encoding='utf-8')
+    if '{%' in text or '{{' in text:
+        errors.append(f'Unresolved course template: {url}')
+    if 'notebook.js' not in text or '学习课程' not in text:
+        errors.append(f'Missing course reading tools/navigation: {url}')
+    for name in ('notes/index.html', 'assets/search_plus_index.json', 'feed.xml'):
+        if url in (root / name).read_text(encoding='utf-8'):
+            errors.append(f'Course appeared in research-only list: {name}')
+    markers = ('data-ridge-lab', 'data-optimizer-lab', 'lecture3.js') if 'optimization_labs: true' in header else ('data-knn-lab', 'data-linear-lab', 'courses.js')
+    for item in markers:
+        if item not in text:
+            errors.append(f'Missing course interaction: {url} -> {item}')
+for name in ('courses/index.html','courses/cs231n/index.html'):
+    if not (root / name).is_file():
+        errors.append(f'Missing course index: {name}')
+    elif '{%' in (root / name).read_text(encoding='utf-8'):
+        errors.append(f'Unresolved course index: {name}')
 if errors:
     print('\n'.join(errors))
     raise SystemExit(1)
