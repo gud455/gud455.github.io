@@ -32,3 +32,6 @@
 
 /* Lecture 8: horizontally inspectable matrices with numeric table equivalents. */
 .attention-scroll{overflow-x:auto;overscroll-behavior-x:contain}.attention-scroll svg,.attention-scroll img{min-width:560px}.prose .attention-table{min-width:560px;font-variant-numeric:tabular-nums}.attention-table td{font-family:var(--mono);white-space:nowrap}
+
+/* Lecture 9: spatial task annotations and exact activation-map values. */
+.vision-scroll{overflow-x:auto;overscroll-behavior-x:contain}.vision-scroll svg,.vision-scroll img{min-width:580px}.prose .activation-table{min-width:500px;font-variant-numeric:tabular-nums}.activation-table td{font-family:var(--mono);white-space:nowrap}
