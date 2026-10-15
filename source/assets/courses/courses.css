@@ -35,3 +35,6 @@
 
 /* Lecture 9: spatial task annotations and exact activation-map values. */
 .vision-scroll{overflow-x:auto;overscroll-behavior-x:contain}.vision-scroll svg,.vision-scroll img{min-width:580px}.prose .activation-table{min-width:500px;font-variant-numeric:tabular-nums}.activation-table td{font-family:var(--mono);white-space:nowrap}
+
+/* Lecture 10: film strips and inspectable temporal contributions. */
+.video-scroll{overflow-x:auto;overscroll-behavior-x:contain}.video-scroll svg,.video-scroll img{min-width:620px}.prose .video-table{min-width:470px;font-variant-numeric:tabular-nums}.video-table td{font-family:var(--mono);white-space:nowrap}
