@@ -29,3 +29,6 @@
 .init-seed{font:11px var(--mono);color:var(--muted)}.init-seed output{color:var(--ink);margin-left:8px}
 /* Lecture 7: persistent input toggles and readable temporal tables. */
 .sequence-bits{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;padding:0 18px 18px}.course-lab .sequence-bits button{display:flex;flex-direction:column;align-items:center;gap:3px;min-height:54px;padding:7px 3px}.sequence-bits small{font:9px var(--mono);opacity:.8}.sequence-bits strong{font:18px var(--mono)}.course-lab .sequence-bits button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}.prose .sequence-table{min-width:520px}.sequence-table .is-detached{color:var(--muted)}@media(max-width:600px){.sequence-bits{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* Lecture 8: horizontally inspectable matrices with numeric table equivalents. */
+.attention-scroll{overflow-x:auto;overscroll-behavior-x:contain}.attention-scroll svg,.attention-scroll img{min-width:560px}.prose .attention-table{min-width:560px;font-variant-numeric:tabular-nums}.attention-table td{font-family:var(--mono);white-space:nowrap}
