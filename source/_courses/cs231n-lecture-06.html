@@ -1,0 +1,30 @@
+---
+layout: course
+title: CNN 架构与训练：让深层网络学起来
+summary: 已学习 CS231n Lecture 6。回看 VGG、ResNet 与训练流程，用残差梯度和初始化模拟理解深层信号传播。
+course: cs231n
+lecture: 6
+status: 已学习 · 记录已整理
+updated: 2026-10-15
+nav_section: courses
+permalink: /courses/cs231n/lecture-06/
+tags: [CNN训练, ResNet, 初始化, 迁移学习]
+course_styles: true
+training_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 06</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从卷积算子走向 CNN 的搭建与训练，学习了归一化层、Dropout、激活函数、VGG 与 ResNet，以及初始化、预处理、数据增强、迁移学习和超参数选择。我更关注：为什么更深不一定更好训练，以及结构和初始尺度怎样影响信号传递。</p><div class="learning-keypoints"><span>01 <strong>理解深层结构</strong><small>VGG / 残差连接</small></span><span>02 <strong>保持合理的信号尺度</strong><small>激活 / fan-in / 初始化</small></span><span>03 <strong>建立可检查的训练流程</strong><small>预处理 / 迁移 / 调参</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>更深模型表现差，不一定是过拟合。</strong>如果训练误差也更高，就需要检查优化与实现问题；残差连接提供了拟合恒等映射的便利途径。</li><li><strong>初始化要考虑层宽与激活。</strong>同一个固定标准差，放到不同 fan-in 的层中，可能产生不同的信号尺度。</li><li><strong>先确认训练流程，再扩大搜索。</strong>检查初始损失、尝试拟合少量样本，再查学习率与训练曲线；验证集用于选择配置，不能只凭一次曲线现象作结论。</li></ol>
+<h2 id="architectures">我对两种架构思路的理解</h2>
+<table><thead><tr><th>架构</th><th>本讲留下的重点</th></tr></thead><tbody><tr><td>VGG</td><td>以小卷积核和规律堆叠构成网络；分辨率、通道与全连接层共同决定参数和计算分布。</td></tr><tr><td>ResNet</td><td>把目标映射写成 H(x) = x + F(x)，通过跳连提供直接路径；尺寸变化时还需处理分支形状匹配。</td></tr></tbody></table>
+<h2 id="residual">实验 01 / “加上输入”怎样改变梯度路径？</h2>
+<p>先用一个标量模型看清结构差异：每个分支为 F(h) = ah。改变深度与 a，比较直接堆叠和残差堆叠的输入梯度。它只解释局部机制，不模拟完整 ResNet 的性能。</p>
+{% include residual-gradient-lab.html %}
+<h2 id="initialization">实验 02 / 初始化尺度如何影响逐层激活？</h2>
+<p>在一个小型全连接网络上做固定种子的前向模拟，比较小尺度、He 基准尺度和大尺度初始化。切换层宽与激活，观察信号是衰减、增长，还是保持在相近量级。</p>
+{% include initialization-lab.html %}
+<h2 id="training-notes">我想带回训练实践的几个检查</h2>
+<div class="course-practice-notes"><div><h3>区分预处理与网络归一化</h3><p>图像预处理的居中与缩放，和网络内部的 LayerNorm 是不同环节。前者若需要估计数据集统计量，应从训练数据获得；后者按指定特征维归一化，并可学习缩放与平移参数。</p></div><div><h3>明确训练与推理的行为</h3><p>Dropout 会随机屏蔽激活。课件展示训练时丢弃、测试时按保留概率缩放的约定；也可采用训练时除以保留概率、测试时原样使用的约定。应明确使用哪一种，避免重复缩放。</p></div><div><h3>增强与迁移都需要任务匹配</h3><p>裁剪、翻转和颜色扰动应与标签语义相容；迁移学习需要考虑数据量与源、目标域的相似程度。对我做的多模态融合，配对输入还需要保持对应关系。</p></div></div>
+<details class="course-review"><summary>展开 / 怎样回看训练曲线？</summary><p>训练和验证表现的差距是诊断线索，需要结合绝对水平、数据划分、训练时间和任务指标判断。先排除流程问题，再比较正则化、容量和预算；不能仅凭“差距小”就确认欠拟合。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-05/' | relative_url }}">← 回看 Lecture 5：CNN 图像分类</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 6: Training CNNs and CNN Architectures》，Stanford CS231n 10th Anniversary，2025 年 4 月 17 日。网络层与激活：课件标号 8–30；VGG / ResNet：32–57；初始化：59–65；预处理与增强：67–75；迁移学习：77–86；超参数选择：88–95。</p><p>本页是精简学习记录。交互使用已知标量函数与自制小网络前向模拟，不是 CNN 训练或模型性能实测，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

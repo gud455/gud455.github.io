@@ -1,0 +1,8 @@
+<section class="course-lab" data-residual-lab aria-label="残差连接与标量梯度传播实验">
+<div class="lab-register"><span>INTERACTIVE / 09</span><span>标量链式法则 · 未模拟完整 ResNet</span></div>
+<div data-residual-controls hidden><div class="lab-controls"><label>堆叠深度 L <output data-res-depth-output>20</output><input type="range" min="1" max="64" step="1" value="20" data-res-depth></label><label>分支斜率 a <output data-res-slope-output>0.05</output><input type="range" min="-1" max="1.5" step="0.01" value="0.05" data-res-slope></label></div><div class="lab-controls"><button type="button" data-res-zero>令 F(h) = 0</button><button type="button" data-res-cancel>观察 1 + a = 0</button><button type="button" data-res-reset>重置 ↺</button></div></div>
+<figure class="course-svg-plot"><div data-residual-plot hidden></div><img data-residual-static src="{{ '/assets/courses/residual-gradient-static.svg' | relative_url }}" alt="普通堆叠与残差堆叠的梯度绝对值随深度变化，默认分支斜率0.05、深度20"><figcaption>灰线：普通堆叠；红线：残差堆叠。纵轴为梯度绝对值的对数刻度，仅显示 10⁻¹² 到 10¹²；数值读数不裁切。</figcaption></figure>
+<div class="ridge-metrics"><span>普通链输入梯度<strong data-plain-gradient>9.537e-27</strong></span><span>残差链输入梯度<strong data-residual-gradient>2.6533</strong></span><span>残差单块导数<strong data-local-gradient>1.0500</strong></span></div>
+<p class="lab-result" data-residual-result role="status">普通链每块导数为 a；残差链每块导数为 1 + a。</p>
+<details class="lab-detail"><summary>模型与梯度计算约定</summary><p>普通块 hₗ₊₁ = ahₗ；残差块 hₗ₊₁ = hₗ + ahₗ。令末端上游梯度为 1，输入梯度分别为 aᴸ 与 (1 + a)ᴸ。数值保留符号，图只画绝对值；零值落在显示下边界。</p><p>F = 0 时，残差块成为恒等映射；a = −1 时，两条梯度路径恰好抵消。残差链也可能衰减或增长，不能把跳连理解为梯度永远不变。本例没有卷积、归一化或加法后的激活。</p></details>
+</section>
