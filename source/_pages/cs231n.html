@@ -3,11 +3,11 @@ layout: academic
 title: CS231n 学习记录
 nav_section: courses
 permalink: /courses/cs231n/
-description: 我的 CS231n 自学档案，记录图像分类、优化、神经网络与反向传播的学习过程。
+description: 我的 CS231n 自学档案，记录图像分类、优化、反向传播与 CNN 的学习过程。
 course_styles: true
 ---
 {% assign lectures = site.courses | where: 'course', 'cs231n' | sort: 'lecture' %}
 <header class="page-heading"><a class="breadcrumb" href="{{ '/courses/' | relative_url }}">← 学习课程</a><div class="page-register"><span>STANFORD / CS231n / 2025</span><span>{{ lectures | size }} LECTURE ON FILE</span></div><h1>CS231n<span class="title-period">.</span></h1><p class="page-lead">从“像素如何变成类别”开始，建立理解视觉模型的基础。</p></header>
-<div class="course-summary"><span class="course-stamp">LEARN<br>BY DOING</span><div><h2>我的学习档案</h2><p>目前收录 Lecture 2–4。把课件中的方法化成可操作的小实验，让学习记录既能展示进度，也能帮助回顾。</p><p class="course-footnote">课程版本：2025 · 记录整理：2026.10.15 · 作业完成情况暂未登记。</p></div></div>
+<div class="course-summary"><span class="course-stamp">LEARN<br>BY DOING</span><div><h2>我的学习档案</h2><p>目前收录 Lecture 2–5。把课件中的方法化成可操作的小实验，让学习记录既能展示进度，也能帮助回顾。</p><p class="course-footnote">课程版本：2025 · 记录整理：2026.10.15 · 作业完成情况暂未登记。</p></div></div>
 <section class="lecture-list" aria-labelledby="lecture-list-title"><h2 id="lecture-list-title">已收录的学习记录</h2>{% for lecture in lectures %}<a class="lecture-entry" href="{{ lecture.url | relative_url }}"><span class="lecture-no">{{ lecture.lecture | prepend: '00' | slice: -2, 2 }}</span><div><small>LECTURE {{ lecture.lecture }} / {{ lecture.status }}</small><h3>{{ lecture.title | escape }}</h3><p>{{ lecture.summary | escape }}</p><span class="tags">{% for tag in lecture.tags %}<span>{{ tag | escape }}</span>{% endfor %}</span></div><span aria-hidden="true">↗</span></a>{% endfor %}</section>
 <aside class="course-source"><strong>原课程</strong><p>Stanford CS231n · Deep Learning for Computer Vision。本站为个人学习记录；课件与课程内容归原作者所有。</p><a href="https://cs231n.stanford.edu/2025/">2025 课程网站 ↗</a></aside>

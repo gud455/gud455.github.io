@@ -1,0 +1,28 @@
+---
+layout: course
+title: CNN 图像分类：从局部窗口到感受野
+summary: 已学习 CS231n Lecture 5。用卷积窗口和尺寸计算器，回看局部连接、权重共享、池化与感受野。
+course: cs231n
+lecture: 5
+status: 已学习 · 记录已整理
+updated: 2026-10-15
+nav_section: courses
+permalink: /courses/cs231n/lecture-05/
+tags: [CNN, 卷积, 池化, 感受野]
+course_styles: true
+convolution_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 05</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从全连接网络走向面向图像的卷积网络，学习了局部连接、权重共享、卷积层的空间与通道维度，以及池化下采样。重点回看卷积核如何形成输出、各层尺寸怎样变化，以及多层堆叠后一个输出能“看到”多大的输入范围。</p><div class="learning-keypoints"><span>01 <strong>同一个核滑过图像</strong><small>局部连接 / 权重共享</small></span><span>02 <strong>分清空间与通道</strong><small>输入 / 输出 / 参数量</small></span><span>03 <strong>从局部走向更大范围</strong><small>步长 / 池化 / 感受野</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>空间局部，不等于只看一个通道。</strong>常规卷积的一个输出通道，会综合全部输入通道；卷积核权重形状是 C<sub>out</sub>×C<sub>in</sub>×K×K。</li><li><strong>参数量与空间分辨率要分开看。</strong>同一组权重在各位置共享；改变输入宽高会影响输出数量与计算量，但不直接改变该层的卷积参数量。</li><li><strong>分辨率降低，也会改变输入覆盖范围。</strong>步长与池化影响输出采样间隔和感受野；理论感受野不等于所有位置都同样有效地影响预测。</li></ol>
+<h2 id="convolution">实验 01 / 一个输出值怎样算出来？</h2>
+<p>选一个卷积核，再改变步长与补零。点击输出网格中的位置，观察输入上对应的 3×3 窗口，并展开逐项乘法。这里按不翻转核的互相关约定计算。</p>
+{% include convolution-lab.html %}
+<h2 id="dimensions">实验 02 / 网络尺寸和感受野怎样变化？</h2>
+<p>把卷积层连续堆叠，再选择是否追加一次池化。比较每层输出形状、参数量与理论感受野；改变输入通道和输出通道，观察它们与空间大小的不同作用。</p>
+{% include receptive-field-lab.html %}
+<h2 id="pooling-notes">池化与 1×1 卷积，我想记住什么？</h2>
+<div class="course-practice-notes"><div><h3>池化是逐通道的空间聚合</h3><p>常见的 2×2、步长 2 最大池化，从每个窗口取最大值，保持通道数并降低空间尺寸；它没有可训练参数。它可以提供对某些小位移的局部鲁棒性，但不保证对所有平移都保持相同输出。</p></div><div><h3>1×1 卷积仍然可以混合通道</h3><p>它在空间上只看一个位置，但常规卷积核仍覆盖该位置的全部输入通道。因此可以改变通道数，并与非线性激活组合。</p></div><div><h3>把这些检查带回我的视觉模块</h3><p>设计融合主干或先验分支时，我需要同时核对分辨率、通道数、局部信息保留和感受野；仅比较层数或参数量，还不能解释模型质量和完整推理开销。</p></div></div>
+<details class="course-review"><summary>展开 / 卷积的平移等变需要留意什么？</summary><p>在适当的边界与采样条件下，输入平移可对应输出特征的平移。有限图像的边界、补零与步长采样都会影响这种对应；不能把它直接等同于“预测对任意平移完全不变”。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-04/' | relative_url }}">← 回看 Lecture 4：神经网络与反向传播</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 5: Image Classification with CNNs》，Stanford CS231n 10th Anniversary，2025 年 4 月 15 日。卷积与通道：课件标号 48–69；空间尺寸、补零、感受野与步长：70–87；参数量与卷积小结：88–98；池化与平移等变：101–106；附录补充 1×1 卷积。</p><p>本页为精简学习记录。演示使用合成小图和手工配置，没有训练 CNN，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

@@ -28,4 +28,5 @@ backprop_labs: true
 <p>设计先验、门控或残差分支时，我需要弄清每条路径是否参与求导，以及共享特征处的梯度如何汇合。前向结果能算出来只是第一步，理解计算图也有助于检查训练中的梯度流向与中间量保存。</p>
 <details class="course-review"><summary>展开 / ReLU 在零点怎么求导？</summary><p>ReLU 在零点不可微，具体实现需要选择一个约定；很多实现使用 0。本页第一个演示只显示前向值，不用它做零点附近的梯度检查。第二个演示采用光滑多项式，可直接与中心差分比较。</p></details>
 <p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-03/' | relative_url }}">← 回看 Lecture 3：正则化与优化</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-05/' | relative_url }}">继续 Lecture 5：CNN 图像分类 →</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 4: Neural Networks and Backpropagation》，Stanford CS231n 10th Anniversary，2025 年 4 月 10 日。神经网络与激活：课件标号 23–34；计算图与标量反传：54–104；反传实现：105–119；向量、Jacobian 与矩阵梯度：120–150。</p><p>本页为精简学习记录。演示使用手工设定的网络和已知函数，没有进行模型训练，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
