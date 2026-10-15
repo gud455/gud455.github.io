@@ -434,3 +434,7 @@ main:focus { outline: none; }
 @media print { .site-header,.edition-bar,.profile,.site-footer,.field-controls,.copy-code { display: none; } body { background: white; } .reading-shell { display: block; padding: 0; } .article-heading h1 { font-size: 28px; } }
 .signal-surface canvas { object-fit: cover; }
 .field-controls button:disabled { color: var(--muted); opacity: .7; border-color: transparent; }
+
+/* Six navigation entries, including the separate learning archive. */
+@media(min-width:761px){.site-nav{gap:18px}.header-inner{gap:19px}}
+@media(min-width:761px) and (max-width:1250px){.header-description{display:none}.site-nav{gap:17px}.header-inner{gap:18px}}
