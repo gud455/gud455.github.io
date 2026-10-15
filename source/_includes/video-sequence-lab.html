@@ -1,0 +1,9 @@
+<section class="course-lab" data-video-sequence-lab aria-label="视频抽帧、帧顺序与时间池化实验">
+<div class="lab-register"><span>INTERACTIVE / 17</span><span>8 帧合成视频 · 同一帧集合的不同顺序</span></div>
+<div data-clip-controls hidden><div class="lab-controls"><label>先抽帧<select data-clip-stride><option value="1">每 1 帧取样</option><option value="2">每 2 帧取样</option><option value="3">每 3 帧取样</option></select></label><label>再排列选中的帧<select data-clip-order><option value="reverse">倒放</option><option value="forward">原顺序</option><option value="interleave">首尾交错</option></select></label><button type="button" data-clip-reset>重置 ↺</button></div></div>
+<figure class="course-svg-plot video-scroll"><div data-clip-plot hidden></div><img data-clip-static src="{{ '/assets/courses/video-sequence-static.svg' | relative_url }}" alt="合成亮点视频的倒放帧序列、时间平均画面，以及为负的局部时间滤波响应"><figcaption>上：当前排列；t 表示原视频帧索引。下左：时间平均画面，亮度相对当前最大值显示。下右：对亮点横坐标做局部时间滤波。它保留局部顺序差异，不是动作分类器或光流估计。</figcaption></figure>
+<div class="ridge-metrics"><span>选中帧数<strong data-clip-count>启用交互查看</strong></span><span>重排前后平均图最大差<strong data-clip-pool-difference>启用交互查看</strong></span><span>局部滤波响应均值<strong data-clip-response>启用交互查看</strong></span></div>
+<p class="lab-result" data-clip-result role="status">先固定选中的帧集合，再改变排列：平均图不变，局部时间响应可改变。</p>
+<div class="optimizer-table-wrap"><table class="optimizer-table video-table"><caption>原始帧索引与当前排列位置不同；边界不填充，只显示完整三点窗口的响应</caption><thead><tr><th>当前位置</th><th>原始 t</th><th>亮点横坐标 p</th><th>局部时间响应</th></tr></thead><tbody data-clip-rows><tr><td colspan="4">启用交互后显示逐帧数值。</td></tr></tbody></table></div>
+<details class="lab-detail"><summary>这个实验保留了哪些假设？</summary><p>原视频为 8 帧、每秒 8 帧的合成示例，每帧 5×10，亮点横坐标为 t + 1。先从 t = 0 起等间隔抽帧，再对选中帧倒放或首尾交错；抽帧可能改变均值，单纯重排同一集合不会。</p><p>帧特征 p 直接使用已知亮点横坐标。三点时间核为 (−1, 0, 1)/2，响应 gᵢ = (pᵢ₊₁ − pᵢ₋₁)/2，单位是像素/选中序列步，未换算为真实速度。交错后也不按原视频时间间隔求导。</p><p>这里用原始像素平均图作为简化示意。同一共享编码器独立提取的帧特征，经过时间平均后也具有排列不变性；拼接特征再用 MLP 等方式读出时，不一定具有这条性质。纯线性时间滤波仅用于观察局部顺序，不代表完整 3D CNN。</p></details>
+</section>

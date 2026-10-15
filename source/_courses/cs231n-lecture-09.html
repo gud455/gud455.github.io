@@ -26,5 +26,5 @@ vision_labs: true
 <h2 id="research-link">与我的图像融合实验有什么联系？</h2>
 <p>这一讲让我更明确地把图像外观、目标可辨识性和空间结构分开看。后续融合实验可以借助检测或分割评价任务表现，再用可视化辅助定位异常；是否保留语义信息仍需真实标注与受控评价，不能只凭一张好看的热图判断。</p>
 <details class="course-review"><summary>展开 / 像素显著图、CAM 和 Grad-CAM 有什么区别？</summary><p>本讲的像素显著图对输入像素求目标分数梯度，并沿颜色通道汇总，反映局部敏感性。CAM 用分类层权重组合空间特征，需要相应的全局平均池化与线性读出结构。Grad-CAM 则对所选空间特征求梯度，平均成通道权重，再加权并经过 ReLU，通常得到较粗的类别相关区域。</p></details>
-<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-08/' | relative_url }}">← 回看 Lecture 8：Attention 与 Transformer</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-08/' | relative_url }}">← 回看 Lecture 8：Attention 与 Transformer</a> · <a href="{{ '/courses/cs231n/lecture-10/' | relative_url }}">继续 Lecture 10：视频理解 →</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 9: Detection, Segmentation, Visualization, and Understanding》，Stanford CS231n 10th Anniversary，2025 年 4 月 29 日。任务与语义分割：课件标号 31–65；检测、RPN 与 DETR：66–112；实例分割与 Mask R-CNN：113–125；滤波器、显著图、CAM 与 Grad-CAM：127–147；附加阅读中的转置卷积矩阵与 RoI 裁剪：151–164。</p><p>本页为精简学习记录。交互使用合成几何、手工特征和解析梯度，没有训练或运行检测、分割模型，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

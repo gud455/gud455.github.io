@@ -1,0 +1,30 @@
+---
+layout: course
+title: 视频理解：把时间带入视觉模型
+summary: 已学习 CS231n Lecture 10。通过帧重排与 3D 核膨胀实验，回看时序信息、时空卷积和多模态视频理解。
+course: cs231n
+lecture: 10
+status: 已学习 · 记录已整理
+updated: 2026-10-16
+nav_section: courses
+permalink: /courses/cs231n/lecture-10/
+tags: [视频理解, 3D CNN, 光流, 视听融合]
+course_styles: true
+video_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 10</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>把图像增加一个时间维度后，模型不仅要看见“有什么”，还要理解“怎样变化”。这一讲学习了短片段采样、早期与晚期融合、3D CNN、光流双流网络、循环建模和时空注意力，也接触了视频动作定位、视听融合及视频与语言模型的连接。</p><div class="learning-keypoints"><span>01 <strong>外观相同，过程可能不同</strong><small>帧顺序 / 采样 / 时间融合</small></span><span>02 <strong>沿空间与时间共同计算</strong><small>3D 卷积 / 共享局部核 / I3D</small></span><span>03 <strong>视频信息不止画面</strong><small>动作定位 / 音频 / 多模态</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>平均池化可以汇总帧，却不会保留排列。</strong>对同一组独立帧特征求时间平均，倒放后结果相同；本页讨论的是平均池化版本，不把所有晚期融合都视作顺序无关。</li><li><strong>采样策略也是模型观察世界的方式。</strong>降低帧率和分辨率能减少输入开销，也可能错过短事件或快速变化。固定帧数时，采样间隔还会改变覆盖的时间范围。</li><li><strong>3D 卷积逐步融合局部时空信息。</strong>卷积核沿时间滑动并共享参数；响应会随输入平移，不意味着任意时刻的输出都完全相同。更长依赖仍需足够上下文或其他时序机制。</li></ol>
+<h2 id="sequence">实验 01 / 倒放以后，平均画面为什么没变？</h2>
+<p>这段合成视频中，一个亮点逐帧向右移动。先抽取一组帧，再倒放或交错重排，比较平均画面和局部时间滤波响应。两者使用完全相同的帧集合，但保留的信息不同。</p>
+{% include video-sequence-lab.html %}
+<h2 id="inflation">实验 02 / 从 2D 核到 3D 核，为什么还要除以 Kₜ？</h2>
+<p>把一个 3×3 空间核沿时间复制。先看重复同一帧的“静态视频”：每个切片除以时间核长后，3D 输出与原 2D 输出相同。再改成运动或亮度变化，逐项检查每帧的贡献。</p>
+{% include video-inflation-lab.html %}
+<h2 id="methods">把视频建模方法串起来</h2>
+<table><thead><tr><th>学习线索</th><th>我保留的理解</th></tr></thead><tbody><tr><td>早期 / 晚期融合</td><td>早期融合把帧并入输入通道，在第一层混合时间；晚期融合先提取帧特征，再池化或用其他读出方式组合。</td></tr><tr><td>光流 / 双流网络</td><td>光流描述像素位移场，双流分别处理外观和运动，再融合结果；光流不等同于简单帧差，也会受到遮挡、亮度变化和相机运动影响。</td></tr><tr><td>循环网络 / 时空注意力</td><td>循环状态沿序列积累信息；非局部块和视频 Transformer 允许更远位置交互。空间与时间分解、token 池化等设计用于控制开销。</td></tr><tr><td>分类 / 时序定位 / 时空检测</td><td>分别回答片段“是什么动作”、长视频中“何时发生”、以及“谁在何处、何时做什么”。</td></tr></tbody></table>
+<h2 id="research-link">与我的多模态学习有什么联系？</h2>
+<p>本讲的视听分离、音视频融合和高效采样，让我开始把模态的互补性放到时间轴上理解：声音可能提示事件或帮助选择值得细看的片段，画面也能为声源分离提供条件。课件末尾的视频与语言模型实例，为后续学习 VLM 增加了一个视频方向的入口；这里只记录学习联系。</p>
+<details class="course-review"><summary>展开 / 用多个短片段平均预测，就理解了完整长视频吗？</summary><p>多片段测试可以扩大覆盖范围并汇总预测，但平均本身不显式表达事件先后关系。需要分清“看过更多片段”和“建模跨片段关系”，也要核对训练、测试时的采样规则。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-09/' | relative_url }}">← 回看 Lecture 9：检测、分割与可视化</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 10: Video Understanding》，Stanford CS231n 10th Anniversary，2025 年 5 月 1 日。视频与片段采样：课件标号 7–14；融合方式与 3D CNN：15–42；光流、双流与循环建模：43–62；非局部块、I3D 与视频 Transformer：63–78；可视化及动作定位：79–86；视听、多模态、高效视频与语言模型：87–102。</p><p>本页为精简学习记录。交互使用合成帧、已知特征和手工卷积核，没有训练视频分类、光流或多模态模型，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
