@@ -1,0 +1,31 @@
+---
+layout: course
+title: RNN 与 LSTM：沿时间传递状态与梯度
+summary: 已学习 CS231n Lecture 7。用序列递推和门控记忆演示，回看共享参数、BPTT、截断与长期依赖。
+course: cs231n
+lecture: 7
+status: 已学习 · 记录已整理
+updated: 2026-10-15
+nav_section: courses
+permalink: /courses/cs231n/lecture-07/
+tags: [RNN, LSTM, 序列建模, BPTT]
+course_styles: true
+recurrent_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 07</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从固定输入的网络走向序列模型，学习了 RNN 隐藏状态更新、跨时间共享参数、不同输入输出组织方式，以及 BPTT 和截断反传。通过字符语言模型与图像描述的例子，进一步接触嵌入、序列生成、梯度问题和 LSTM 门控记忆。</p><div class="learning-keypoints"><span>01 <strong>状态随输入递推</strong><small>隐藏状态 / 参数共享</small></span><span>02 <strong>梯度沿时间返回</strong><small>BPTT / 截断 / 累加</small></span><span>03 <strong>选择保留与写入</strong><small>细胞状态 / 门控 / LSTM</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>展开后的多个时间步共享同一套参数。</strong>参数梯度需要合并各时间步的贡献，不能把展开图看成互不相关的多层网络。</li><li><strong>截断梯度，不等于删除前向历史。</strong>隐藏状态可以继续携带过去的信息，但当前更新的梯度不会跨过设定的截断边界。</li><li><strong>门控让长期记忆更容易学习，不提供绝对保证。</strong>LSTM 仍可能出现梯度衰减或增长；梯度裁剪也不能找回已经消失的学习信号。</li></ol>
+<h2 id="rnn">实验 01 / 序列怎样改变状态？截断又改变了什么？</h2>
+<p>这是一个手工设置的标量 tanh RNN。点选八个输入，改变共享参数，再观察每一步状态。将反传范围缩短，比较当前状态是否改变，以及早期输入和共享参数的梯度如何变化。</p>
+{% include rnn-sequence-lab.html %}
+<h2 id="lstm">实验 02 / LSTM 怎样保留、写入和读出记忆？</h2>
+<p>把门值直接交给滑块控制，单独观察细胞状态的加法更新。试试保留初始记忆，再把输出门关小：细胞状态与当前读出会出现不同的变化。</p>
+{% include lstm-memory-lab.html %}
+<h2 id="applications">把序列模型放回视觉任务中</h2>
+<table><thead><tr><th>组织方式</th><th>我在本讲理解的用途</th></tr></thead><tbody><tr><td>多对一</td><td>读取一段序列，再输出一个分类或摘要表示。</td></tr><tr><td>一对多</td><td>以图像特征为条件，逐步生成描述；图像编码和语言生成承担不同角色。</td></tr><tr><td>多对多</td><td>在多个时间步输出结果，例如逐步预测或视频序列处理。</td></tr></tbody></table>
+<p>语言建模中，嵌入将离散符号变成向量，隐藏状态用于计算下一符号的分数与分布。训练时可使用真实历史符号，生成时则需要把已经生成的符号继续送回模型，两者的数据来源需要分清。</p>
+<h2 id="research-link">与我后续的多模态学习有什么联系？</h2>
+<p>这一讲让我把“特征融合”进一步放到时间与条件生成中理解：视觉信息如何进入序列状态，早期信息如何影响后续输出，以及训练时的梯度究竟能够追溯多远。课件也简要提到状态空间模型；这里只记录这一联系，尚未据此作具体模型比较。</p>
+<details class="course-review"><summary>展开 / 能递推长序列，就等于记住全部历史吗？</summary><p>RNN 可以反复更新同一个有限维状态，序列变长也不要求按时间步复制独立参数。但这不意味着它能无损保存任意长历史；表示容量、状态更新和训练中的梯度都会限制实际长期依赖。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-06/' | relative_url }}">← 回看 Lecture 6：CNN 架构与训练</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 7: Recurrent Neural Networks》，Stanford CS231n 10th Anniversary，2025 年 4 月 22 日。序列形式、隐藏状态与参数共享：课件标号 17–51；BPTT 与截断：54–58；语言模型与图像描述：59–106；梯度问题：107–118；LSTM 与状态空间模型简述：119–132。</p><p>本页为精简学习记录。交互使用手工参数与标量方程，没有训练语言模型、图像描述模型或完整 LSTM，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
