@@ -1,0 +1,30 @@
+---
+layout: course
+title: 检测、分割与可视化：从识别到定位与理解
+summary: 已学习 CS231n Lecture 9。用任务输出对照和 CAM/Grad-CAM 实验，回看密集预测、目标定位与模型可视化。
+course: cs231n
+lecture: 9
+status: 已学习 · 记录已整理
+updated: 2026-10-16
+nav_section: courses
+permalink: /courses/cs231n/lecture-09/
+tags: [目标检测, 语义分割, 实例分割, Grad-CAM]
+course_styles: true
+vision_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 09</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从整张图像的分类走向空间预测：学习了语义分割的密集输出与上采样、检测中的候选区域和框回归，以及实例分割如何为每个对象保留独立掩码。随后通过滤波器、显著图、CAM 和 Grad-CAM，接触了观察网络内部表示与分数敏感性的方法。</p><div class="learning-keypoints"><span>01 <strong>先分清输出是什么</strong><small>图像标签 / 框 / 像素 / 实例</small></span><span>02 <strong>定位依赖空间细节</strong><small>U-Net / 候选区域 / RoI Align</small></span><span>03 <strong>可视化需要读懂依据</strong><small>特征 / 类别权重 / 梯度</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>同类像素，不等于同一个对象。</strong>语义分割赋予像素类别，实例分割还区分“第几个对象”；检测框提供位置与范围，却没有给出精确轮廓。</li><li><strong>上采样不会自动找回丢失的细节。</strong>转置卷积是可学习的线性映射，不是普通卷积的逆运算；U-Net 通过跳跃连接结合较高分辨率的编码特征。</li><li><strong>热图表示特定计算下的响应或敏感性。</strong>CAM 依赖读出结构，Grad-CAM 使用目标分数的梯度。它们都不能直接当作分割标注，也不能单凭颜色就证明模型的因果解释。</li></ol>
+<h2 id="tasks">实验 01 / 同一个场景，四种输出</h2>
+<p>场景里始终是两个同类圆片。切换任务，再移动右侧圆片使它们靠近：语义图仍使用同一种类别颜色，实例图则保留两个身份。这里直接从已知几何生成标注，不运行识别模型。</p>
+{% include vision-task-lab.html %}
+<h2 id="methods">把方法放回各自的位置</h2>
+<table><thead><tr><th>学习线索</th><th>我保留的理解</th></tr></thead><tbody><tr><td>FCN / U-Net</td><td>共享整图特征做密集预测；下采样扩大上下文，上采样恢复输出尺寸，跳跃连接补充空间信息。</td></tr><tr><td>R-CNN → Fast → Faster</td><td>从逐区域计算 CNN，发展到共享特征，再由 RPN 生成候选区域；分类与框回归承担不同目标。</td></tr><tr><td>单阶段检测 / DETR</td><td>前者直接组织密集类别与框预测；本讲的 DETR 用 Transformer 输出对象集合，通过二分图匹配对应真值。</td></tr><tr><td>Mask R-CNN / RoI Align</td><td>为每个候选对象增加掩码预测；RoI Align 保留连续采样坐标，用插值减少特征裁剪的量化错位。</td></tr></tbody></table>
+<h2 id="cam">实验 02 / CAM 与 Grad-CAM 的权重从哪里来？</h2>
+<p>三个手工特征通道送入一个可精确求导的小型读出模型。切换目标类别或改变第一通道，观察加权图和分数；再把线性读出换成非线性读出，比较固定类别权重与梯度权重。</p>
+{% include activation-map-lab.html %}
+<h2 id="research-link">与我的图像融合实验有什么联系？</h2>
+<p>这一讲让我更明确地把图像外观、目标可辨识性和空间结构分开看。后续融合实验可以借助检测或分割评价任务表现，再用可视化辅助定位异常；是否保留语义信息仍需真实标注与受控评价，不能只凭一张好看的热图判断。</p>
+<details class="course-review"><summary>展开 / 像素显著图、CAM 和 Grad-CAM 有什么区别？</summary><p>本讲的像素显著图对输入像素求目标分数梯度，并沿颜色通道汇总，反映局部敏感性。CAM 用分类层权重组合空间特征，需要相应的全局平均池化与线性读出结构。Grad-CAM 则对所选空间特征求梯度，平均成通道权重，再加权并经过 ReLU，通常得到较粗的类别相关区域。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-08/' | relative_url }}">← 回看 Lecture 8：Attention 与 Transformer</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 9: Detection, Segmentation, Visualization, and Understanding》，Stanford CS231n 10th Anniversary，2025 年 4 月 29 日。任务与语义分割：课件标号 31–65；检测、RPN 与 DETR：66–112；实例分割与 Mask R-CNN：113–125；滤波器、显著图、CAM 与 Grad-CAM：127–147；附加阅读中的转置卷积矩阵与 RoI 裁剪：151–164。</p><p>本页为精简学习记录。交互使用合成几何、手工特征和解析梯度，没有训练或运行检测、分割模型，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

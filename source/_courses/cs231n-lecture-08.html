@@ -26,5 +26,5 @@ attention_labs: true
 <h2 id="research-link">与我后续的多模态学习有什么联系？</h2>
 <p>这一讲让我把“融合”进一步拆成两个问题：谁向谁检索信息，以及被汇集的内容是什么。交叉注意力为不同模态之间的交互提供了一种组织方式，但是否有效仍需对齐方式、复杂度与消融实验支持。注意力热图能展示权重分配，单靠它还不能证明模型的因果解释。</p>
 <details class="course-review"><summary>展开 / 位置编码和因果掩码可以互相替代吗？</summary><p>位置编码把位置信息放进表示；因果掩码约束某个 query 能读取哪些 key。关闭位置编码后，因果掩码本身仍引入了顺序相关的可见范围，所以本页只在两者都关闭时展示纯自注意力的置换等变关系。</p></details>
-<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-07/' | relative_url }}">← 回看 Lecture 7：RNN 与 LSTM</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-07/' | relative_url }}">← 回看 Lecture 7：RNN 与 LSTM</a> · <a href="{{ '/courses/cs231n/lecture-09/' | relative_url }}">继续 Lecture 9：检测、分割与可视化 →</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 8: Attention and Transformers》，Stanford CS231n 10th Anniversary，2025 年 4 月 24 日。编码器—解码器与注意力动机：课件标号 6–29；Q/K/V 与交叉注意力：30–46；自注意力、位置编码、掩码与多头：47–67；计算、存储及 FlashAttention：68–78；Transformer 与语言建模：84–100；ViT：101–109；结构改动：110–120。</p><p>本页为精简学习记录。交互使用手工二维向量与固定投影，仅演示数学关系，没有训练 Transformer 或 ViT，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

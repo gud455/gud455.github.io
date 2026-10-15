@@ -1,0 +1,8 @@
+<section class="course-lab" data-vision-task-lab aria-label="四种视觉任务输出对照实验">
+<div class="lab-register"><span>INTERACTIVE / 15</span><span>同一合成场景 · 直接生成标注</span></div>
+<div data-task-controls hidden><div class="lab-controls"><label>查看输出<select data-task-mode><option value="semantic">语义分割</option><option value="classification">图像分类</option><option value="detection">目标检测</option><option value="instance">实例分割</option></select></label><label>右侧圆片横坐标 <output data-task-x-output>11.0</output><input type="range" min="9" max="15" step="0.5" value="11" data-task-x></label><button type="button" data-task-reset>重置 ↺</button></div></div>
+<figure class="course-svg-plot vision-scroll"><div data-task-plot hidden></div><img data-task-static src="{{ '/assets/courses/vision-tasks-static.svg' | relative_url }}" alt="两个同类圆片的合成像素场景，与仅区分类别、不区分对象身份的语义标注"><figcaption>左：同一输入，前方圆片遮挡后方圆片。右：所选任务的理想化标注。语义图中同类使用同色；实例图中颜色代表对象身份。窄屏可横向查看。</figcaption></figure>
+<div class="ridge-metrics"><span>输出单位<strong data-task-unit>像素类别</strong></span><span>本例输出形式<strong data-task-shape>12 × 20 标签图</strong></span><span>身份信息<strong data-task-identity>同类不分实例</strong></span></div>
+<p class="lab-result" data-task-result role="status">语义分割：每个像素属于背景或圆片类。即使相邻圆片连在一起，也没有实例编号。</p>
+<details class="lab-detail"><summary>怎样生成这些输出？</summary><p>在 20×12 网格的像素中心判断圆形覆盖范围。先画圆片 1，再画圆片 2；重叠位置归前方圆片 2。两者属于同一个“圆片”类别。</p><p>分类输出一个图像级类别。检测框取每个可见实例掩码的最小外接矩形；语义图将两个实例统一为类别 1；实例图保留 1、2 两个身份。此处只标注可见区域，不推断被遮挡部分，不把连通区域数量当作实例数量。</p><p>这些是教学标注，不是模型预测、置信度或性能结果。</p></details>
+</section>
