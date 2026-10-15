@@ -1,0 +1,31 @@
+---
+layout: course
+title: 大规模分布式训练：把计算、显存与通信放在一起看
+summary: 已学习 CS231n Lecture 11。通过梯度归约与流水线排程实验，回看数据并行、分片、检查点和多维并行。
+course: cs231n
+lecture: 11
+status: 已学习 · 记录已整理
+updated: 2026-10-16
+nav_section: courses
+permalink: /courses/cs231n/lecture-11/
+tags: [分布式训练, 数据并行, FSDP, 流水线并行]
+course_styles: true
+distributed_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 11</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从 GPU 的计算与带宽出发，学习了训练如何沿批量、序列、层和特征维度拆分。重点理解了数据并行的梯度同步、FSDP 的模型状态分片、激活检查点的重计算，以及流水线中的空闲气泡；也开始用 MFU 区分“设备忙碌”和“有效模型计算”。</p><div class="learning-keypoints"><span>01 <strong>先核对训练目标</strong><small>全局 batch / 局部均值 / 梯度同步</small></span><span>02 <strong>显存不只有参数</strong><small>梯度 / 优化器状态 / 激活</small></span><span>03 <strong>并行仍有依赖和开销</strong><small>通信 / 流水线气泡 / MFU</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>各卡算得对，还要合并得对。</strong>局部 batch 等大时，局部平均梯度再平均等于全局样本均值的梯度；有效样本数不同时，要按实际归一化目标核对权重。</li><li><strong>更多 GPU 不会自动把所有显存合成一个大池子。</strong>普通数据并行复制模型状态；分片减少常驻副本，但仍需考虑临时聚合、通信缓冲和激活。激活检查点通过反传时重算部分前向来节省保存量。</li><li><strong>利用率高，不等于训练效率高。</strong>数据等待、同步、阶段不均衡和重计算都影响迭代时间。MFU 需要一致口径的有效模型 FLOPs、设备峰值与完整迭代耗时，不能直接用监控面板的 GPU 利用率代替。</li></ol>
+<h2 id="gradients">实验 01 / 各 GPU 的梯度怎样合成一次更新？</h2>
+<p>固定同一组 8 个样本和同一个参数，分别在 2 或 4 个逻辑 GPU 上计算。先看等量划分，再切换不等量划分，比较按样本数加权的归约与直接平均各卡均值。</p>
+{% include distributed-gradient-lab.html %}
+<h2 id="parallelism">训练可以沿哪些方向拆分？</h2>
+<table><thead><tr><th>方式</th><th>拆分对象与我保留的理解</th></tr></thead><tbody><tr><td>数据并行 DP / FSDP / HSDP</td><td>不同副本处理不同样本并同步梯度；FSDP 进一步分片参数、梯度和优化器状态，计算时按需聚合。HSDP 在分片组之间再进行复制与同步。</td></tr><tr><td>上下文并行 CP</td><td>沿序列拆分一个长输入。逐 token 运算较直接，注意力仍需组织跨分片的信息交换。</td></tr><tr><td>流水线并行 PP</td><td>沿层拆分，在阶段边界传递激活和梯度。微批让不同阶段同时处理不同工作，减少填充和排空造成的空闲。</td></tr><tr><td>张量并行 TP</td><td>拆分层内矩阵运算，将部分结果拼接或归约。多个维度可以组合使用，但切分方式也决定通信需求。</td></tr></tbody></table>
+<h2 id="pipeline">实验 02 / 微批怎样减少流水线气泡？</h2>
+<p>这是等成本阶段、忽略通信的 GPipe 风格“先全部前向，再全部反向”排程。调节阶段数和微批数，逐时隙查看各 GPU 的工作；图中的忙碌率只描述这个理想时间表。</p>
+{% include pipeline-schedule-lab.html %}
+<h2 id="research-link">回到我的多卡复现实验</h2>
+<p>这一讲让我能更具体地审视双卡训练：先确认全局 batch、梯度累积和同步是否符合预期，再区分数据读取、计算、通信与显存限制。后续比较配置时，需要固定评价口径，记录端到端吞吐和迭代耗时；本页演示不据此推断 DSPFusion 或其他项目的实际加速比。</p>
+<details class="course-review"><summary>展开 / 分片与激活检查点解决的是同一个问题吗？</summary><p>它们都能缓解显存压力，但作用对象不同。分片减少每卡常驻的模型状态副本；激活检查点减少需要长期保留的前向中间结果，代价是反传时重算。真实峰值还取决于分片粒度、预取、临时张量和执行顺序，不能只用参数量估算。</p></details>
+<aside class="course-practice-notes"><div><h3>MFU：我希望补进实验记录的一个视角</h3><p>用“有效模型 FLOPs /（设备总峰值 FLOP/s × 实际迭代秒数）”组织口径。分子不把检查点额外重算当作新的有效模型工作；分母包含实际迭代的等待与开销。这里未采集真实 MFU，也不把下方理想排程比例当作实测结果。</p></div></aside>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-10/' | relative_url }}">← 回看 Lecture 10：视频理解</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 11: Large-Scale Distributed Training》，Stanford CS231n 10th Anniversary，2025 年 5 月 6 日。GPU 与集群背景：课件标号 6–29；数据并行、分片与 HSDP：30–70；激活检查点：71–101；HFU/MFU：102–112；上下文并行：116–125；流水线：128–133；张量与多维并行：135–147。</p><p>本页为精简学习记录。交互是浏览器内的解析数学和理想排程，不调用 GPU、不运行通信库，也不表示已完成课程作业。不等量样本归约是对课件等量示例的补充说明。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
