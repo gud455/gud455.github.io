@@ -38,3 +38,6 @@
 
 /* Lecture 10: film strips and inspectable temporal contributions. */
 .video-scroll{overflow-x:auto;overscroll-behavior-x:contain}.video-scroll svg,.video-scroll img{min-width:620px}.prose .video-table{min-width:470px;font-variant-numeric:tabular-nums}.video-table td{font-family:var(--mono);white-space:nowrap}
+
+/* Lecture 11: readable rank reductions and an inspectable slot-by-slot schedule. */
+.distributed-scroll{overflow-x:auto;overscroll-behavior-x:contain}.distributed-scroll svg,.distributed-scroll img{min-width:640px}.pipeline-scroll{overflow-x:auto;overscroll-behavior-x:contain}.pipeline-scroll svg,.pipeline-scroll img{min-width:760px}.prose .distributed-table{min-width:650px;font-variant-numeric:tabular-nums}.prose .pipeline-table{min-width:520px;font-variant-numeric:tabular-nums}.distributed-table td,.pipeline-table td{font-family:var(--mono);white-space:nowrap}
