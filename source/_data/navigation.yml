@@ -14,3 +14,6 @@
   key: notes
   url: /notes/
 
+- label: 学习课程
+  key: courses
+  url: /courses/

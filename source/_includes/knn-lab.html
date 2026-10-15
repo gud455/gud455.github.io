@@ -1,0 +1,8 @@
+<section class="course-lab" data-knn-lab aria-label="kNN 交互实验">
+<div class="lab-register"><span>INTERACTIVE / 01</span><span>二维合成样本 · 非训练结果</span></div>
+<div class="lab-controls" data-knn-controls hidden><label>近邻数量 k <output data-k-output>3</output><input type="range" min="1" max="15" step="2" value="3" data-k aria-label="近邻数量 k"></label><label>距离度量<select data-metric><option value="l2">L2 / 欧氏距离</option><option value="l1">L1 / 曼哈顿距离</option></select></label><button type="button" data-knn-reset>重置 ↺</button></div>
+<figure class="knn-plot"><canvas width="480" height="320" data-knn-canvas tabindex="0" role="img" aria-label="二维合成样本的 kNN 分类边界；可点击选择查询点，也可用下面的坐标滑块操作" hidden></canvas><img data-knn-fallback src="{{ '/assets/courses/knn-static.svg' | relative_url }}" alt="k 等于 3、使用 L2 距离时的三类合成样本与分类边界静态示意"><figcaption>○ A 类 · □ B 类 · △ C 类；十字为查询点。坐标是合成特征，不是像素坐标。<br>点击图面或拖动坐标滑块；画布获焦后可用方向键微调。</figcaption></figure>
+<div class="lab-coordinates" data-knn-coordinates hidden><label>查询 x <output data-x-output>0.50</output><input type="range" min="0" max="1" step="0.01" value="0.5" data-query-x></label><label>查询 y <output data-y-output>0.50</output><input type="range" min="0" max="1" step="0.01" value="0.5" data-query-y></label></div>
+<p class="lab-result" data-knn-result role="status">静态示意：k = 3、L2 距离，中心查询点预测为 B 类（A 0 / B 2 / C 1）。启用 JavaScript 后可操作。</p>
+<details class="lab-detail"><summary>查看近邻与投票规则</summary><p>距离相同时按样本编号排序；票数相同时，取并列类别中最近的样本所属类别。演示约定用于保证结果可复现。</p><ol data-neighbor-list><li>交互开启后显示当前查询点的近邻。</li></ol></details>
+</section>

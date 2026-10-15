@@ -1,0 +1,27 @@
+---
+layout: course
+title: 从最近邻到线性分类器
+summary: 已学习 CS231n Lecture 2。记录图像分类的基本思路，并用两个小实验回看距离、打分与损失。
+course: cs231n
+lecture: 2
+status: 已学习 · 记录已整理
+updated: 2026-10-15
+nav_section: courses
+permalink: /courses/cs231n/lecture-02/
+tags: [图像分类, kNN, 线性分类器, Softmax]
+course_styles: true
+course_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 02</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从图像分类任务出发，学习了两条基本路线：用最近邻寻找相似样本，以及用参数化的线性函数计算类别分数。随后接触了 Softmax、交叉熵，以及课后阅读部分的多分类 SVM 损失。</p><div class="learning-keypoints"><span>01 <strong>距离与邻居</strong><small>kNN / L1 / L2</small></span><span>02 <strong>从像素到打分</strong><small>f(x, W) = Wx + b</small></span><span>03 <strong>评价与选择</strong><small>验证集 / 损失函数</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>像素相近，不一定语义相近。</strong>直接用像素距离做最近邻，对平移、遮挡和颜色变化都很敏感。</li><li><strong>超参数交给验证集。</strong>用训练集保存样本或拟合参数，用验证集选择 k、距离度量等配置；测试集留给最终评估。</li><li><strong>类别分数还不是概率。</strong>线性分类器先给出 logits，Softmax 再做归一化，交叉熵衡量正确类别得到的概率。</li></ol>
+<h2 id="neighbors">实验 01 / “最近”如何改变分类？</h2>
+<p>切换 k 和距离度量，再移动查询点。背景色表示每个位置的预测类别，连线标出当前查询点的 k 个近邻。观察：k 变大通常会使局部边界更平滑，但并不保证泛化效果更好。</p>
+{% include knn-lab.html %}
+<h2 id="linear">实验 02 / 像素如何变成类别分数？</h2>
+<p>把一张 2×2 灰度小图展平成四个数，与每类模板的权重逐项相乘并求和，再加上偏置。调整图像或模板，看分数、概率与损失怎样一起变化。</p>
+{% include linear-lab.html %}
+<h2 id="research-link">与我正在做的视觉研究有什么联系？</h2>
+<p>这一讲提醒我，在融合或恢复任务中，需要分清“输入发生了变化”和“任务需要的语义发生了变化”。像素距离的局限，也让我更关注表征空间中应该保留什么信息。这里是学习中的理解与联想，后续还需要通过阅读和实验检验。</p>
+<details class="course-review"><summary>展开 / 两个值得回看的问题</summary><p><strong>为什么不在测试集上选 k？</strong>反复根据测试结果调整配置，会让最终评估间接参与模型选择，失去独立检验的意义。</p><p><strong>三个类别的分数相同，交叉熵是多少？</strong>正确类别概率为 1/3，损失是 ln(3) ≈ 1.099。在上面的线性实验中点击“均匀打分”，可以直接检查。</p></details>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据所学课件《Lecture 2: Image Classification with Linear Classifiers》，Stanford CS231n 10th Anniversary，2025 年 4 月 3 日。kNN 与验证集：课件标号 20–50；线性分类：51–70；Softmax：71–83；SVM：课后阅读部分 85–104。</p><p>本页为精简学习记录；两个组件由本站制作，使用二维合成样本和 2×2 合成图像，不展示真实训练结果，也不代表完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

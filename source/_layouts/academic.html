@@ -7,18 +7,20 @@
   <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
   <meta name="description" content="{{ page.description | default: page.summary | default: site.description | strip_html | normalize_whitespace | escape }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
-  <meta property="og:type" content="{% if page.layout == 'record' %}article{% else %}website{% endif %}">
+  <meta property="og:type" content="{% if page.layout == 'record' or page.layout == 'course' %}article{% else %}website{% endif %}">
   <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
   <meta property="og:description" content="{{ page.summary | default: site.description | escape }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/academic/favicon.svg' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/academic/site.css?v=20261015-v3' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/academic/site.css?v=20261015-v4' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/gitbook/rouge/github.css' | relative_url }}">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
   <script defer src="{{ '/assets/academic/field.js?v=20261015-v3' | relative_url }}"></script>
   <script defer src="{{ '/assets/academic/site.js?v=20261015-v3' | relative_url }}"></script>
   <link rel="stylesheet" href="{{ '/assets/academic/notebook.css?v=20261015-v3' | relative_url }}">
-  {% if page.layout == 'record' %}<script defer src="{{ '/assets/academic/notebook.js?v=20261015-v3' | relative_url }}"></script>{% endif %}
+  {% if page.layout == 'record' or page.layout == 'course' %}<script defer src="{{ '/assets/academic/notebook.js?v=20261015-v3' | relative_url }}"></script>{% endif %}
+  {% if page.course_styles or page.nav_section == 'home' %}<link rel="stylesheet" href="{{ '/assets/courses/courses.css?v=20261015-v4' | relative_url }}">{% endif %}
+  {% if page.course_labs %}<script defer src="{{ '/assets/courses/courses.js?v=20261015-v4' | relative_url }}"></script>{% endif %}
   {% if page.math %}{% include mathjax.html %}{% endif %}
   {% if page.mermaid %}{% include mermaid.html %}{% endif %}
 </head>
@@ -35,7 +37,7 @@
       <a class="header-github" href="{{ site.data.profile.github }}">GitHub <span aria-hidden="true">↗</span></a>
     </div>
   </header>
-  <div class="edition-bar"><span>GUD / FIELD NOTES</span><span>北京，{{ 'now' | date: '%Y' }}</span><span>VOL. 03 <span class="edition-dot" aria-hidden="true">●</span> 持续更新</span></div>
+  <div class="edition-bar"><span>GUD / FIELD NOTES</span><span>北京，{{ 'now' | date: '%Y' }}</span><span>VOL. 04 <span class="edition-dot" aria-hidden="true">●</span> 持续更新</span></div>
   {% if page.nav_section == 'home' %}
     <main id="main" class="home-main" tabindex="-1">{{ content }}</main>
   {% else %}
