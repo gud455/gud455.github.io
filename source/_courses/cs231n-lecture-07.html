@@ -27,5 +27,5 @@ recurrent_labs: true
 <h2 id="research-link">与我后续的多模态学习有什么联系？</h2>
 <p>这一讲让我把“特征融合”进一步放到时间与条件生成中理解：视觉信息如何进入序列状态，早期信息如何影响后续输出，以及训练时的梯度究竟能够追溯多远。课件也简要提到状态空间模型；这里只记录这一联系，尚未据此作具体模型比较。</p>
 <details class="course-review"><summary>展开 / 能递推长序列，就等于记住全部历史吗？</summary><p>RNN 可以反复更新同一个有限维状态，序列变长也不要求按时间步复制独立参数。但这不意味着它能无损保存任意长历史；表示容量、状态更新和训练中的梯度都会限制实际长期依赖。</p></details>
-<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-06/' | relative_url }}">← 回看 Lecture 6：CNN 架构与训练</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-06/' | relative_url }}">← 回看 Lecture 6：CNN 架构与训练</a> · <a href="{{ '/courses/cs231n/lecture-08/' | relative_url }}">继续 Lecture 8：Attention 与 Transformer →</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 7: Recurrent Neural Networks》，Stanford CS231n 10th Anniversary，2025 年 4 月 22 日。序列形式、隐藏状态与参数共享：课件标号 17–51；BPTT 与截断：54–58；语言模型与图像描述：59–106；梯度问题：107–118；LSTM 与状态空间模型简述：119–132。</p><p>本页为精简学习记录。交互使用手工参数与标量方程，没有训练语言模型、图像描述模型或完整 LSTM，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

@@ -1,0 +1,30 @@
+---
+layout: course
+title: Attention 与 Transformer：让信息按需交互
+summary: 已学习 CS231n Lecture 8。用 Q/K/V 加权和顺序实验，回看自注意力、位置编码、因果掩码及 ViT。
+course: cs231n
+lecture: 8
+status: 已学习 · 记录已整理
+updated: 2026-10-15
+nav_section: courses
+permalink: /courses/cs231n/lecture-08/
+tags: [Attention, Transformer, 位置编码, ViT]
+course_styles: true
+attention_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 08</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从 RNN 编码器—解码器的固定状态瓶颈出发，学习了注意力如何按 query 从多个 value 中汇集信息，再把 Q/K/V、自注意力、多头、位置编码与掩码连接成 Transformer。最后回到视觉：把图像变成 patch token，同样可以进行全局信息交互。</p><div class="learning-keypoints"><span>01 <strong>匹配与取值分开</strong><small>Q / K / V / 缩放点积</small></span><span>02 <strong>顺序需要额外信息</strong><small>位置编码 / 因果掩码</small></span><span>03 <strong>从序列回到图像</strong><small>Transformer block / ViT</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>权重由 Q 和 K 决定，输出还取决于 V。</strong>同一套注意力权重可以汇集不同内容；自注意力的 Q/K/V 来自同组输入，交叉注意力的 query 与 key/value 则来自不同输入组。</li><li><strong>打乱输入时，纯自注意力的输出也跟着打乱。</strong>这里说的是无位置信息、无顺序相关掩码时的置换等变性，并非输出完全不变。位置编码和因果掩码分别提供位置与可见范围的信息。</li><li><strong>全局交互有计算成本。</strong>标准稠密注意力包含 N×N 的两两匹配；FlashAttention 可避免显式存下完整注意力矩阵，但不能据此把标准稠密注意力的计算量说成随 N 线性增长。</li></ol>
+<h2 id="qkv">实验 01 / 匹配到什么，与读出什么</h2>
+<p>移动二维 query，观察三个 key 分到的权重。再只调整 V₂ 的高度：权重保持相同，输出却会移动。切换缩放点积，比较 softmax 分布的集中程度。</p>
+{% include attention-qkv-lab.html %}
+<h2 id="order">实验 02 / 打乱 token，自注意力知道吗？</h2>
+<p>先关闭位置编码与掩码，交换 A 和 C，比较当前输出与“原输出按同样顺序重排”的参考值。随后分别打开位置编码、因果掩码，观察等变关系在哪些条件下发生变化。</p>
+{% include attention-order-lab.html %}
+<h2 id="transformer">从注意力到 Transformer，再到 ViT</h2>
+<div class="course-practice-notes"><div><h3>多头与 block：交互之后，还要变换特征</h3><p>多个头各自投影 Q/K/V，在不同子空间里进行注意力计算，再拼接并做输出投影。一个 block 还包括逐 token 的 MLP、残差连接与归一化；MLP 在各位置共享参数，跨 token 的混合由注意力承担。</p></div><div><h3>ViT：把二维图像组织成 token</h3><p>按本讲示例，224×224 图像切成 16×16 的 patch，得到 14×14 = 196 个 token；每个 RGB patch 展平成 768 维，再线性映射到 D 维并加入位置信息。图像分类示例允许 patch 间双向交互，最后对输出平均池化并分类。</p></div><div><h3>结构改动：先认清它改了哪一部分</h3><p>本讲还接触了 Pre-Norm、RMSNorm、SwiGLU 和 MoE：分别涉及归一化位置、归一化方式、MLP 门控和专家路由。这里只记录它们在 block 中的位置，后续再通过实现与实验加深理解。</p></div></div>
+<h2 id="research-link">与我后续的多模态学习有什么联系？</h2>
+<p>这一讲让我把“融合”进一步拆成两个问题：谁向谁检索信息，以及被汇集的内容是什么。交叉注意力为不同模态之间的交互提供了一种组织方式，但是否有效仍需对齐方式、复杂度与消融实验支持。注意力热图能展示权重分配，单靠它还不能证明模型的因果解释。</p>
+<details class="course-review"><summary>展开 / 位置编码和因果掩码可以互相替代吗？</summary><p>位置编码把位置信息放进表示；因果掩码约束某个 query 能读取哪些 key。关闭位置编码后，因果掩码本身仍引入了顺序相关的可见范围，所以本页只在两者都关闭时展示纯自注意力的置换等变关系。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-07/' | relative_url }}">← 回看 Lecture 7：RNN 与 LSTM</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 8: Attention and Transformers》，Stanford CS231n 10th Anniversary，2025 年 4 月 24 日。编码器—解码器与注意力动机：课件标号 6–29；Q/K/V 与交叉注意力：30–46；自注意力、位置编码、掩码与多头：47–67；计算、存储及 FlashAttention：68–78；Transformer 与语言建模：84–100；ViT：101–109；结构改动：110–120。</p><p>本页为精简学习记录。交互使用手工二维向量与固定投影，仅演示数学关系，没有训练 Transformer 或 ViT，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
