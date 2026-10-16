@@ -26,5 +26,5 @@ generative_labs: true
 <h2 id="research-link">与我的扩散与融合学习有什么联系？</h2>
 <p>这一讲把“先验”和“潜表示”放回完整概率模型中理解：生成时从哪里取样，训练时怎样近似推断，以及重建目标怎样与分布约束配合。后续看潜空间生成或条件融合方法时，我会先核对各个随机变量与条件，而不是只凭 encoder、decoder 等结构名称判断方法。</p>
 <details class="course-review"><summary>展开 / 重建越接近输入，就一定生成得越好吗？</summary><p>单纯追求重建可能让编码分布集中在便于记忆的位置，却不保证从指定先验抽到的点也能被良好解码。VAE 的目标同时考虑重建与分布约束；采样质量、覆盖情况和下游用途仍需分别评价。</p></details>
-<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-12/' | relative_url }}">← 回看 Lecture 12：自监督学习</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-12/' | relative_url }}">← 回看 Lecture 12：自监督学习</a> · <a href="{{ '/courses/cs231n/lecture-14/' | relative_url }}">继续 Lecture 14：生成模型（二）→</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 13: Generative Models (part 1)》，Stanford CS231n 10th Anniversary，2025 年 5 月 15 日。生成与判别、动机和分类：课件标号 22–47；最大似然与自回归：48–59；自编码器与潜变量：60–90；ELBO：91–103；训练、重参数化与采样：104–112。</p><p>本页为精简学习记录。交互使用手工二值模型和固定的一维线性高斯模型，不训练图像生成器。高斯示例的精确后验仅用于验证数学关系，不代表一般神经 VAE 的后验都能闭式计算；也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

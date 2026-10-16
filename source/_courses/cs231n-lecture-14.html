@@ -1,0 +1,30 @@
+---
+layout: course
+title: 生成模型（二）：对抗目标、流与条件引导
+summary: 已学习 CS231n Lecture 14。通过 GAN 梯度与 Rectified Flow / CFG 演示，回看生成目标、反向采样与潜空间生成。
+course: cs231n
+lecture: 14
+status: 已学习 · 记录已整理
+updated: 2026-10-16
+nav_section: courses
+permalink: /courses/cs231n/lecture-14/
+tags: [GAN, Rectified Flow, CFG, 潜空间生成]
+course_styles: true
+generative2_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 14</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>接着上一讲的概率与潜变量模型，学习了 GAN 如何用生成器和判别器的对抗目标学习采样，再通过 Rectified Flow 理解数据与噪声之间的路径、速度预测和迭代采样。进一步接触了条件生成、CFG、时间采样策略、潜空间扩散、DiT 与蒸馏。</p><div class="learning-keypoints"><span>01 <strong>目标形式影响梯度信号</strong><small>判别器 / 生成器 / 非饱和目标</small></span><span>02 <strong>速度与时间方向要对应</strong><small>线性插值 / 反向积分 / 采样误差</small></span><span>03 <strong>生成系统由多部分组成</strong><small>条件引导 / 潜表示 / 采样器</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>GAN 两方各有目标，不能只盯一条总体下降曲线。</strong>仍可记录各自损失与梯度，但理论最优分布不等于有限模型、有限数据下的训练收敛保证。非饱和生成器目标改善的是一部分梯度信号。</li><li><strong>先确认时间、预测量和更新符号。</strong>本讲 Rectified Flow 取 t = 0 为数据、t = 1 为噪声，训练目标 v = z − x，采样从 1 走向 0，因此用负时间步更新。它不等同于直接预测 DDPM 的噪声 ε。</li><li><strong>采样更快、引导更强，不自动代表结果更好。</strong>数值误差、模型误差、条件遵循和覆盖情况需要分别评价；潜空间压缩、去噪骨干与蒸馏也承担不同作用。</li></ol>
+<h2 id="gan">实验 01 / 判别器很自信时，生成器还能收到多大信号？</h2>
+<p>把假样本的判别器输出写成 D = sigmoid(a)。移动 logit a，比较原始生成器目标、非饱和生成器目标和判别器假样本项的局部梯度。此处只分析一个标量，不训练 GAN。</p>
+{% include gan-gradient-lab.html %}
+<h2 id="flow">实验 02 / 从噪声走回数据，步数与 CFG 改变了什么？</h2>
+<p>使用可精确求解的高斯速度场，比较反向 Euler 轨迹与解析参考。改变步数，再调整引导权重，观察数值误差和轨迹方向；这里展示的是数学采样，不生成图像。</p>
+{% include rectified-flow-lab.html %}
+<h2 id="pipeline">把课件中的生成管线分层理解</h2>
+<table><thead><tr><th>部分</th><th>我保留的理解</th></tr></thead><tbody><tr><td>训练路径与目标</td><td>Rectified Flow 使用 xₜ = (1−t)x + tz、目标 v = z−x；模型用平方误差学习给定状态与时间下的预测。单对训练样本的直线路径，不保证学到的边缘速度场轨迹也是直线。</td></tr><tr><td>条件与 CFG</td><td>训练时可随机丢弃条件，使模型支持两路预测。课件写为 v_cfg = (1+w)v_c − wv_u；另一常见记号 v_u + s(v_c−v_u) 对应 s = 1+w。</td></tr><tr><td>潜空间 / DiT</td><td>编码器与解码器负责表示转换，生成过程可在压缩潜空间中进行；DiT 是预测网络的一种骨干，不等同于整个生成系统。</td></tr><tr><td>时间采样 / 蒸馏</td><td>训练时如何抽 t、推理时如何走时间网格、如何用教师减少学生采样步数，是相关但不同的选择，需要分别核对目标与评价口径。</td></tr></tbody></table>
+<h2 id="research-link">与我的扩散先验与融合实验有什么联系？</h2>
+<p>这一讲让我更注意拆开“表示、条件、目标、采样器”各自的贡献。后续比较扩散先验方案时，应把条件输入、预测参数化、实际步数与额外计算写清，再用消融确认收益来自哪里，而不是只凭“加入扩散”或“更强引导”判断效果。</p>
+<details class="course-review"><summary>展开 / 训练配对是直线，采样轨迹也一定是直线吗？</summary><p>单对数据与噪声的线性插值是直线，但同一个状态与时间可能对应多种配对。平方误差下的最优预测是条件平均速度，这个边缘速度场的积分轨迹一般可以弯曲。本页高斯示例同时给出解析轨迹和数值轨迹，帮助区分配对路径、模型速度与求解误差。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-13/' | relative_url }}">← 回看 Lecture 13：生成模型（一）</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 14: Generative Models (part 2)》，Stanford CS231n 10th Anniversary，2025 年 5 月 20 日。GAN 目标、梯度与架构：课件标号 8–35；Rectified Flow 训练与采样：36–55；条件与 CFG：56–71；最优预测与时间安排：72–84；潜空间、DiT 与条件生成：85–106；蒸馏及其他视角：107–121。</p><p>本页为精简学习记录。交互是标量损失与手工高斯速度场，不运行 GAN、扩散模型或图像生成器，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
