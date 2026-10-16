@@ -1,0 +1,30 @@
+---
+layout: course
+title: 生成模型（一）：从概率链到潜变量与 ELBO
+summary: 已学习 CS231n Lecture 13。用自回归概率链和一维高斯 VAE 演示，回看似然、潜变量、ELBO 与重参数化。
+course: cs231n
+lecture: 13
+status: 已学习 · 记录已整理
+updated: 2026-10-16
+nav_section: courses
+permalink: /courses/cs231n/lecture-13/
+tags: [生成模型, 自回归, VAE, ELBO]
+course_styles: true
+generative_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 13</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>从判别模型与生成模型的区别出发，学习了如何对数据分布建模，以及多种可能输出为什么需要概率描述。重点回顾了最大似然、自回归分解、图像的序列化建模，再从普通自编码器走向 VAE 的潜变量、近似后验、ELBO 与重参数化。</p><div class="learning-keypoints"><span>01 <strong>先分清建模哪个分布</strong><small>p(y|x) / p(x) / p(x|y)</small></span><span>02 <strong>联合概率可以逐项分解</strong><small>条件概率 / 似然 / 顺序采样</small></span><span>03 <strong>潜变量需要推断与约束</strong><small>先验 / 近似后验 / ELBO</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>概率建模与生成样本是相关但不同的能力。</strong>离散概率对所有结果求和为 1；连续密度对空间积分为 1，密度数值本身不是某个点的概率。</li><li><strong>自回归的概率链并不要求只依赖前一项。</strong>一般形式可以依赖全部历史；本页用一阶模型作简化。训练评分时使用已知前缀，采样时则把自己生成的结果继续作为条件。</li><li><strong>VAE 优化的是下界，不是直接算出了复杂模型的边缘似然。</strong>重建项与先验 KL 共同作用；重参数化中的 σ 是标准差，不能把协方差直接当作噪声乘数。</li></ol>
+<h2 id="autoregressive">实验 01 / 一幅小图的联合概率从哪里来？</h2>
+<p>把 2×2 二值图按行展开成四个变量。切换目标像素，调整条件概率，再对照 16 种结果的完整分布。移动查看步骤，观察当前预测能够使用的前缀；也可以按模型顺序采样一次。</p>
+{% include autoregressive-chain-lab.html %}
+<h2 id="vae">实验 02 / ELBO 距离真实对数密度还有多远？</h2>
+<p>用一个可以精确求解的一维高斯生成模型作参照，调整近似后验 q 的均值与标准差。让 q 匹配真实后验时，下界会收紧；再移动固定噪声 ε，区分一次重参数化取值与期望目标。</p>
+{% include gaussian-vae-lab.html %}
+<h2 id="connections">把几个容易混淆的对象分开</h2>
+<table><thead><tr><th>对象</th><th>我在本讲保留的理解</th></tr></thead><tbody><tr><td>普通自编码器 / VAE</td><td>重建输入并不自动提供合适的可采样潜空间；VAE 明确给出潜变量先验、生成条件分布和近似推断分布。</td></tr><tr><td>p(z) / q(z|x)</td><td>生成新数据先从先验取 z；训练时 q 根据已知 x 提供近似后验，帮助优化潜变量模型。</td></tr><tr><td>ELBO / log p(x)</td><td>ELBO = 期望重建对数密度 − KL(q‖先验)。与真实 log p(x) 的间隙是 KL(q‖真实后验)，不是前一个先验 KL。</td></tr><tr><td>独立先验 / 可解释因素</td><td>独立高斯先验是一种分布假设，不保证学到的每个坐标都会对应独立、可解释的语义因素。</td></tr></tbody></table>
+<h2 id="research-link">与我的扩散与融合学习有什么联系？</h2>
+<p>这一讲把“先验”和“潜表示”放回完整概率模型中理解：生成时从哪里取样，训练时怎样近似推断，以及重建目标怎样与分布约束配合。后续看潜空间生成或条件融合方法时，我会先核对各个随机变量与条件，而不是只凭 encoder、decoder 等结构名称判断方法。</p>
+<details class="course-review"><summary>展开 / 重建越接近输入，就一定生成得越好吗？</summary><p>单纯追求重建可能让编码分布集中在便于记忆的位置，却不保证从指定先验抽到的点也能被良好解码。VAE 的目标同时考虑重建与分布约束；采样质量、覆盖情况和下游用途仍需分别评价。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-12/' | relative_url }}">← 回看 Lecture 12：自监督学习</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 13: Generative Models (part 1)》，Stanford CS231n 10th Anniversary，2025 年 5 月 15 日。生成与判别、动机和分类：课件标号 22–47；最大似然与自回归：48–59；自编码器与潜变量：60–90；ELBO：91–103；训练、重参数化与采样：104–112。</p><p>本页为精简学习记录。交互使用手工二值模型和固定的一维线性高斯模型，不训练图像生成器。高斯示例的精确后验仅用于验证数学关系，不代表一般神经 VAE 的后验都能闭式计算；也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

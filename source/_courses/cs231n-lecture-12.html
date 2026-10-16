@@ -26,5 +26,5 @@ selfsupervised_labs: true
 <h2 id="research-link">与我的多模态学习有什么联系？</h2>
 <p>这一讲让我开始把“哪些信息应该一致、哪些差异应该保留”放到目标设计中考虑。后续研究图像融合或退化鲁棒表征时，可以借鉴视图一致性与遮挡目标，但不能直接把不同模态的所有差异都当作应消除的噪声；仍需确认任务信息、空间对齐与下游效果。</p>
 <details class="course-review"><summary>展开 / 把所有样本映射成同一个向量，不也很“一致”吗？</summary><p>它满足了一种平凡的一致性，却失去了区分信息。下面的 InfoNCE 示例中，正负候选完全相同时概率均匀，无法识别正样本。不同自监督方法用不同机制处理这类问题；不能把一条方法的防坍塌机制套到所有方法上。</p></details>
-<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-11/' | relative_url }}">← 回看 Lecture 11：大规模分布式训练</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-11/' | relative_url }}">← 回看 Lecture 11：大规模分布式训练</a> · <a href="{{ '/courses/cs231n/lecture-13/' | relative_url }}">继续 Lecture 13：生成模型（一）→</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 12: Self-Supervised Learning》，Stanford CS231n 10th Anniversary，2025 年 5 月 8 日。自监督与评价：课件标号 9–15；变换与重建前置任务：19–51；MAE 与评价方式：52–60；对比学习与 SimCLR：66–86；MoCo：87–93；CPC：94–101；MoCo v3、DINO 与总结：102–110。</p><p>本页为精简学习记录。交互使用手工二维向量、合成 patch 和手动预测，不训练编码器、MAE 或自蒸馏模型，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

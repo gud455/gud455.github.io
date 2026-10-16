@@ -19,7 +19,7 @@
   <script defer src="{{ '/assets/academic/site.js?v=20261015-v3' | relative_url }}"></script>
   <link rel="stylesheet" href="{{ '/assets/academic/notebook.css?v=20261015-v3' | relative_url }}">
   {% if page.layout == 'record' or page.layout == 'course' %}<script defer src="{{ '/assets/academic/notebook.js?v=20261015-v3' | relative_url }}"></script>{% endif %}
-  {% if page.course_styles or page.nav_section == 'home' %}<link rel="stylesheet" href="{{ '/assets/courses/courses.css?v=20261016-v14' | relative_url }}">{% endif %}
+  {% if page.course_styles or page.nav_section == 'home' %}<link rel="stylesheet" href="{{ '/assets/courses/courses.css?v=20261016-v15' | relative_url }}">{% endif %}
   {% if page.course_labs %}<script defer src="{{ '/assets/courses/courses.js?v=20261015-v4' | relative_url }}"></script>{% endif %}
   {% if page.optimization_labs %}<script defer src="{{ '/assets/courses/lecture3.js?v=20261015-v5' | relative_url }}"></script>{% endif %}
   {% if page.backprop_labs %}<script defer src="{{ '/assets/courses/lecture4.js?v=20261015-v6' | relative_url }}"></script>{% endif %}
@@ -31,6 +31,7 @@
   {% if page.video_labs %}<script defer src="{{ '/assets/courses/lecture10.js?v=20261016-v12' | relative_url }}"></script>{% endif %}
   {% if page.distributed_labs %}<script defer src="{{ '/assets/courses/lecture11.js?v=20261016-v13' | relative_url }}"></script>{% endif %}
   {% if page.selfsupervised_labs %}<script defer src="{{ '/assets/courses/lecture12.js?v=20261016-v14' | relative_url }}"></script>{% endif %}
+  {% if page.generative_labs %}<script defer src="{{ '/assets/courses/lecture13.js?v=20261016-v15' | relative_url }}"></script>{% endif %}
   {% if page.math %}{% include mathjax.html %}{% endif %}
   {% if page.mermaid %}{% include mermaid.html %}{% endif %}
 </head>
@@ -47,7 +48,7 @@
       <a class="header-github" href="{{ site.data.profile.github }}">GitHub <span aria-hidden="true">↗</span></a>
     </div>
   </header>
-  <div class="edition-bar"><span>GUD / FIELD NOTES</span><span>北京，{{ 'now' | date: '%Y' }}</span><span>VOL. 14 <span class="edition-dot" aria-hidden="true">●</span> 持续更新</span></div>
+  <div class="edition-bar"><span>GUD / FIELD NOTES</span><span>北京，{{ 'now' | date: '%Y' }}</span><span>VOL. 15 <span class="edition-dot" aria-hidden="true">●</span> 持续更新</span></div>
   {% if page.nav_section == 'home' %}
     <main id="main" class="home-main" tabindex="-1">{{ content }}</main>
   {% else %}
