@@ -59,9 +59,9 @@ node tests/lecture13.cjs
 node tests/lecture14.cjs
 ```
 
-本次已执行全部 16 组 Node 检查，涵盖课程数学关系与实际事件处理，以及旧科研和页面组件回归。另检查 50 个离线 HTML 页面的内部链接、锚点、课程和科研索引范围，并渲染检查新 SVG。
+本轮维护已完成 Jekyll 4.3.2 源码构建及全部 16 组 Node 检查，并验证 50 个 HTML 页面的内部链接、锚点、课程资源与科研索引范围。浏览器检查覆盖 47 个正文页面，在 1440、768、390、320 px 四种宽度下共检查 188 次，没有页面横向溢出或脚本报错；另核验手机菜单、键盘关闭及无脚本导航。
 
-当前环境没有重跑完整 Jekyll 生产构建，也未进行浏览器页面视觉验收。包内 `preview/` 复用既有真实构建页面，使用 `tools/preview_courses.py` 装配新课程、导航及资源；它是离线预览，不是本次完整 Jekyll 构建结果。修改后可在包根目录运行 `python3 tools/preview_courses.py`（需要 PyYAML）。正式构建以上传后的 GitHub Actions 结果为准。
+本轮清理了 15 个无引用的旧 GitBook 模板，合并导航与课程图表的重复样式；封面脚本只在首页加载。手机导航采用三列网格，增大按钮点击范围；课程卡片在窄屏上下排列，并统一列表分隔线与交互反馈。原科研和课程内容保持原有链接。
 
 ## 添加下一讲
 
@@ -73,6 +73,6 @@ node tests/lecture14.cjs
 
 ## 上传
 
-完整包中的 `上传更新说明.md` 给出两批网页上传方法。两批内的 `source/` 合并覆盖仓库根目录的 `source/`；路径应为 `source/_courses/…` 等。`preview/`、`tools/` 和包根目录说明不必上传。当前更新包尚未提交线上。
+维护文件位于仓库根目录的 `source/`，路径应为 `source/_courses/…` 等。提交到 `master` 会触发 GitHub Actions 构建和 Pages 部署；根目录历史主题文件不参与此构建。
 
 原仓库基于 sighingnow/jekyll-gitbook，保留 Apache-2.0 LICENSE。

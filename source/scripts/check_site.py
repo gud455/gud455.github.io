@@ -57,9 +57,11 @@ for path in root.rglob('*.html'):
         errors.append(f'Missing page metadata: {path.relative_to(root)}')
     if page.main and page.h1 != 1:
         errors.append(f'Expected one H1: {path.relative_to(root)} ({page.h1})')
-    # Jekyll deliberately copies historic JavaScript/CSS. Active pages must use the new shell.
+    # Active pages must use the current shell and load the cover script only on the home page.
     if page.main and ('gitbook.js' in source or 'theme.js' in source):
         errors.append(f'Old runtime loaded: {path.relative_to(root)}')
+    if page.main and path != root / 'index.html' and 'field.js' in source:
+        errors.append(f'Home-only cover script loaded: {path.relative_to(root)}')
     for record in page.records:
         if not record.get('data-search') or not record.get('data-tags'):
             errors.append(f'Missing record filter data: {path.relative_to(root)}')
