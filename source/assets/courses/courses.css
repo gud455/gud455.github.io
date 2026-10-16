@@ -47,3 +47,6 @@
 
 /* Lecture 13: prefix inspection and exact Gaussian density comparisons. */
 .generative-scroll{overflow-x:auto;overscroll-behavior-x:contain}.generative-scroll svg,.generative-scroll img{min-width:660px}.prose .generative-table{min-width:570px;font-variant-numeric:tabular-nums}.generative-table td{font-family:var(--mono);white-space:nowrap}.ar-bits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0 18px 12px;max-width:420px}.course-lab .ar-bits button{font:13px var(--mono);min-height:46px}.course-lab .ar-bits button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* Lecture 14: local GAN gradients and analytic flow trajectories. */
+.flow-course-scroll{overflow-x:auto;overscroll-behavior-x:contain}.flow-course-scroll svg,.flow-course-scroll img{min-width:670px}.prose .flow-course-table{min-width:590px;font-variant-numeric:tabular-nums}.flow-course-table td{font-family:var(--mono);white-space:nowrap}
