@@ -1,4 +1,4 @@
-# Gud / 视觉研究与学习档案 · VOL.13
+# Gud / 视觉研究与学习档案 · VOL.14
 
 站点：<https://gud455.github.io/>。Jekyll 博客，仓库 `gud455/gud455.github.io` 的 `master` 分支，从 `source/` 构建。
 
@@ -8,9 +8,9 @@
 
 - 13 篇公开科研记录；历史记录保留兼容地址。
 - SDADP v0.2 阶段结果、可靠度门控、适配器交叉评价及相关复现记录，实测图表与 CSV 来源保持原有内容。
-- CS231n Lecture 2–11，共 10 讲：图像分类、损失与优化、神经网络与反传、CNN、架构与训练、RNN/LSTM、Attention/Transformer、检测/分割/可视化、视频理解、分布式训练。
+- CS231n Lecture 2–12，共 11 讲：图像分类、损失与优化、神经网络与反传、CNN、架构与训练、RNN/LSTM、Attention/Transformer、检测/分割/可视化、视频理解、分布式训练、自监督学习。
 - 每讲包含精简学习回顾、数学交互、无脚本静态回退、正文目录与阅读进度。
-- Lecture 11 新增数据并行的样本加权梯度归约，以及 GPipe 风格流水线时间表；另简要回顾 FSDP/HSDP、激活检查点、CP/TP 和 MFU。
+- Lecture 12 新增 InfoNCE 的正负候选、温度与坍塌示例，以及 MAE 可见 patch 和遮挡损失实验；另简要回顾前置任务、SimCLR/MoCo、CPC/DINO 与表征评价。
 
 所有课程演示均用于解释具体数学机制；没有把手工参数或合成样本当作训练结果。课程的“已整理”也不代表整门课程或作业完成。
 
@@ -23,12 +23,12 @@
 | `_includes/home-courses.html` | 首页最新讲次 |
 | `_layouts/course.html` | 课程文章、目录与阅读进度 |
 | `_layouts/academic.html` | 全局导航、版次、按需资源加载 |
-| `_includes/distributed-gradient-lab.html` | 局部梯度与全局样本均值归约 |
-| `_includes/pipeline-schedule-lab.html` | 先前向后反向流水线与微批排程 |
-| `assets/courses/lecture11.js` | 解析梯度、理想排程、SVG、交互挂载 |
-| `assets/courses/distributed-gradient-static.svg`、`pipeline-schedule-static.svg` | Lecture 11 无脚本回退图 |
+| `_includes/contrastive-loss-lab.html` | InfoNCE、候选概率、分数导数与坍塌示例 |
+| `_includes/masked-patch-lab.html` | 可见 patch、手动预测和遮挡损失范围 |
+| `assets/courses/lecture12.js` | 稳定损失、固定种子遮挡、SVG、交互挂载 |
+| `assets/courses/contrastive-loss-static.svg`、`masked-patch-static.svg` | Lecture 12 无脚本回退图 |
 | `assets/courses/courses.css` | 课程公共样式与响应式排版 |
-| `tests/lecture11.cjs` | 梯度差分、加权归约、排程依赖和事件检查 |
+| `tests/lecture12.cjs` | InfoNCE 差分、坍塌、遮挡误差隔离与事件检查 |
 | `scripts/check_site.py` | 输出链接、锚点、索引范围、课程资源检查 |
 | `_records/`、`_data/experiments.json` | 科研正文与实测图表数据 |
 | `assets/academic/notebook.js` | 科研图表、DDPM 和阅读导航 |
@@ -54,9 +54,10 @@ node tests/lecture8.cjs
 node tests/lecture9.cjs
 node tests/lecture10.cjs
 node tests/lecture11.cjs
+node tests/lecture12.cjs
 ```
 
-本次已执行全部 13 组 Node 检查，涵盖课程数学关系与实际事件处理，以及旧科研和页面组件回归。另检查 47 个离线 HTML 页面的内部链接、锚点、课程和科研索引范围，并渲染检查新 SVG。
+本次已执行全部 14 组 Node 检查，涵盖课程数学关系与实际事件处理，以及旧科研和页面组件回归。另检查 48 个离线 HTML 页面的内部链接、锚点、课程和科研索引范围，并渲染检查新 SVG。
 
 当前环境没有重跑完整 Jekyll 生产构建，也未进行浏览器页面视觉验收。包内 `preview/` 复用既有真实构建页面，使用 `tools/preview_courses.py` 装配新课程、导航及资源；它是离线预览，不是本次完整 Jekyll 构建结果。修改后可在包根目录运行 `python3 tools/preview_courses.py`（需要 PyYAML）。正式构建以上传后的 GitHub Actions 结果为准。
 
@@ -64,7 +65,7 @@ node tests/lecture11.cjs
 
 在 `_courses/` 新建 HTML，指定 `layout: course`、`course: cs231n`、数字 `lecture`、`title`、`summary`、`status`、`updated`、`permalink`、`tags` 和 `course_styles: true`。目录自动按 lecture 排序。
 
-新交互应有静态回退、可键盘操作的原生控件和数值依据。Lecture 11 使用 `distributed_labs: true`，只在本讲加载 `lecture11.js`。后续采用新标记时，同步更新全局布局、离线预览脚本与站点检查脚本的对应分支。
+新交互应有静态回退、可键盘操作的原生控件和数值依据。Lecture 12 使用 `selfsupervised_labs: true`，只在本讲加载 `lecture12.js`。后续采用新标记时，同步更新全局布局、离线预览脚本与站点检查脚本的对应分支。
 
 更新首页最新讲次、课程范围、前后讲次链接及资源缓存版本；回退 SVG 从对应的纯函数生成，与测试同步。
 

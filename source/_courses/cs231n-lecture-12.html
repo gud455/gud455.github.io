@@ -1,0 +1,30 @@
+---
+layout: course
+title: 自监督学习：让数据提供学习信号
+summary: 已学习 CS231n Lecture 12。通过 InfoNCE 与 MAE 遮挡实验，回看对比学习、重建目标和表征评价。
+course: cs231n
+lecture: 12
+status: 已学习 · 记录已整理
+updated: 2026-10-16
+nav_section: courses
+permalink: /courses/cs231n/lecture-12/
+tags: [自监督学习, InfoNCE, SimCLR, MAE]
+course_styles: true
+selfsupervised_labs: true
+---
+<section class="learning-recap" aria-labelledby="recap-title"><p class="eyebrow">MY LEARNING RECORD / 12</p><h2 id="recap-title">这一讲，我学过什么？</h2><p>把“监督从哪里来”作为起点，学习了旋转预测、图像补全、着色等前置任务，再走向 MAE、SimCLR、MoCo、CPC 与 DINO。重点是区分预训练目标与真正关心的下游任务：任务设计可以来自数据本身，但表征是否有用仍需要评价。</p><div class="learning-keypoints"><span>01 <strong>数据本身可以提供目标</strong><small>前置任务 / 视图增强 / 遮挡</small></span><span>02 <strong>拉近相似，也要保留区分</strong><small>正负样本 / InfoNCE / 坍塌</small></span><span>03 <strong>学会任务，不等于表征优秀</strong><small>线性探测 / 微调 / 迁移</small></span></div></section>
+<h2 id="takeaways">留给自己的三个提醒</h2>
+<ol><li><strong>自监督不等于没有训练目标。</strong>标签或目标由变换、视图关系和被遮挡内容构造，仍可以用分类、回归等损失训练。</li><li><strong>增强策略决定哪些变化应被忽略。</strong>把两种视图设为正对，是在指定希望保留的一致性。过强裁剪可能丢掉共同语义，不同样本也可能属于同类，负样本构造需要结合任务理解。</li><li><strong>预训练损失和下游能力要分开看。</strong>线性探测冻结编码器，只训练线性层；完整微调会更新编码器。重建更好或对比损失更低，都不能单独证明迁移表现更好。</li></ol>
+<h2 id="contrastive">实验 01 / 正样本能从候选里被找出来吗？</h2>
+<p>固定一个 anchor，调整二维单位向量的夹角、负样本数和温度。观察正样本分到的概率与单 anchor 的 InfoNCE 损失；再试试所有向量完全相同的“坍塌”状态。</p>
+{% include contrastive-loss-lab.html %}
+<h2 id="mae">实验 02 / MAE 看见什么，又在哪些位置算损失？</h2>
+<p>把合成图划成 16 个 patch，改变遮挡比例与位置。手动指定预测值，比较只在遮挡位置计算的误差与全图误差；单独改变可见位置的预测，检验两种损失的区别。</p>
+{% include masked-patch-lab.html %}
+<h2 id="methods">本讲方法各自强调什么？</h2>
+<table><thead><tr><th>方法</th><th>我保留的理解</th></tr></thead><tbody><tr><td>变换预测 / 重建</td><td>通过旋转、位置、拼图、着色、补全等自动生成目标；设计任务时要留意不需要语义理解的捷径。</td></tr><tr><td>MAE</td><td>编码器只处理可见 patch，较轻的解码器补入 mask token 和位置信息做重建；本讲损失只计算遮挡区域。</td></tr><tr><td>SimCLR / MoCo</td><td>SimCLR 用增强视图、投影头和批内候选做对比；MoCo 用队列和动量更新的 key 编码器，将候选集合大小与当前小批量解耦。</td></tr><tr><td>CPC / DINO</td><td>CPC 对比正确与错误的未来/上下文关系；DINO 用教师—学生的跨视图自蒸馏学习表征，不能简单等同于显式正负样本的 InfoNCE。</td></tr></tbody></table>
+<h2 id="research-link">与我的多模态学习有什么联系？</h2>
+<p>这一讲让我开始把“哪些信息应该一致、哪些差异应该保留”放到目标设计中考虑。后续研究图像融合或退化鲁棒表征时，可以借鉴视图一致性与遮挡目标，但不能直接把不同模态的所有差异都当作应消除的噪声；仍需确认任务信息、空间对齐与下游效果。</p>
+<details class="course-review"><summary>展开 / 把所有样本映射成同一个向量，不也很“一致”吗？</summary><p>它满足了一种平凡的一致性，却失去了区分信息。下面的 InfoNCE 示例中，正负候选完全相同时概率均匀，无法识别正样本。不同自监督方法用不同机制处理这类问题；不能把一条方法的防坍塌机制套到所有方法上。</p></details>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-11/' | relative_url }}">← 回看 Lecture 11：大规模分布式训练</a></p>
+<aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 12: Self-Supervised Learning》，Stanford CS231n 10th Anniversary，2025 年 5 月 8 日。自监督与评价：课件标号 9–15；变换与重建前置任务：19–51；MAE 与评价方式：52–60；对比学习与 SimCLR：66–86；MoCo：87–93；CPC：94–101；MoCo v3、DINO 与总结：102–110。</p><p>本页为精简学习记录。交互使用手工二维向量、合成 patch 和手动预测，不训练编码器、MAE 或自蒸馏模型，也不表示已完成课程作业。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>

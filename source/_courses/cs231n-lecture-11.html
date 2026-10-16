@@ -27,5 +27,5 @@ distributed_labs: true
 <p>这一讲让我能更具体地审视双卡训练：先确认全局 batch、梯度累积和同步是否符合预期，再区分数据读取、计算、通信与显存限制。后续比较配置时，需要固定评价口径，记录端到端吞吐和迭代耗时；本页演示不据此推断 DSPFusion 或其他项目的实际加速比。</p>
 <details class="course-review"><summary>展开 / 分片与激活检查点解决的是同一个问题吗？</summary><p>它们都能缓解显存压力，但作用对象不同。分片减少每卡常驻的模型状态副本；激活检查点减少需要长期保留的前向中间结果，代价是反传时重算。真实峰值还取决于分片粒度、预取、临时张量和执行顺序，不能只用参数量估算。</p></details>
 <aside class="course-practice-notes"><div><h3>MFU：我希望补进实验记录的一个视角</h3><p>用“有效模型 FLOPs /（设备总峰值 FLOP/s × 实际迭代秒数）”组织口径。分子不把检查点额外重算当作新的有效模型工作；分母包含实际迭代的等待与开销。这里未采集真实 MFU，也不把下方理想排程比例当作实测结果。</p></div></aside>
-<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-10/' | relative_url }}">← 回看 Lecture 10：视频理解</a></p>
+<p class="course-lesson-links"><a href="{{ '/courses/cs231n/lecture-10/' | relative_url }}">← 回看 Lecture 10：视频理解</a> · <a href="{{ '/courses/cs231n/lecture-12/' | relative_url }}">继续 Lecture 12：自监督学习 →</a></p>
 <aside class="course-source"><strong>课件与记录范围</strong><p>依据《Lecture 11: Large-Scale Distributed Training》，Stanford CS231n 10th Anniversary，2025 年 5 月 6 日。GPU 与集群背景：课件标号 6–29；数据并行、分片与 HSDP：30–70；激活检查点：71–101；HFU/MFU：102–112；上下文并行：116–125；流水线：128–133；张量与多维并行：135–147。</p><p>本页为精简学习记录。交互是浏览器内的解析数学和理想排程，不调用 GPU、不运行通信库，也不表示已完成课程作业。不等量样本归约是对课件等量示例的补充说明。</p><a href="https://cs231n.stanford.edu/2025/">访问原课程 ↗</a></aside>
