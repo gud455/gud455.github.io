@@ -41,3 +41,6 @@
 
 /* Lecture 11: readable rank reductions and an inspectable slot-by-slot schedule. */
 .distributed-scroll{overflow-x:auto;overscroll-behavior-x:contain}.distributed-scroll svg,.distributed-scroll img{min-width:640px}.pipeline-scroll{overflow-x:auto;overscroll-behavior-x:contain}.pipeline-scroll svg,.pipeline-scroll img{min-width:760px}.prose .distributed-table{min-width:650px;font-variant-numeric:tabular-nums}.prose .pipeline-table{min-width:520px;font-variant-numeric:tabular-nums}.distributed-table td,.pipeline-table td{font-family:var(--mono);white-space:nowrap}
+
+/* Lecture 12: unit-vector candidates and inspectable masked patches. */
+.ssl-scroll{overflow-x:auto;overscroll-behavior-x:contain}.ssl-scroll svg,.ssl-scroll img{min-width:640px}.prose .ssl-table{min-width:550px;font-variant-numeric:tabular-nums}.ssl-table td{font-family:var(--mono);white-space:nowrap}.course-lab input:disabled{cursor:default;opacity:.4}
