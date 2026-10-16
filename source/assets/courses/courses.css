@@ -44,3 +44,6 @@
 
 /* Lecture 12: unit-vector candidates and inspectable masked patches. */
 .ssl-scroll{overflow-x:auto;overscroll-behavior-x:contain}.ssl-scroll svg,.ssl-scroll img{min-width:640px}.prose .ssl-table{min-width:550px;font-variant-numeric:tabular-nums}.ssl-table td{font-family:var(--mono);white-space:nowrap}.course-lab input:disabled{cursor:default;opacity:.4}
+
+/* Lecture 13: prefix inspection and exact Gaussian density comparisons. */
+.generative-scroll{overflow-x:auto;overscroll-behavior-x:contain}.generative-scroll svg,.generative-scroll img{min-width:660px}.prose .generative-table{min-width:570px;font-variant-numeric:tabular-nums}.generative-table td{font-family:var(--mono);white-space:nowrap}.ar-bits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0 18px 12px;max-width:420px}.course-lab .ar-bits button{font:13px var(--mono);min-height:46px}.course-lab .ar-bits button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
