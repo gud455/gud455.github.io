@@ -1,0 +1,198 @@
+---
+layout: course
+title: 从 Transformer 到微调与分享
+summary: Hugging Face LLM Course 第一部分（第 1–4 章）。串起自监督学习、文本表征、模型调用、微调评价和模型分享，建立一条能逐步检查的学习路径。
+course: huggingface-llm
+course_home: /courses/huggingface-llm/
+course_name: LLM Course 学习记录
+provider: HUGGING FACE / CHAPTERS 1–4
+reading_tools: 概念梳理、图解与实践示例
+part: 1
+status: 笔记已整理 · 实践待记录
+updated: 2026-10-17
+nav_section: courses
+permalink: /courses/huggingface-llm/part-01/
+tags: [Transformer, 自监督学习, Embedding, 微调, Hugging Face]
+course_styles: true
+math: true
+---
+<section class="learning-recap" aria-labelledby="recap-title">
+  <p class="eyebrow">PART 01 / CHAPTERS 1–4</p>
+  <h2 id="recap-title">把“会调用模型”变成“知道每一步在做什么”</h2>
+  <p>第一部分的目标，是理解预训练模型怎样接受输入、产生预测、通过数据继续学习，并被别人重新加载。下面按“为什么能学 → 怎样输入 → 如何训练 → 如何复用”整理。</p>
+  <div class="learning-keypoints"><span>01 <strong>表征从哪里来</strong><small>自监督 / Token / Embedding</small></span><span>02 <strong>任务怎样落地</strong><small>Pipeline / Head / Trainer</small></span><span>03 <strong>结果怎样复查</strong><small>评价 / Checkpoint / Model card</small></span></div>
+  <p class="course-footnote">记录范围：第 1–4 章主线，含生成推理、部署和学习曲线的延伸概念。本文为课程学习笔记；代码为配套练习示例，尚未登记个人模型运行和训练成绩。</p>
+</section>
+
+<h2 id="map">先看全貌：一条输入，两种用途</h2>
+<p>推理和训练使用相同的前向计算。差别在于：训练还需要目标、损失和参数更新。下面以句子分类为例；换成生成任务时，输出通常是每个位置对词表的分数，形状也随任务改变。</p>
+<figure class="research-diagram"><div class="diagram-scroll" tabindex="0" role="region" aria-label="可横向滚动的模型输入、推理与训练流程图"><img src="{{ '/assets/courses/llm-part1-pipeline.svg' | relative_url }}" width="760" height="360" style="min-width:580px" alt="文本经过分词器成为整数 ID 和掩码，再经过 Transformer 和分类头产生 logits；推理对 logits 做 Softmax，训练将 logits 与标签送入损失函数并反向更新模型。"></div><figcaption>本站绘制的句子分类示意图。B 为批量大小，L 为序列长度，H 为隐藏维度，C 为类别数。分词器通常不参与这里的梯度更新。</figcaption></figure>
+<div class="table-scroll" tabindex="0" role="region" aria-label="第一部分四章的对应问题"><table><thead><tr><th>章节</th><th>核心问题</th><th>应能说清的结果</th></tr></thead><tbody><tr><td>1 · 模型基础</td><td>为什么模型能迁移到新任务？</td><td>学习目标、架构、上下文范围</td></tr><tr><td>2 · 使用模型</td><td>一句话怎样成为预测？</td><td>分词、张量、任务头、后处理</td></tr><tr><td>3 · 微调</td><td>怎样让模型适应任务？</td><td>数据划分、训练、评价与曲线</td></tr><tr><td>4 · 保存与分享</td><td>怎样让别人复用？</td><td>权重、配置、分词器、模型卡和版本</td></tr></tbody></table></div>
+
+<h2 id="chapter1">第 1 章 / 模型学到的是什么？</h2>
+<h3 id="self-supervision">1.1 没有人工标签，为什么仍然可以训练？</h3>
+<p><strong>自监督学习把数据的一部分变成另一部分的预测目标。</strong>例如，让模型根据前文预测下一个 token，或者把若干 token 遮住再恢复。训练时仍然存在目标和损失，只是不需要逐条人工标注“正面情感”“人物名称”这样的任务标签。</p>
+<p>以因果语言建模为例，把序列写作 x₁,…,xₜ，其训练目标可写成：</p>
+<p>\[\mathcal{L}_{\mathrm{CLM}}=-\sum_{t=1}^{T}\log p_\theta(x_t\mid x_{&lt;t}).\]</p>
+<p>每个位置只使用此前的 token，预测当前目标。掩码语言建模则利用可见上下文预测被选中的原始 token。两者都让模型从大量文本中学习统计结构；学习到有用的语言表征，不等于获得了可靠的事实数据库。</p>
+<p>这里也回应我对“无监督学习”的疑问：<strong>没有人工任务标签，不等于没有训练信号。</strong>自监督经常被放在广义无监督学习中讨论，但复述方法时，直接说清“预测什么、目标怎么构造”更有帮助。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter1/4">Transformer 的工作方式与预训练</a>。</p>
+
+<h3 id="architectures">1.2 三种架构：关键在于“能看见哪些位置”</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="三种 Transformer 架构比较"><table><thead><tr><th>架构</th><th>典型注意力范围</th><th>常见任务</th><th>例子</th></tr></thead><tbody><tr><td>Encoder-only</td><td>可用输入中的双向上下文</td><td>句子分类、实体识别、抽取式问答</td><td>BERT、DistilBERT</td></tr><tr><td>Decoder-only</td><td>因果自注意力，只看当前位置及此前位置</td><td>自回归文本生成</td><td>GPT 系列、Llama</td></tr><tr><td>Encoder–decoder</td><td>编码器读输入；解码器看目标前缀，并跨注意力读取编码表示</td><td>翻译、摘要等序列到序列任务</td><td>T5、BART</td></tr></tbody></table></div>
+<p>这张表是常见选择依据，不是能力的绝对边界。比如 decoder 模型也能通过提示或任务适配做分类。需要同时检查<strong>架构、预训练目标、任务头和 checkpoint</strong>，不能仅凭模型名字判断。</p>
+<p><strong>架构</strong>是网络结构与运算方式；<strong>checkpoint</strong>包含训练得到的参数及相关状态。相同架构可能对应完全不同的预训练语料、任务能力和使用限制。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter1/6">Transformer 架构</a>；<a href="https://huggingface.co/learn/llm-course/chapter1/5">不同任务的模型与输出</a>。</p>
+
+<h3 id="learning-stages">1.3 预训练、微调和推理不是一回事</h3>
+<ul><li><strong>预训练：</strong>通常在较大数据上学习通用表征与预测能力。</li><li><strong>微调：</strong>从已有参数出发，继续训练以适应目标任务；目标既可以是有监督分类，也可以是其他训练目标。</li><li><strong>推理：</strong>用已有参数计算输出，通常不更新权重。改变提示词或采样参数，本身不等于微调。</li></ul>
+<p>本部分先用预训练模型做任务微调，重点理解数据与评价；不需要从零训练一个大语言模型，也不把简单分类微调等同于后续章节的指令微调。</p>
+
+<h3 id="generation">1.4 生成：为什么回答会一个 token 接一个 token 出现？</h3>
+<p>生成模型先处理提示上下文（prefill），再循环预测并选择下一个 token（decode），直到停止条件满足。KV cache 可以复用之前位置的注意力键和值，减少重复计算，但缓存本身也需要内存。</p>
+<ul><li><strong>贪心解码：</strong>每步选当前分数最高的 token。</li><li><strong>Temperature：</strong>采样时对 logits 做温度缩放，较高温度通常使分布更平坦；它不会自动提高事实正确性。</li><li><strong>Top-k / Top-p：</strong>限制采样候选集合；前者按候选数，后者按累计概率质量。</li></ul>
+<p>生成流畅不保证事实正确。预训练数据中的偏差、语言覆盖不足、输入分布改变，都可能影响输出。使用模型时要把“生成了什么”和“是否经过独立验证”分开记录。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter1/8">生成推理</a>；<a href="https://huggingface.co/learn/llm-course/chapter1/9">偏差与局限</a>。</p>
+
+<h2 id="chapter2">第 2 章 / 拆开一次 pipeline</h2>
+<h3 id="embedding">2.1 Token ID、embedding、隐藏状态：三个层次</h3>
+<p><strong>Tokenizer</strong>按特定规则把文本切分成词、子词或其他符号，并映射为整数 ID。token 不一定等于一个单词，一个汉字也不保证只占一个 token。模型和 tokenizer 必须使用相匹配的词表、特殊 token 和预处理约定。</p>
+<p><strong>Token ID 是索引，数值大小没有“语义更强”或“更相似”的含义。</strong>Embedding 层根据索引取出可学习的向量；后续 Transformer 层再结合上下文更新表征。同一 token 的输入查表向量通常相同，而不同语境下的最终隐藏状态可以不同。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="token ID 与 embedding 的形状比较"><table><thead><tr><th>对象</th><th>典型形状</th><th>含义</th></tr></thead><tbody><tr><td>input_ids</td><td>[B, L]</td><td>离散整数索引</td></tr><tr><td>输入 token embedding</td><td>[B, L, H]</td><td>从可学习参数表中取出的向量</td></tr><tr><td>last_hidden_state</td><td>[B, L, H]</td><td>模型结合上下文后的表示</td></tr><tr><td>句子分类 logits</td><td>[B, C]</td><td>任务头给出的类别分数</td></tr><tr><td>语言建模 logits</td><td>[B, L, V]</td><td>每个位置对大小为 V 的词表打分</td></tr></tbody></table></div>
+<p>“Embedding”这个词有时也泛指最终的文本向量。阅读代码时要进一步确认：指输入查表、某层隐藏状态，还是经过池化与专门训练的句向量？普通隐藏状态直接平均，不一定就适合语义检索。位置关系也需要通过位置嵌入或其他位置机制处理，具体方式取决于架构。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter2/4">Tokenizer</a>；<a href="https://huggingface.co/learn/llm-course/chapter2/2">模型、隐藏状态与任务头</a>。</p>
+
+<h3 id="masks">2.2 Padding mask 与因果 mask，分别挡住什么？</h3>
+<p>不同长度的句子通常需要补齐才能组成张量。padding mask 告诉模型哪些键位置是有效输入；因果 mask 则阻止某个位置读取未来信息。它们可以同时使用，<strong>都不等于 MLM 中替换文本的 [MASK] token</strong>。</p>
+<figure class="research-diagram"><div class="diagram-scroll" tabindex="0" role="region" aria-label="可横向滚动的注意力掩码图解"><img src="{{ '/assets/courses/llm-part1-masks.svg' | relative_url }}" width="760" height="310" style="min-width:580px" alt="行是有效查询 A、B、C，列是键 A、B、C、PAD。双向加 padding mask 的三行都能读取 A、B、C；因果加 padding mask 的三行依次只能读取 A，A与B，A与B与C；两种情况下 PAD 列均不可读取。"></div><figcaption>示意中的 1 表示允许读取、0 表示屏蔽；实际实现可将规则转换为加性掩码。仅展示有效 query，PAD 对应输出通常在任务处理时忽略。标准文本 tokenizer 返回的二维 attention_mask 通常使用 1 / 0 标记有效输入与补齐位置，因果约束往往由模型内部处理。</figcaption></figure>
+<p>Padding 用来补齐，truncation 用来截断超长输入，二者都不能凭空增加模型支持的上下文长度。对句子对任务，使用 tokenizer 的双输入接口，让它负责特殊 token 与段信息；部分架构没有 token_type_ids，不应强行添加。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter2/5">多个序列、补齐与掩码</a>；<a href="https://huggingface.co/learn/llm-course/chapter2/6">完整预处理</a>。</p>
+
+<h3 id="inference-code">2.3 一段能看见中间量的推理示例</h3>
+<p>这里选用已经做过 SST-2 情感分类微调的英文 checkpoint。它用于理解接口，不据此宣称能可靠处理中文或科研文本。完整脚本可在<a href="{{ '/assets/courses/llm-part1-practice.py' | relative_url }}">此处下载</a>。</p>
+{% highlight python %}
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+checkpoint = "distilbert/distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+model.eval()
+
+batch = tokenizer(
+    ["The explanation is clear.", "This example is confusing."],
+    padding=True, truncation=True, return_tensors="pt",
+)
+print(tokenizer.convert_ids_to_tokens(batch["input_ids"][0].tolist()))
+print("IDs:", batch["input_ids"].shape)
+print("mask:", batch["attention_mask"])
+with torch.no_grad():
+    logits = model(**batch).logits
+probabilities = logits.softmax(dim=-1)
+for row in probabilities:
+    index = row.argmax().item()
+    print(model.config.id2label[index], row[index].item())
+{% endhighlight %}
+<p><code>model.eval()</code>切换 dropout 等模块的运行方式；<code>torch.no_grad()</code>关闭本次计算的梯度记录，二者作用不同。<code>AutoModel</code>通常用于取基础模型表示，<code>AutoModelForSequenceClassification</code>则包含句子分类头。logits 是未归一化分数；此处的二分类使用 Softmax 得到类别分布，但这个分数不等于经过校准的“事实可信度”。</p>
+<p>可以尝试删去短句的 padding mask，再比较独立推理和混合批量推理的输出；正常传入掩码时，两者应在数值误差范围内接近。该练习用于观察输入处理，没有在本文中预设实验结果。</p>
+
+<h3 id="deployment">2.4 本地调用与部署服务，需要分开考虑</h3>
+<p><code>pipeline</code>适合快速组织单机任务流程。课程还介绍 TGI、vLLM、llama.cpp 等部署工具。理解部署时，先关注批处理、KV cache、内存占用与延迟等约束；不要把某个框架名称当成固定的速度保证。量化降低存储精度，仍需检查目标任务的质量变化。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter2/8">优化推理与部署</a>。这里保留概念索引，具体部署命令以对应项目当前文档为准。</p>
+
+<h2 id="chapter3">第 3 章 / 微调：把数据、损失与评价接起来</h2>
+<h3 id="dataset">3.1 先定义任务，再选模型和标签</h3>
+<p>课程以 MRPC 句子对分类为例：判断两句话是否为释义关系。每个样本由两段文本与一个标签组成；它与上一节的情感分类是不同任务。训练示例从 BERT 基础 checkpoint 加载分类模型，新建的任务头需要训练；出现部分权重随机初始化的提示时，应核对是否正是预期新增的任务层。</p>
+<ol><li><strong>保留官方数据划分：</strong>训练集更新参数，验证集用于观察和选配置；独立测试评价留到方法确定之后。</li><li><strong>按句子对分词：</strong><code>tokenizer(sentence1, sentence2, truncation=True)</code>，同时确认标签编号的含义。</li><li><strong>按批动态补齐：</strong><code>DataCollatorWithPadding</code>通常只补到当前 batch 的最长序列，避免所有样本都补到固定最大长度。</li><li><strong>核对形状与损失：</strong>句子对分类输出 [B, 2]，每个样本一个类别标签。PyTorch 的交叉熵接收 logits，通常不在传入前手动 Softmax。</li></ol>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter3/2">数据处理与动态补齐</a>。</p>
+
+<h3 id="trainer">3.2 Trainer 帮我管理什么？</h3>
+<p><code>TrainingArguments</code>设置训练与评价策略；<code>Trainer</code>组织数据批次、前向、反向、优化和日志。它不会替我决定任务是否合理、数据是否泄漏或指标是否具有解释力。下面展示关键配置；完整的数据加载、指标计算、模型保存与环境记录都在配套脚本中。</p>
+{% highlight python %}
+from transformers import TrainingArguments, Trainer, DataCollatorWithPadding
+
+args = TrainingArguments(
+    output_dir="outputs/llm-part1-mrpc",
+    learning_rate=2e-5,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    num_train_epochs=3,
+    eval_strategy="epoch",
+    save_strategy="epoch",
+    load_best_model_at_end=True,
+    metric_for_best_model="f1",
+    greater_is_better=True,
+    save_total_limit=2,
+    seed=42,
+    report_to="none",
+    push_to_hub=False,
+)
+trainer = Trainer(
+    model=model,                         # MRPC 的 BERT 分类模型
+    args=args,
+    train_dataset=encoded["train"],
+    eval_dataset=encoded["validation"],
+    processing_class=tokenizer,
+    data_collator=DataCollatorWithPadding(tokenizer),
+    compute_metrics=compute_metrics,     # accuracy 和正类 F1
+)
+trainer.train()
+metrics = trainer.evaluate()
+{% endhighlight %}
+<p>学习率、batch size 和轮数是练习起点，不是已经找到的最优参数。当前文档使用 <code>eval_strategy</code> 与 <code>processing_class</code>；旧版示例的参数名可能不同。运行时应保存实际依赖版本和 checkpoint / 数据集 revision，避免仅凭“代码一样”判断可复现。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter3/3">Trainer 微调</a>；接口核对：<a href="https://huggingface.co/docs/transformers/main_classes/trainer">Trainer 官方文档</a>。</p>
+
+<h3 id="training-loop">3.3 把高层接口还原成训练循环</h3>
+<p>手写循环的基本过程是：<code>model.train()</code> → 准备 batch 与设备 → 计算损失 → <code>loss.backward()</code> → <code>optimizer.step()</code> → <code>scheduler.step()</code>（若设置）→ 清空梯度。开始循环前也应清空梯度。若使用梯度累积，这些更新步骤需按累积边界组织。</p>
+<p>评价时切换到 <code>model.eval()</code>，关闭梯度记录，并累计整个评价集的预测与标签后计算指标。重新训练前要切回训练模式。Accelerate 可以帮助处理设备、混合精度和分布式执行，但不改变这些训练与评价职责。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter3/4">完整训练循环与 Accelerate</a>。</p>
+
+<h3 id="evaluation">3.4 Loss 下降，不等于任务已经做好</h3>
+<p>Accuracy 是预测正确的比例；二分类的正类 F1 为 2TP / (2TP + FP + FN)，同时关注精确率与召回率。指标名称相同，也必须检查使用的数据划分、正类定义和阈值。本文的 MRPC 示例以类别 1 为正类，并以 argmax 产生预测。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="学习曲线的现象与检查方向"><table><thead><tr><th>观察</th><th>可能的解释</th><th>下一步检查</th></tr></thead><tbody><tr><td>训练 loss 降，验证 loss 升</td><td>可能过拟合，也可能分布存在差异</td><td>数据划分、早停、正则化与错误样例</td></tr><tr><td>Loss 降，accuracy 不变</td><td>分数变好但 argmax 尚未改变</td><td>概率、F1、类别分布</td></tr><tr><td>训练与验证均较差</td><td>可能欠拟合或流程有误</td><td>标签、预处理、学习率、模型与任务匹配</td></tr><tr><td>曲线明显抖动</td><td>可能与学习率、批量或数据异常有关</td><td>日志、梯度、坏样本，再逐项调整</td></tr></tbody></table></div>
+<p>曲线只能给出线索，不能单独确定原因。反复根据验证集选择模型，会使它参与方法设计，不能再把同一分数当成完全独立的最终检验。与我的融合实验一样，需要同时看任务指标和具体失败样例。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter3/5">理解学习曲线</a>。</p>
+
+<h2 id="chapter4">第 4 章 / 模型能被重新加载，才算留下了完整记录</h2>
+<h3 id="save">4.1 保存的不是一份权重那么简单</h3>
+<p>推理复用需要权重、模型配置、分词器资源及其配置，还需要知道预处理和标签定义。<code>save_pretrained</code>让这些文件使用约定的结构保存；<code>from_pretrained</code>既能读取 Hub checkpoint，也能读取本地目录。</p>
+{% highlight python %}
+artifact_dir = "outputs/llm-part1-mrpc/final"
+trainer.save_model(artifact_dir)
+tokenizer.save_pretrained(artifact_dir)
+
+restored_tokenizer = AutoTokenizer.from_pretrained(artifact_dir)
+restored_model = AutoModelForSequenceClassification.from_pretrained(artifact_dir)
+restored_model.eval()
+{% endhighlight %}
+<p>用于推理的模型导出与用于<strong>中断后续训</strong>的 checkpoint 要分清。精确恢复训练还可能需要优化器、调度器、随机状态和训练步数等信息，仅保存最终模型通常不够。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter4/2">使用预训练模型</a>；<a href="https://huggingface.co/learn/llm-course/chapter4/3">模型保存与分享</a>。</p>
+
+<h3 id="model-card">4.2 分享时，模型卡要回答哪些问题？</h3>
+<ul><li><strong>来源与任务：</strong>基础模型、revision、目标语言和标签定义。</li><li><strong>训练数据：</strong>数据集、划分、预处理和使用许可。</li><li><strong>训练方式：</strong>超参数、随机种子、依赖版本和硬件。</li><li><strong>评价结果：</strong>指标、数据划分、基线、错误样例与适用范围。</li><li><strong>使用方式：</strong>最小加载代码、输入输出说明及模型局限。</li></ul>
+<p>Hub 支持按版本管理文件，复查实验时可以指定 revision。若未来要分享自己的模型，再登录并执行上传；本文的脚本只保存到本地，不会自动发布到 Hub。个人令牌也不应写进公开代码或博客。</p>
+<p class="course-footnote">原课对应：<a href="https://huggingface.co/learn/llm-course/chapter4/4">模型卡</a>。</p>
+
+<h2 id="practice">动手练习 / 先跑通，再讨论效果</h2>
+<p>配套脚本：<a href="{{ '/assets/courses/llm-part1-practice.py' | relative_url }}" download>下载 llm-part1-practice.py</a>。默认只运行上面的推理流程，显式传入 <code>--train</code> 才会启动 MRPC 微调。运行前需有 Python 环境、对应依赖，以及下载模型和数据的网络；完整 BERT 微调在 CPU 上可能很慢。</p>
+{% highlight bash %}
+python -m pip install torch transformers datasets accelerate numpy
+python llm-part1-practice.py
+python llm-part1-practice.py --train
+{% endhighlight %}
+<p>脚本会保存依赖版本、模型 revision、数据集指纹、实际配置与评价日志，便于后续整理。建议保留原始数据快照和数据集 revision，以便更严格复现。<strong>当前已做语法与离线指标函数检查，尚未执行模型下载、完整推理或微调；不预填 accuracy / F1，也不把课程结果当成个人成绩。</strong></p>
+<ol><li>运行推理，解释 input_ids、attention_mask 和 logits 的含义。</li><li>运行微调，对照验证集 loss、accuracy、F1 和错误样例；确认任务头已参与训练。</li><li>重新加载保存的目录，用相同输入检查预测能否复现。</li><li>记录一个失败样例，说明它暴露的是输入、任务定义、数据还是模型能力的问题。</li></ol>
+
+<h2 id="self-check">自测 / 先自己解释，再展开答案</h2>
+<details class="course-review"><summary>为什么 token ID 100 和 101 不一定语义相近？</summary><p>ID 只是词表索引。语义关系来自训练得到的向量和上下文计算；整数编号之间的距离没有预设的语义解释。</p></details>
+<details class="course-review"><summary>没有人工标签，自监督学习用什么算损失？</summary><p>从文本自身构造预测目标，例如把后一个 token 当目标，或者恢复被遮住的 token。没有人工任务标签，不代表没有目标。</p></details>
+<details class="course-review"><summary>把 attention_mask 传给 BERT，会让它变成自回归模型吗？</summary><p>常见二维 attention_mask 主要标记有效输入与补齐位置；模型架构、内部因果规则和训练目标共同决定行为。仅传入 padding mask 不会让 BERT 自动获得下一 token 生成能力。</p></details>
+<details class="course-review"><summary>AutoModel 能直接给出正面 / 负面标签吗？</summary><p>基础模型主要输出隐藏表示。情感分类还需要匹配任务的分类头、经过相应训练的参数和标签映射。新建随机分类头不等于已有可用的分类能力。</p></details>
+<details class="course-review"><summary>为什么训练 loss 更低，验证 F1 却可能更差？</summary><p>训练目标针对训练数据；过拟合、数据分布差异或不同的决策边界都可能造成这种现象。先检查数据与错误样例，再结合验证曲线判断。</p></details>
+<details class="course-review"><summary>只把 model.safetensors 发给别人，够不够？</summary><p>往往不够。还需要匹配的模型配置、分词器和预处理约定、标签定义与使用说明；若要继续训练，还需要相关训练状态。</p></details>
+
+<h2 id="research">与我的视觉研究连接起来</h2>
+<p>这里是学习后的方法联想：文本 token 与图像 patch 都会被映射为向量，但“形状相同”不意味着天然处于同一个语义空间。VLM 通常还需要对齐训练、投影层或其他连接机制。可结合 <a href="{{ '/courses/cs231n/lecture-08/' | relative_url }}">CS231n 的 Transformer 笔记</a>回看注意力，再比较输入与目标的不同。</p>
+<p>对目前的 SDADP 先验工作，更直接的启发是明确<strong>表征来源、输入输出和下游评价</strong>：特征看起来合理，不代表对融合任务有效；任务收益需要独立对照实验。这是理解模型与评价协议的联系，不据此直接调整现有方法。</p>
+
+<aside class="course-source"><strong>课程来源与整理说明</strong><p>依据 Hugging Face LLM Course 第 1–4 章，2026.10.17 核对。本文用中文重新梳理课程概念，并增加原创流程图、掩码图解、自测与练习脚本；不是课程逐字翻译。各节附原课链接，课程资料归原作者所有，原课以 <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a> 发布。</p><p>笔记整理与实践结果分别登记；当前不声明课程作业、考试或认证完成。</p><a href="https://huggingface.co/learn/llm-course/">回到原课程 ↗</a></aside>

@@ -2,9 +2,11 @@
 layout: academic
 ---
 <article class="article course-article" data-research-article>
-<header class="page-heading article-heading"><a class="breadcrumb" href="{{ '/courses/cs231n/' | relative_url }}">← CS231n 学习记录</a><div class="page-register"><span>LEARNING / LECTURE {{ page.lecture | prepend: '00' | slice: -2, 2 }}</span><span>STANFORD / 2025</span></div><div class="record-meta"><span>公开课程自学</span><span class="status">{{ page.status | escape }}</span></div><h1>{{ page.title | escape }}</h1><p class="page-lead">{{ page.summary | escape }}</p><div class="article-ledger"><span>AUTHOR <strong>Gud</strong></span><span>记录整理 <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: '%Y.%m.%d' }}</time></span></div><div class="tags">{% for tag in page.tags %}<span>{{ tag | escape }}</span>{% endfor %}</div></header>
-<div class="article-tools"><span>COURSE NOTE / 学习回顾与交互演示</span><span class="reading-meter" hidden><progress data-reading-progress max="100" value="0" aria-label="本篇阅读进度"></progress><span data-reading-label>0%</span></span></div>
+{% assign course_home = page.course_home | default: '/courses/cs231n/' %}
+{% assign course_name = page.course_name | default: 'CS231n 学习记录' %}
+<header class="page-heading article-heading"><a class="breadcrumb" href="{{ course_home | relative_url }}">← {{ course_name | escape }}</a><div class="page-register"><span>{% if page.part %}LEARNING / PART {{ page.part | prepend: '00' | slice: -2, 2 }}{% else %}LEARNING / LECTURE {{ page.lecture | prepend: '00' | slice: -2, 2 }}{% endif %}</span><span>{{ page.provider | default: 'STANFORD / 2025' | escape }}</span></div><div class="record-meta"><span>公开课程自学</span><span class="status">{{ page.status | escape }}</span></div><h1>{{ page.title | escape }}</h1><p class="page-lead">{{ page.summary | escape }}</p><div class="article-ledger"><span>AUTHOR <strong>Gud</strong></span><span>记录整理 <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: '%Y.%m.%d' }}</time></span></div><div class="tags">{% for tag in page.tags %}<span>{{ tag | escape }}</span>{% endfor %}</div></header>
+<div class="article-tools"><span>COURSE NOTE / {{ page.reading_tools | default: '学习回顾与交互演示' | escape }}</span><span class="reading-meter" hidden><progress data-reading-progress max="100" value="0" aria-label="本篇阅读进度"></progress><span data-reading-label>0%</span></span></div>
 <details class="note-toc" data-note-toc hidden><summary>本篇导航 / CONTENTS</summary><nav class="toc-links" data-toc-links aria-label="本篇目录"></nav></details>
 <div class="prose">{{ content }}</div>
-<footer class="article-end"><span class="end-mark" aria-hidden="true">■</span><p>随着学习继续补充新的课程记录。</p><a href="{{ '/courses/cs231n/' | relative_url }}">返回 CS231n 学习档案 ↗</a></footer>
+<footer class="article-end"><span class="end-mark" aria-hidden="true">■</span><p>随着学习继续补充新的课程记录。</p><a href="{{ course_home | relative_url }}">返回 {{ course_name | escape }} ↗</a></footer>
 </article>

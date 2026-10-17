@@ -1,8 +1,8 @@
 - date: '2026.10.17'
   label: 课程学习
-  title: 开始记录 Hugging Face LLM Course 的学习
-  detail: 建立语言模型课程档案，整理学习路线与后续实践关注点。
-  url: /courses/huggingface-llm/
+  title: LLM Course 第一部分：从 Transformer 到微调与分享
+  detail: 第 1–4 章笔记已整理，附模型流程图、注意力掩码图解与实践示例。
+  url: /courses/huggingface-llm/part-01/
 - date: '2026.10.15'
   label: 阶段实验
   title: SDADP v0.2：保留负结果，重新审视扩散的必要性

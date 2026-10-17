@@ -15,8 +15,10 @@ course_styles: true
 
 <div class="course-summary">
   <span class="course-stamp">LEARN<br>BY DOING</span>
-  <div><h2>我的学习档案</h2><p>正在学习 Hugging Face LLM Course，希望逐步建立对 Transformer、语言模型及其训练工具的理解，为后续阅读多模态模型相关工作打好基础。</p><p class="course-footnote">建档：2026.10.17 · 当前状态：学习中 · 具体章节、练习与实验结果待随笔记补充。</p><a class="text-link" href="https://huggingface.co/learn/llm-course/">进入原课程 ↗</a></div>
+  <div><h2>我的学习档案</h2><p>正在学习 Hugging Face LLM Course，希望逐步建立对 Transformer、语言模型及其训练工具的理解，为后续阅读多模态模型相关工作打好基础。</p><p class="course-footnote">最近整理：2026.10.17 · 第一部分笔记已收录 · 练习与个人实验结果另行记录。</p><a class="text-link" href="https://huggingface.co/learn/llm-course/">进入原课程 ↗</a></div>
 </div>
+
+<section class="lecture-list" aria-labelledby="notes-title"><h2 id="notes-title">已收录的学习笔记</h2><a class="lecture-entry" href="{{ '/courses/huggingface-llm/part-01/' | relative_url }}"><span class="lecture-no">01</span><div><small>CHAPTERS 1–4 / 笔记已整理</small><h3>从 Transformer 到微调与分享</h3><p>从自监督学习与 embedding 出发，拆解 pipeline，理解数据、训练、评价和模型归档。附两张图解、代码示例与自测问答。</p><span class="tags"><span>Transformer</span><span>Embedding</span><span>Trainer</span><span>Hub</span></span></div><span aria-hidden="true">↗</span></a></section>
 
 <div class="prose">
   <section class="learning-recap" aria-labelledby="focus-title">
@@ -31,6 +33,7 @@ course_styles: true
     <p>依据原课程目录整理。以下是学习安排，章节笔记与练习完成情况会在后续单独记录。</p>
     <details class="course-review" open>
       <summary>01 / 第 1–4 章：模型基础与使用</summary>
+      <p><a href="{{ '/courses/huggingface-llm/part-01/' | relative_url }}">阅读第一部分学习笔记 →</a></p>
       <ul>
         <li><a href="https://huggingface.co/learn/llm-course/chapter1/1">第 1 章 · Transformer 模型</a>：关注模型架构与任务的关系。</li>
         <li><a href="https://huggingface.co/learn/llm-course/chapter2/1">第 2 章 · 使用 Transformers</a>：拆解 tokenizer、模型与 pipeline 的分工。</li>
@@ -65,7 +68,7 @@ course_styles: true
 
   <section aria-labelledby="practice-title">
     <h2 id="practice-title">后续笔记与实践</h2>
-    <p>章节笔记尚待整理。后续按“概念理解 → 最小示例 → 观察与疑问”补充，优先留下以下记录：</p>
+    <p>第一部分笔记已整理，后续继续补充运行记录与失败样例。按“概念理解 → 最小示例 → 观察与疑问”留下以下记录：</p>
     <div class="course-practice-notes">
       <div><h3>拆开一次模型调用</h3><p>记录原始文本、token IDs、attention mask 与模型输出，弄清各步骤的输入和输出。</p></div>
       <div><h3>整理一次微调对照</h3><p>记录模型版本、数据划分、配置和评价指标，对照微调前后的表现与失败样例。</p></div>
