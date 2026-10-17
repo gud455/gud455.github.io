@@ -31,4 +31,4 @@ permalink: /
     <article><div class="home-record-meta"><span>{{ selected_record.kind | escape }}</span><span>{{ selected_record.status | escape }}</span></div><h3><a href="{{ selected_record.url | relative_url }}">{{ selected_record.title | escape }}</a></h3><p>{{ selected_record.summary | escape }}</p></article>
   {% endif %}{% endfor %}</div>
 </section>
-<section class="home-learning" aria-labelledby="learning-title"><h2 id="learning-title">学习笔记</h2><p>公开课自学与交互笔记，单独整理在学习课程中。</p><a href="{{ '/courses/' | relative_url }}">浏览学习课程 →</a></section>
+<section class="home-learning" aria-labelledby="learning-title"><h2 id="learning-title">学习笔记</h2><p>CS231n 视觉学习笔记与 <a href="{{ '/courses/huggingface-llm/' | relative_url }}">Hugging Face LLM Course</a> 自学档案。</p><a href="{{ '/courses/' | relative_url }}">浏览学习课程 →</a></section>

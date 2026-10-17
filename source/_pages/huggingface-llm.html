@@ -1,0 +1,77 @@
+---
+layout: academic
+title: Hugging Face LLM Course 学习记录
+nav_section: courses
+permalink: /courses/huggingface-llm/
+description: 我的 Hugging Face LLM Course 自学档案，记录 Transformer、模型使用、数据处理与微调的学习路线和后续实践。
+course_styles: true
+---
+<header class="page-heading">
+  <a class="breadcrumb" href="{{ '/courses/' | relative_url }}">← 学习课程</a>
+  <div class="page-register"><span>HUGGING FACE / LLM COURSE</span><span>学习中</span></div>
+  <h1>LLM Course<span class="title-period">.</span></h1>
+  <p class="page-lead">从视觉模型走向语言模型，把概念理解与代码实践连接起来。</p>
+</header>
+
+<div class="course-summary">
+  <span class="course-stamp">LEARN<br>BY DOING</span>
+  <div><h2>我的学习档案</h2><p>正在学习 Hugging Face LLM Course，希望逐步建立对 Transformer、语言模型及其训练工具的理解，为后续阅读多模态模型相关工作打好基础。</p><p class="course-footnote">建档：2026.10.17 · 当前状态：学习中 · 具体章节、练习与实验结果待随笔记补充。</p><a class="text-link" href="https://huggingface.co/learn/llm-course/">进入原课程 ↗</a></div>
+</div>
+
+<div class="prose">
+  <section class="learning-recap" aria-labelledby="focus-title">
+    <p class="eyebrow">LEARNING FOCUS</p>
+    <h2 id="focus-title">这门课，我想弄清楚什么？</h2>
+    <p>学习时重点追踪三个问题：文本如何成为模型输入，预训练模型如何适应具体任务，以及怎样留下能复查的实践记录。</p>
+    <div class="learning-keypoints"><span>01 <strong>输入与表征</strong><small>Tokenizer / Transformer</small></span><span>02 <strong>训练与适配</strong><small>Datasets / Fine-tuning</small></span><span>03 <strong>验证与分享</strong><small>Evaluation / Hub</small></span></div>
+  </section>
+
+  <section aria-labelledby="roadmap-title">
+    <h2 id="roadmap-title">学习路线</h2>
+    <p>依据原课程目录整理。以下是学习安排，章节笔记与练习完成情况会在后续单独记录。</p>
+    <details class="course-review" open>
+      <summary>01 / 第 1–4 章：模型基础与使用</summary>
+      <ul>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter1/1">第 1 章 · Transformer 模型</a>：关注模型架构与任务的关系。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter2/1">第 2 章 · 使用 Transformers</a>：拆解 tokenizer、模型与 pipeline 的分工。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter3/1">第 3 章 · 微调预训练模型</a>：梳理数据、训练与评价流程。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter4/1">第 4 章 · 分享模型与分词器</a>：记录模型版本和使用说明。</li>
+      </ul>
+    </details>
+    <details class="course-review">
+      <summary>02 / 第 5–8 章：数据、分词与 NLP 任务</summary>
+      <ul>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter5/1">第 5 章 · Datasets</a>：关注数据加载与预处理。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter6/1">第 6 章 · Tokenizers</a>：理解分词规则与输入表示。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter7/1">第 7 章 · 经典 NLP 任务</a>：比较不同任务的数据与评价方式。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter8/1">第 8 章 · 如何寻求帮助</a>：学习提供清楚的问题描述与复现信息。</li>
+      </ul>
+    </details>
+    <details class="course-review">
+      <summary>03 / 第 9–10 章：演示与数据质量</summary>
+      <ul>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter9/1">第 9 章 · 构建和分享演示</a>：把模型能力整理成可体验的示例。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter10/1">第 10 章 · 高质量数据集</a>：关注标注、筛选与数据质量。</li>
+      </ul>
+    </details>
+    <details class="course-review">
+      <summary>04 / 第 11–12 章：LLM 微调与推理模型</summary>
+      <ul>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter11/1">第 11 章 · 微调大语言模型</a>：学习对话模板、SFT、LoRA 与评价。</li>
+        <li><a href="https://huggingface.co/learn/llm-course/chapter12/1">第 12 章 · 构建推理模型</a>：进一步了解推理模型的训练思路。</li>
+      </ul>
+    </details>
+  </section>
+
+  <section aria-labelledby="practice-title">
+    <h2 id="practice-title">后续笔记与实践</h2>
+    <p>章节笔记尚待整理。后续按“概念理解 → 最小示例 → 观察与疑问”补充，优先留下以下记录：</p>
+    <div class="course-practice-notes">
+      <div><h3>拆开一次模型调用</h3><p>记录原始文本、token IDs、attention mask 与模型输出，弄清各步骤的输入和输出。</p></div>
+      <div><h3>整理一次微调对照</h3><p>记录模型版本、数据划分、配置和评价指标，对照微调前后的表现与失败样例。</p></div>
+      <div><h3>连接视觉与语言表征</h3><p>结合 <a href="{{ '/courses/cs231n/lecture-08/' | relative_url }}">CS231n 的 Transformer 学习记录</a>，比较图像 patch 与文本 token 的表示方式，为后续 VLM 学习积累问题。</p></div>
+    </div>
+  </section>
+</div>
+
+<aside class="course-source"><strong>课程来源与记录范围</strong><p>Hugging Face · LLM Course。本页为个人学习路线与记录入口，课程内容归原作者所有。目录核对于 2026.10.17，后续以原课程为准。</p><a href="https://huggingface.co/learn/llm-course/">访问原课程 ↗</a></aside>
