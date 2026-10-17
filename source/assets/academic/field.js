@@ -20,7 +20,16 @@
       const u=nx*Math.cos(tilt*.24)-ny*Math.sin(tilt*.24);
       const v=nx*Math.sin(tilt*.24)+ny*Math.cos(tilt*.24);
       let light;
-      if(mode==='orbit') {
+      if(mode==='cosmos') {
+        const r=Math.hypot(u,v*1.8), a=Math.atan2(v*1.8,u);
+        const spiral=Math.cos(2*a-5*r+phase*.65+offset);
+        const arms=Math.pow(.5+.5*spiral,7)*Math.exp(-r*r*1.3);
+        const core=Math.exp(-r*r*34);
+        const halo=.11*Math.exp(-r*r*1.9);
+        const star=hash(x,y,seed+7919)>.997
+          ? .55+.4*(.5+.5*Math.sin(phase*.8+hash(x,y,seed)*20)) : 0;
+        light=clamp(core*.95+arms*.68+halo+star);
+      } else if(mode==='orbit') {
         const a=Math.atan2(v*1.25,u), r=Math.hypot(u,v*1.25);
         const contour=.74+.13*Math.sin(a*3+offset+phase);
         const rim=Math.exp(-(r-contour)*(r-contour)*40);
@@ -44,7 +53,8 @@
       const color=plate.pixels[i];
       if(color) rectangles+=`<rect x="${i%plate.width}" y="${Math.floor(i/plate.width)}" width="1" height="1" fill="${PALETTE[color]}"/>`;
     }
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${plate.width} ${plate.height}" shape-rendering="crispEdges" role="img" aria-label="程序生成的像素抖动曲面"><rect width="100%" height="100%" fill="${PALETTE[0]}"/>${rectangles}</svg>`;
+    const description=mode==='cosmos'?'程序生成的像素星空与旋涡星系':'程序生成的像素抖动曲面';
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${plate.width} ${plate.height}" shape-rendering="crispEdges" role="img" aria-label="${description}"><rect width="100%" height="100%" fill="${PALETTE[0]}"/>${rectangles}</svg>`;
   }
   const api={pattern,svg,palette:PALETTE.slice()};
   if(typeof module==='object'&&module.exports) module.exports=api;
@@ -88,7 +98,8 @@
       motionButton.disabled=!!media?.matches;
     }
     buttons.forEach(button=>button.addEventListener('click',()=>{
-      mode=button.dataset.artMode==='orbit'?'orbit':'wave';phase=0;
+      mode=['orbit','cosmos'].includes(button.dataset.artMode)?button.dataset.artMode:'wave';phase=0;
+      canvas.setAttribute('aria-label',mode==='cosmos'?'缓慢旋转的像素星系与闪烁星点':mode==='orbit'?'缓慢变化的轨道插图':'缓慢变化的生成式波场插图');
       buttons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));draw();
     }));
     seedButton?.addEventListener('click',()=>{seed=(seed+137)%10000;if(seedLabel) seedLabel.textContent=String(seed).padStart(4,'0');phase=0;draw();});
@@ -100,6 +111,12 @@
       observer.observe(canvas);
     }
     draw();sync();canvas.hidden=false;controls.hidden=false;
+    const modeControls=figure.querySelector('[data-field-modes]');
+    if(modeControls) {
+      modeControls.hidden=false;
+      const staticLabel=figure.querySelector('[data-field-static-label]');
+      if(staticLabel) staticLabel.hidden=true;
+    }
     figure.querySelector('.signal-surface>img')?.setAttribute('aria-hidden','true');
   });
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -15,7 +15,7 @@ permalink: /
   </div>
   <figure class="signal-figure" data-generative-figure>
     <div class="signal-surface"><img src="{{ '/assets/academic/field-001.svg' | relative_url }}" width="270" height="105" alt="由像素抖动构成的生成式波场插图"><canvas data-generative-canvas width="270" height="105" role="img" aria-label="缓慢变化的生成式波场插图" hidden></canvas></div>
-    <figcaption class="plate-caption"><span>生成式波场</span><div class="field-controls" data-field-controls hidden><button type="button" data-art-motion aria-pressed="true" aria-label="暂停动态插图">暂停动态</button></div></figcaption>
+    <figcaption class="plate-caption"><span data-field-static-label>生成式波场</span><div class="field-modes" data-field-modes role="group" aria-label="生成式插图风格" hidden><button type="button" data-art-mode="wave" aria-pressed="true">生成式波场</button><button type="button" data-art-mode="cosmos" aria-pressed="false">生成式宇宙</button></div><div class="field-controls" data-field-controls hidden><button type="button" data-art-motion aria-pressed="true" aria-label="暂停动态插图">暂停动态</button></div></figcaption>
   </figure>
 </section>
 <section class="home-section" aria-labelledby="updates-title">
@@ -32,3 +32,4 @@ permalink: /
   {% endif %}{% endfor %}</div>
 </section>
 <section class="home-learning" aria-labelledby="learning-title"><h2 id="learning-title">学习笔记</h2><p>CS231n 视觉学习笔记与 <a href="{{ '/courses/huggingface-llm/' | relative_url }}">Hugging Face LLM Course</a> 自学档案。</p><a href="{{ '/courses/' | relative_url }}">浏览学习课程 →</a></section>
+<aside class="home-ai-note" aria-labelledby="ai-note-title"><h2 id="ai-note-title">AI 辅助说明</h2><p>本站使用 ChatGPT 等 AI 工具辅助网页设计与代码实现，以及学习笔记的整理与表述。笔记内容持续核对与修订，科研经历和实验结果以实际记录为准。</p></aside>

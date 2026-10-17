@@ -10,6 +10,12 @@ assert.equal(digest(wave),digest(field.pattern(270,105,455,'wave')));
 assert.notEqual(digest(wave),digest(field.pattern(270,105,592,'wave')));
 assert.notEqual(digest(wave),digest(field.pattern(270,105,455,'orbit')));
 assert.notEqual(digest(wave),digest(field.pattern(270,105,455,'wave',.8)));
+const cosmos=field.pattern(270,105,455,'cosmos');
+assert.equal(digest(cosmos),digest(field.pattern(270,105,455,'cosmos')));
+assert.notEqual(digest(cosmos),digest(wave));
+assert.notEqual(digest(cosmos),digest(field.pattern(270,105,455,'cosmos',.8)));
+assert.notEqual(digest(cosmos),digest(field.pattern(270,105,592,'cosmos')));
+assert.ok([...cosmos.pixels].filter(n=>n>0).length>300);
 assert.equal(wave.pixels.length,270*105);
 const paletteCounts=[0,0,0];
 for(const color of wave.pixels){assert.ok(color>=0&&color<3);paletteCounts[color]++;}
@@ -23,7 +29,7 @@ class Element {
   emit(event){this.handlers[event]?.();}
 }
 const seed=new Element(),motion=new Element(),label=new Element(),controls=new Element();
-const modes=[new Element({artMode:'wave'}),new Element({artMode:'orbit'})];
+const modes=[new Element({artMode:'wave'}),new Element({artMode:'orbit'}),new Element({artMode:'cosmos'})];
 let draws=0;
 const canvas=new Element();
 canvas.getContext=()=>({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData:()=>draws++});
@@ -41,6 +47,8 @@ assert.equal(motion.attributes['aria-pressed'],'true');assert.equal(callbacks.si
 assert.equal(motion.textContent,'暂停动态');
 seed.emit('click');assert.equal(label.textContent,'0592');assert.equal(draws,2);
 modes[1].emit('click');assert.equal(modes[1].attributes['aria-pressed'],'true');assert.equal(draws,3);
+modes[2].emit('click');assert.equal(modes[2].attributes['aria-pressed'],'true');assert.equal(modes[1].attributes['aria-pressed'],'false');assert.equal(draws,4);
+assert.equal(canvas.attributes['aria-label'],'缓慢旋转的像素星系与闪烁星点');
 motion.emit('click');assert.equal(callbacks.size,0);assert.equal(motion.attributes['aria-pressed'],'false');
 assert.equal(motion.textContent,'播放动态');
 motion.emit('click');assert.equal(callbacks.size,1);assert.equal(motion.attributes['aria-pressed'],'true');
