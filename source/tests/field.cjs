@@ -37,11 +37,24 @@ const context={document,matchMedia:()=>media,Uint8ClampedArray,console,
  requestAnimationFrame:fn=>{callbacks.set(++next,fn);return next;},cancelAnimationFrame:id=>callbacks.delete(id)};
 vm.runInNewContext(fs.readFileSync(assetPath('assets/academic/field.js'),'utf8'),context);
 assert.equal(draws,1);assert.equal(canvas.hidden,false);assert.equal(controls.hidden,false);
-assert.equal(motion.attributes['aria-pressed'],'false');assert.equal(callbacks.size,0);
+assert.equal(motion.attributes['aria-pressed'],'true');assert.equal(callbacks.size,1);
+assert.equal(motion.textContent,'暂停动态');
 seed.emit('click');assert.equal(label.textContent,'0592');assert.equal(draws,2);
 modes[1].emit('click');assert.equal(modes[1].attributes['aria-pressed'],'true');assert.equal(draws,3);
+motion.emit('click');assert.equal(callbacks.size,0);assert.equal(motion.attributes['aria-pressed'],'false');
+assert.equal(motion.textContent,'播放动态');
 motion.emit('click');assert.equal(callbacks.size,1);assert.equal(motion.attributes['aria-pressed'],'true');
 document.visibilityState='hidden';document.emit('visibilitychange');assert.equal(callbacks.size,0);
 document.visibilityState='visible';document.emit('visibilitychange');assert.equal(callbacks.size,1);
 media.matches=true;media.emit('change');assert.equal(motion.disabled,true);assert.equal(callbacks.size,0);assert.equal(motion.attributes['aria-pressed'],'false');
 console.log('Passed deterministic plates, seed/mode variation, static fallback and motion/visibility scenarios.');
+
+media.matches=false;media.emit('change');assert.equal(callbacks.size,1);assert.equal(motion.disabled,false);
+
+// The compact home cover has only a motion control; reduced motion must never auto-start.
+callbacks.clear();media.matches=true;
+figure.querySelector=key=>({'[data-generative-canvas]':canvas,'[data-field-controls]':controls,'[data-art-motion]':motion})[key]||null;
+figure.querySelectorAll=()=>[];
+vm.runInNewContext(fs.readFileSync(assetPath('assets/academic/field.js'),'utf8'),context);
+assert.equal(callbacks.size,0);assert.equal(motion.disabled,true);assert.equal(motion.textContent,'静态显示');
+console.log('Passed compact controls and initial reduced-motion preference.');

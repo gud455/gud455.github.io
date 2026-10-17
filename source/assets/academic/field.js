@@ -61,7 +61,7 @@
     const motionButton=figure.querySelector('[data-art-motion]');
     const seedLabel=figure.querySelector('[data-seed-label]');
     const media=typeof matchMedia==='function'?matchMedia('(prefers-reduced-motion: reduce)'):null;
-    let seed=455,mode='wave',phase=0,playing=false,visible=true,raf=null,lastFrame=0;
+    let seed=455,mode='wave',phase=0,playing=true,visible=true,raf=null,lastFrame=0;
     canvas.width=270;canvas.height=105;
     function draw() {
       const plate=pattern(270,105,seed,mode,phase);
@@ -83,17 +83,18 @@
       if(raf!==null) {cancelAnimationFrame(raf);raf=null;}
       if(playing&&visible&&document.visibilityState!=='hidden'&&!media?.matches) raf=requestAnimationFrame(tick);
       motionButton.setAttribute('aria-pressed',String(playing&&!media?.matches));
-      motionButton.textContent=playing&&!media?.matches?'动态：开启':'动态：关闭';
+      motionButton.textContent=media?.matches?'静态显示':playing?'暂停动态':'播放动态';
+      motionButton.setAttribute('aria-label',media?.matches?'已遵循系统减少动态效果设置':playing?'暂停动态插图':'播放动态插图');
       motionButton.disabled=!!media?.matches;
     }
     buttons.forEach(button=>button.addEventListener('click',()=>{
       mode=button.dataset.artMode==='orbit'?'orbit':'wave';phase=0;
       buttons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));draw();
     }));
-    seedButton.addEventListener('click',()=>{seed=(seed+137)%10000;seedLabel.textContent=String(seed).padStart(4,'0');phase=0;draw();});
+    seedButton?.addEventListener('click',()=>{seed=(seed+137)%10000;if(seedLabel) seedLabel.textContent=String(seed).padStart(4,'0');phase=0;draw();});
     motionButton.addEventListener('click',()=>{playing=!playing;sync();});
     document.addEventListener('visibilitychange',sync);
-    media?.addEventListener?.('change',()=>{if(media.matches) playing=false;sync();});
+    media?.addEventListener?.('change',sync);
     if(typeof IntersectionObserver==='function') {
       const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();});
       observer.observe(canvas);

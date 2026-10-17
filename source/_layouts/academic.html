@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f3f1e9">{% if page.archived %}<meta name="robots" content="noindex,follow">{% endif %}
+  <meta name="theme-color" content="#ffffff">{% if page.archived %}<meta name="robots" content="noindex,follow">{% endif %}
   <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
   <meta name="description" content="{{ page.description | default: page.summary | default: site.description | strip_html | normalize_whitespace | escape }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
@@ -12,14 +12,14 @@
   <meta property="og:description" content="{{ page.summary | default: site.description | escape }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/academic/favicon.svg' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/academic/site.css?v=20261016-cleanup' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/academic/site.css?v=20261017-academic' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/gitbook/rouge/github.css' | relative_url }}">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
-  {% if page.nav_section == 'home' %}<script defer src="{{ '/assets/academic/field.js?v=20261015-v3' | relative_url }}"></script>{% endif %}
+  {% if page.nav_section == 'home' %}<script defer src="{{ '/assets/academic/field.js?v=20261017-motion' | relative_url }}"></script>{% endif %}
   <script defer src="{{ '/assets/academic/site.js?v=20261015-v3' | relative_url }}"></script>
   <link rel="stylesheet" href="{{ '/assets/academic/notebook.css?v=20261015-v3' | relative_url }}">
   {% if page.layout == 'record' or page.layout == 'course' %}<script defer src="{{ '/assets/academic/notebook.js?v=20261015-v3' | relative_url }}"></script>{% endif %}
-  {% if page.course_styles or page.nav_section == 'home' %}<link rel="stylesheet" href="{{ '/assets/courses/courses.css?v=20261016-cleanup' | relative_url }}">{% endif %}
+  {% if page.course_styles %}<link rel="stylesheet" href="{{ '/assets/courses/courses.css?v=20261016-cleanup' | relative_url }}">{% endif %}
   {% if page.course_labs %}<script defer src="{{ '/assets/courses/courses.js?v=20261015-v4' | relative_url }}"></script>{% endif %}
   {% if page.optimization_labs %}<script defer src="{{ '/assets/courses/lecture3.js?v=20261015-v5' | relative_url }}"></script>{% endif %}
   {% if page.backprop_labs %}<script defer src="{{ '/assets/courses/lecture4.js?v=20261015-v6' | relative_url }}"></script>{% endif %}
@@ -40,21 +40,20 @@
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="Gud 首页">gud<span class="brand-square" aria-hidden="true"></span></a>
-      <span class="header-description">视觉研究与学习档案<br><span lang="en">INDEPENDENT LEARNING ARCHIVE</span></span>
+      <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="Gud 首页">Gud</a>
+      <span class="header-description">科研与学习</span>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden>目录 <span aria-hidden="true">＋</span></button>
       <nav id="site-nav" class="site-nav" aria-label="主导航">
-        {% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.nav_section == item.key %} aria-current="page"{% endif %}><span class="nav-number" aria-hidden="true">0{{ forloop.index0 }}</span>{{ item.label | escape }}</a>{% endfor %}
+        {% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.nav_section == item.key %} aria-current="page"{% endif %}>{{ item.label | escape }}</a>{% endfor %}
       </nav>
       <a class="header-github" href="{{ site.data.profile.github }}">GitHub <span aria-hidden="true">↗</span></a>
     </div>
   </header>
-  <div class="edition-bar"><span>GUD / FIELD NOTES</span><span>北京，{{ 'now' | date: '%Y' }}</span><span>VOL. 16 <span class="edition-dot" aria-hidden="true">●</span> 持续更新</span></div>
   {% if page.nav_section == 'home' %}
     <main id="main" class="home-main" tabindex="-1">{{ content }}</main>
   {% else %}
     <div class="reading-shell">{% include academic-profile.html %}<main id="main" class="main-content" tabindex="-1">{{ content }}</main></div>
   {% endif %}
-  <footer class="site-footer"><div class="footer-top"><a class="footer-brand" href="{{ '/' | relative_url }}">Stay curious.<br>Keep a record<span>.</span></a><p>从理解出发，在实践中记录。<br>Gud 的科研与学习档案。</p><a class="footer-up" href="#main" aria-label="回到正文顶部">↑</a></div><div class="footer-bottom"><span>© {{ 'now' | date: '%Y' }} GUD</span><span>VISUAL COMPUTING / LEARNING IN PUBLIC</span><a href="{{ '/feed.xml' | relative_url }}">RSS ↗</a><a href="{{ site.data.profile.github }}">GITHUB ↗</a></div></footer>
+  <footer class="site-footer"><div class="footer-inner"><span>© {{ 'now' | date: '%Y' }} {{ site.data.profile.name | escape }} · 科研与学习</span><div><a href="{{ '/feed.xml' | relative_url }}">RSS</a><a href="{{ site.data.profile.github }}">GitHub</a><a href="#main">回到顶部 ↑</a></div></div></footer>
 </body>
 </html>
