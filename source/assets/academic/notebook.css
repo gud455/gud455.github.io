@@ -1,6 +1,7 @@
 /* VOL.03 / Evidence, provenance and interactive research notes. */
 select { font: inherit; color: inherit; border-radius: 0; }
 select:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.prose mjx-container[display="true"] { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .4em 0; }
 .article-tools { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 0 0 18px; color: var(--muted); font: 10px/1.7 var(--mono); }
 .reading-meter { display: flex; align-items: center; gap: 10px; }
 .reading-meter progress { width: 100px; height: 3px; appearance: none; border: 0; background: var(--faint); }
