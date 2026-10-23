@@ -1,3 +1,12 @@
+- title: 'MedForge: Interpretable Medical Deepfake Detection via Forgery-aware Reasoning'
+  short: MedForge
+  source: Chen et al. · ACL 2026 Main Conference
+  status: 框架学习完成 / 代码阅读中
+  description: 从医学图像输入学习定位、解释与真伪判断，核对 SFT、GSPO、奖励和公开评测路径。
+  paper: https://aclanthology.org/2026.acl-long.1177/
+  code: https://github.com/richardChenzhihui/ACL2026-MedForge
+  note: /records/medforge/
+  note_label: 我的学习专题
 - title: Denoising Diffusion Probabilistic Models
   short: DDPM
   source: Ho, Jain & Abbeel · 2020

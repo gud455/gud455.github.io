@@ -3,7 +3,7 @@ lang: zh-CN
 timezone: Asia/Shanghai
 title: Gud · 科研与学习
 author: Gud
-description: 中国矿业大学（北京）计算机科学与技术本科生，记录多模态图像融合、扩散模型、论文复现与公开课自学。
+description: 中国矿业大学（北京）计算机科学与技术本科生，记录图像融合、扩散模型、MedForge 与多模态推理学习、论文实践和公开课自学。
 url: https://gud455.github.io
 baseurl: ''
 markdown: kramdown

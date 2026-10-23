@@ -13,4 +13,14 @@
   english: Efficient & Reproducible Learning
   description: 从少步采样、紧凑模块与实验记录入手，理解方法的计算代价和结果的可重复性。
   tags: [少步采样, PyTorch, 实验记录]
+- number: '04'
+  title: 医学图像取证与推理
+  english: Medical Image Forensics & Reasoning
+  description: 以 MedForge 为学习入口，理解真伪、定位和解释的联系，并准备通用与领域模型对照。
+  tags: [MedForge, 视觉语言模型, SFT / GSPO]
+- number: '05'
+  title: 世界模型入门
+  english: World Models for Embodied AI
+  description: 初步学习状态、动作、未来预测与规划之间的关系，以综述建立阅读框架。
+  tags: [方向探索, 具身智能, 预测与规划]
 

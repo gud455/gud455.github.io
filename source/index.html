@@ -10,7 +10,7 @@ permalink: /
     <h1 id="intro-title">{{ site.data.profile.name | escape }}</h1>
     <p class="home-affiliation">{{ site.data.profile.university | escape }}<br>{{ site.data.profile.major | escape }} · {{ site.data.profile.stage | escape }}</p>
     <p class="home-description">{{ site.data.profile.intro | escape }}</p>
-    <p class="home-interests"><strong>研究兴趣</strong>多模态图像融合、退化感知先验、扩散模型</p>
+    <p class="home-interests"><strong>研究兴趣</strong>多模态图像融合、退化感知先验、医学图像可信分析</p>
     <div class="home-links"><a href="{{ '/research/' | relative_url }}">研究记录</a><a href="{{ '/projects/' | relative_url }}">复现实践</a><a href="{{ site.data.profile.github }}">GitHub ↗</a></div>
   </div>
   <figure class="signal-figure" data-generative-figure>
@@ -20,16 +20,16 @@ permalink: /
 </section>
 <section class="home-section" aria-labelledby="updates-title">
   <div class="home-section-heading"><h2 id="updates-title">近期进展</h2><a href="{{ '/notes/' | relative_url }}">全部记录 →</a></div>
-  <ul class="home-updates">{% for update in site.data.updates %}
+  <ul class="home-updates">{% for update in site.data.updates limit:6 %}
     <li><time>{{ update.date | escape }}</time><div><a href="{{ update.url | relative_url }}">{{ update.title | escape }}</a><p>{{ update.detail | escape }}</p></div></li>{% endfor %}
   </ul>
 </section>
 <section class="home-section" aria-labelledby="selected-title">
   <div class="home-section-heading"><h2 id="selected-title">代表性研究与实践</h2><a href="{{ '/research/' | relative_url }}">研究记录 →</a></div>
-  {% assign selected_slugs = 'sdadp-v02-results,dspfusion-reproduction,cddfuse,ddpm' | split: ',' %}
+  {% assign selected_slugs = 'medforge,sdadp-v02-results,dspfusion-reproduction,cddfuse,ddpm' | split: ',' %}
   <div class="home-selected">{% for slug in selected_slugs %}{% assign selected_record = site.records | where: 'slug', slug | first %}{% if selected_record %}
     <article><div class="home-record-meta"><span>{{ selected_record.kind | escape }}</span><span>{{ selected_record.status | escape }}</span></div><h3><a href="{{ selected_record.url | relative_url }}">{{ selected_record.title | escape }}</a></h3><p>{{ selected_record.summary | escape }}</p></article>
   {% endif %}{% endfor %}</div>
 </section>
-<section class="home-learning" aria-labelledby="learning-title"><h2 id="learning-title">学习笔记</h2><p>CS231n 视觉学习笔记与 <a href="{{ '/courses/huggingface-llm/' | relative_url }}">Hugging Face LLM Course</a> 自学档案。</p><a href="{{ '/courses/' | relative_url }}">浏览学习课程 →</a></section>
+<section class="home-learning" aria-labelledby="learning-title"><h2 id="learning-title">学习笔记</h2><p>近期专题：<a href="{{ '/records/medforge/' | relative_url }}">MedForge 与多模态推理</a> · <a href="{{ '/records/world-models-reading/' | relative_url }}">世界模型入门</a>。</p><p>课程学习：CS231n 视觉笔记与 <a href="{{ '/courses/huggingface-llm/' | relative_url }}">Hugging Face LLM Course</a> 自学档案。</p><a href="{{ '/courses/' | relative_url }}">浏览学习课程 →</a></section>
 <aside class="home-ai-note" aria-labelledby="ai-note-title"><h2 id="ai-note-title">AI 辅助说明</h2><p>本站使用 ChatGPT 等 AI 工具辅助网页设计与代码实现，以及学习笔记的整理与表述。笔记内容持续核对与修订，科研经历和实验结果以实际记录为准。</p></aside>

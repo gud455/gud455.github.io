@@ -1,3 +1,23 @@
+- date: '2026.10.23'
+  label: 论文学习
+  title: MedForge 专题：视觉证据、SFT / GSPO 与源码阅读
+  detail: 三篇笔记串联输入、定位、解释、奖励与评测；整理方法理解和复现准备。
+  url: /records/medforge/
+- date: '2026.10.22'
+  label: 模型调研
+  title: 医学图像与伪造解释模型：从底座到统一评测
+  detail: 整理通用与领域模型的角色、公开材料及单卡 A800 实验方案。
+  url: /records/medical-forgery-model-survey/
+- date: '2026.10.19'
+  label: 方向学习
+  title: 世界模型入门：状态、动作、预测与规划
+  detail: 以综述为入口，初步梳理世界模型、VLA、JEPA 与具身智能。
+  url: /records/world-models-reading/
+- date: '2026.10.18'
+  label: 部署实践
+  title: DeepSeek-R1 8B 本地部署与模型服务学习
+  detail: 记录 Ollama 首次部署、运行环境，以及本地权重、API 和联网的关系。
+  url: /records/local-llm-deployment/
 - date: '2026.10.17'
   label: 课程学习
   title: LLM Course 第一部分：从 Transformer 到微调与分享
