@@ -1,3 +1,8 @@
+- date: '2026.10.30'
+  label: 论文学习
+  title: GEMeX：胸片问答、视觉证据与三类评价
+  detail: 整理摘要与引言、四类题型、benchmark，以及 AR-score / A-score / V-score 与 NLG 的区别。
+  url: /records/gemex/
 - date: '2026.10.23'
   label: 论文学习
   title: MedForge 专题：视觉证据、SFT / GSPO 与源码阅读

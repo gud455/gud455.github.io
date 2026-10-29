@@ -1,3 +1,12 @@
+- title: 'GEMeX: A Large-Scale, Groundable, and Explainable Medical VQA Benchmark for Chest X-ray Diagnosis'
+  short: GEMeX
+  source: Liu et al. · ICCV 2025
+  status: 摘要与引言已整理 / 数据与评测框架学习
+  description: 理解四类题型、报告与区域对应，以及答案、文本解释和视觉定位的评价；完整复现待实践。
+  paper: https://openaccess.thecvf.com/content/ICCV2025/html/Liu_GEMeX_A_Large-Scale_Groundable_and_Explainable_Medical_VQA_Benchmark_for_ICCV_2025_paper.html
+  code: https://github.com/Awenbocc/GEMeX-Project
+  note: /records/gemex/
+  note_label: 我的学习专题
 - title: 'MedForge: Interpretable Medical Deepfake Detection via Forgery-aware Reasoning'
   short: MedForge
   source: Chen et al. · ACL 2026 Main Conference

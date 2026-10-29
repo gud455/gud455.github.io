@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="900" height="640" role="img" aria-labelledby="title desc">
+  <title id="title">GEMeX：数据构建与模型评价</title>
+  <desc id="desc">数据构建使用报告与区域，经医生指导及 OpenBioLLM 重定位，再由 GPT-4o 生成四种问答及参考答案、理由和区域框。模型评价以图像、问题和任务提示为输入，分别检查答案、答案与理由的文本，以及区域定位。</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#637034"/></marker></defs>
+  <style>text{font-family:Arial,"Noto Sans CJK SC","Microsoft YaHei",sans-serif;fill:#252822}.label{font-size:12px;fill:#637034;letter-spacing:1px}.heading{font-size:19px;font-weight:600}.body{font-size:14px}.small{font-size:12px;fill:#63685b}.box{fill:#fff;stroke:#bec3b6;stroke-width:1.2}.accent{fill:#f0f3e7;stroke:#637034;stroke-width:1.3}.arrow{fill:none;stroke:#637034;stroke-width:1.5;marker-end:url(#arrow)}</style>
+  <rect width="900" height="640" fill="#fafbf7"/>
+  <text x="28" y="32" class="label">GEMeX / DATA AND EVALUATION</text>
+  <text x="28" y="66" class="heading">先建立文字与区域对应，再评价多模态回答</text>
+  <path d="M28 88H872" stroke="#bec3b6"/>
+  <text x="28" y="115" class="label">01 / 数据构建：报告与标注参与生成</text>
+  <rect x="28" y="135" width="230" height="105" class="box"/>
+  <text x="44" y="164" class="heading">Chest ImaGenome</text>
+  <text x="44" y="190" class="body">报告句子、解剖区域与框</text>
+  <text x="44" y="216" class="small">需要精炼文字—区域对应</text>
+  <path d="M258 188H292" class="arrow"/>
+  <rect x="300" y="135" width="272" height="105" class="accent"/>
+  <text x="316" y="164" class="heading">阶段一：报告重定位</text>
+  <text x="316" y="190" class="body">医生指导 + OpenBioLLM-70B</text>
+  <text x="316" y="216" class="small">区域选择与合并、句子拆分与改写</text>
+  <path d="M572 188H606" class="arrow"/>
+  <rect x="614" y="135" width="258" height="105" class="accent"/>
+  <text x="630" y="164" class="heading">阶段二：生成问答</text>
+  <text x="630" y="190" class="body">GPT-4o + 规则与示例</text>
+  <text x="630" y="216" class="small">开放 / 封闭 / 单选 / 多选</text>
+  <path d="M743 240V263" class="arrow"/>
+  <rect x="28" y="272" width="844" height="61" class="box"/>
+  <text x="44" y="297" class="body">样本：图像 + 问题（及选项）+ 参考答案 + 文本理由 + 区域框</text>
+  <text x="44" y="319" class="small">区域名称经后处理映射到框；按训练、验证与测试划分使用</text>
+  <path d="M28 360H872" stroke="#bec3b6"/>
+  <text x="28" y="389" class="label">02 / 模型评价：按测试协议构造输入</text>
+  <rect x="28" y="416" width="230" height="118" class="box"/>
+  <text x="44" y="447" class="heading">待测模型输入</text>
+  <text x="44" y="475" class="body">图像 + 问题</text>
+  <text x="44" y="501" class="body">选项（如有）与任务提示</text>
+  <path d="M258 475H292" class="arrow"/>
+  <rect x="300" y="416" width="184" height="118" class="accent"/>
+  <text x="316" y="447" class="heading">视觉语言模型</text>
+  <text x="316" y="475" class="body">生成答案、理由</text>
+  <text x="316" y="501" class="body">及视觉位置</text>
+  <path d="M484 475H523V430H550" class="arrow"/>
+  <path d="M523 475H550" class="arrow"/>
+  <path d="M523 475V520H550" class="arrow"/>
+  <rect x="558" y="409" width="314" height="42" class="box"/>
+  <text x="573" y="436" class="body">答案匹配 → A-score</text>
+  <rect x="558" y="454" width="314" height="42" class="box"/>
+  <text x="573" y="481" class="body">答案 + 理由的文本 → AR-score</text>
+  <rect x="558" y="499" width="314" height="42" class="box"/>
+  <text x="573" y="526" class="body">框匹配与 mIoU → V-score</text>
+  <text x="28" y="582" class="small">文本评价器可使用报告与参考回答；这不意味着待测模型可以读取参考标注。</text>
+  <text x="28" y="610" class="small">依据 GEMeX 论文自绘的学习示意 · 具体提示、输出解析及计分按评测协议核对</text>
+</svg>
